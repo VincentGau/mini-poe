@@ -1,0 +1,2 @@
+<!--pages/poe-detail/poe-detail.wxml-->
+<view>{{data}}</view>

@@ -1,0 +1,12 @@
+<!--pages/poe/poe.wxml-->
+
+
+<!-- <view class='a' wx:for="{{authors}}">
+    <view>{{item.authorname}}</view>
+</view> -->
+
+<view class='a' wx:for="{{works}}" bindtap="toDetail" data-text="{{item.title}}">
+    <view>{{item.title}}</view>
+    <view>{{item.AuthorName}}</view>
+    <view>{{item.content}}</view>
+</view>
