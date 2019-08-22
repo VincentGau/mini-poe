@@ -14,6 +14,11 @@ const formatNumber = n => {
   return n[1] ? n : '0' + n
 }
 
+const contentDigest = n => {
+  return n.split("。")[0]
+}
+
 module.exports = {
-  formatTime: formatTime
+  formatTime: formatTime,
+  contentDigest: contentDigest
 }

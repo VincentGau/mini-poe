@@ -1,0 +1,7 @@
+var contentDigest = function (d) {
+  return d.split("。")[0];
+}
+
+module.exports = {
+  contentDigest: contentDigest,
+};

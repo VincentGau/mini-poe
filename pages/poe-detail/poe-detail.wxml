@@ -1,2 +1,4 @@
 <!--pages/poe-detail/poe-detail.wxml-->
-<view>{{data}}</view>
+<view>{{work.Title}}</view>
+<view>{{work.AuthorName}}</view>
+<view>{{work.Content}}</view>

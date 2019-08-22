@@ -16,19 +16,19 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // db.collection('authors').where({
-    //     authorid: options.authorid
-    // }).get({
-    //   success: res => {
-    //     // console.log(res)
-    //     this.setData({
-    //       authors: res.data
-    //     })
-    //   }
-    // })
-    this.setData({
-      data:options.title
+    console.log("---" + options.WorkId)
+    
+    db.collection('works-1').where({
+      WorkId: Number(options.WorkId)
     })
+    .get({
+      success: res => {
+        console.log(res.data)
+        this.setData({
+          work: res.data[0]
+        })
+      }
+    })    
   },
 
   /**

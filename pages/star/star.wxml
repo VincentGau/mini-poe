@@ -1,6 +1,8 @@
-<!--pages/poe/poe.wxml-->
-
+<!--pages/star/star.wxml-->
 <wxs src="./../../wxs/tools.wxs" module="tools" />
+
+<view bindtap="shuffle">Click</view>
+
 <view class='works-item' wx:for="{{works}}" bindtap="toDetail" data-text="{{item.WorkId}}">
     <view>{{item.Title}}</view>
     <view class="author-name">[{{item.Dynasty}}]{{item.AuthorName}}</view>

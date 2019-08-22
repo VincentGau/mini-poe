@@ -1,3 +1,4 @@
+// pages/star/star.js
 // pages/poe/poe.js
 
 wx.cloud.init()
@@ -10,16 +11,31 @@ Page({
    * 页面的初始数据
    */
   data: {
-    bottominfo:"加载中...",
-    pageindex:1
+    bottominfo: "加载中...",
+    pageindex: 1
   },
 
-  toDetail:function(e){
+  toDetail: function (e) {
     console.log(e.currentTarget.dataset.text)
     wx.navigateTo({
       url: '../poe-detail/poe-detail?WorkId=' + e.currentTarget.dataset.text,
     })
   },
+
+  // 对已显示的作品乱序处理
+  shuffle: function(e){
+    let shuffleWorks = this.data.works
+    let m = shuffleWorks.length;
+    while (m) {
+      const i = Math.floor(Math.random() * m--);
+      [shuffleWorks[m], shuffleWorks[i]] = [shuffleWorks[i], shuffleWorks[m]];
+    }
+    this.setData({
+      works:shuffleWorks
+    })
+  },
+
+
 
   /**
    * 生命周期函数--监听页面加载
@@ -33,7 +49,7 @@ Page({
         })
       }
     })
-    
+
   },
 
   /**
@@ -78,7 +94,7 @@ Page({
     //   }
     // })
 
-    
+
   },
 
   /**
@@ -89,24 +105,24 @@ Page({
     console.log(this.data.pageindex)
     let curpage = this.data.pageindex
     db.collection('works-1').skip(curpage * 20).limit(20).get({
-      
+
       success: res => {
         console.log(res.data)
-        if(res.data == ''){
+        if (res.data == '') {
           this.setData({
-            bottominfo:"没有更多数据了"
+            bottominfo: "没有更多数据了"
           })
         }
-        else{
+        else {
           curpage++
           this.setData({
             works: this.data.works.concat(res.data),
-            pageindex:curpage
+            pageindex: curpage
           })
         }
       }
     })
-    
+
   },
 
   /**

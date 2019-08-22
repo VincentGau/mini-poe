@@ -3,12 +3,16 @@
     "pages/index/index",
     "pages/logs/logs",
     "pages/poe/poe",
-    "pages/poe-detail/poe-detail"
+    "pages/poe-detail/poe-detail",
+    "pages/random-poe/random-poe",
+    "pages/me/me",
+    "pages/star/star",
+    "pages/discover/discover"
   ],
   "window": {
     "backgroundTextStyle": "light",
     "navigationBarBackgroundColor": "#fff",
-    "navigationBarTitleText": "WeChat",
+    "navigationBarTitleText": "Haku Poe",
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
@@ -18,12 +22,12 @@
         "text": "首页"
       },
       {
-        "pagePath": "pages/logs/logs",
-        "text": "日志"
+        "pagePath": "pages/discover/discover",
+        "text": "发现"
       },
       {
-        "pagePath": "pages/poe/poe",
-        "text": "诗词"
+        "pagePath": "pages/me/me",
+        "text": "我"
       }
     ]
   },
