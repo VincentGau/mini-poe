@@ -21,13 +21,13 @@
             <text>作品</text>
             <navigator url="../poe-detail/poe-detail?WorkId={{item.WorkId}}" wx:for="{{searchResultWorks}}" class="weui-cell" hover-class="weui-cell_active">
                 <view class="weui-cell__bd">
-                    <view>{{item.Title}}</view>
+                    <view>{{item.Title}}<text class="dynasty">[{{item.Dynasty}}]{{item.AuthorName}}</text></view>
                 </view>
             </navigator>
             <text>作者</text>
             <navigator url="../author-detail/author-detail?AuthorId={{item.authorid}}" wx:for="{{searchResultAuthors}}" class="weui-cell" hover-class="weui-cell_active">
                 <view class="weui-cell__bd">
-                    <view>{{item.authorname}}</view>
+                    <view>{{item.authorname}}<text class="dynasty">{{item.dynasty}}</text></view>
                 </view>
             </navigator>
         </view>
