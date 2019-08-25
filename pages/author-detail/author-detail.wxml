@@ -1,0 +1,2 @@
+<!--pages/author-detail/author-detail.wxml-->
+<view>{{author.authorname}}</view>

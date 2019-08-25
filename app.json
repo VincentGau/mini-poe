@@ -7,7 +7,8 @@
     "pages/random-poe/random-poe",
     "pages/me/me",
     "pages/star/star",
-    "pages/discover/discover"
+    "pages/discover/discover",
+    "pages/author-detail/author-detail"
   ],
   "window": {
     "backgroundTextStyle": "light",

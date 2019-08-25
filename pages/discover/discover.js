@@ -1,4 +1,7 @@
 // pages/discover/discover.js
+wx.cloud.init()
+const db = wx.cloud.database()
+
 Page({
 
   /**
@@ -62,5 +65,69 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  showInput: function () {
+    this.setData({
+      inputShowed: true
+    });
+  },
+  hideInput: function () {
+    this.setData({
+      inputVal: "",
+      inputShowed: false
+    });
+  },
+  clearInput: function () {
+    this.setData({
+      inputVal: ""
+    });
+  },
+  inputTyping: function (e) {
+    const _ = db.command
+    db.collection("works-1").where(_.or([
+      {
+        Content: {
+          $regex: '.*' + e.detail.value,
+          $options: 'i'
+        }
+      },
+      {
+        Title: {
+          $regex: '.*' + e.detail.value,
+          $options: 'i'
+        }
+      }
+    ])).get({
+      success: res => {
+        console.log(res.data)
+        this.setData({
+          searchResultWorks: res.data
+        })
+      }
+    })
+
+    db.collection("authors").where({
+      authorname: {
+        $regex: '.*' + e.detail.value,
+        $options: 'i'
+      }
+    }).get({
+      success: res => {
+        if(res.data != ''){
+          console.log("author not null")
+        }
+        else{
+          console.log("authors null")
+        }
+        this.setData({
+          searchResultAuthors: res.data
+        })
+      }
+    })    
+
+    this.setData({
+      inputVal: e.detail.value
+    });
   }
 })
