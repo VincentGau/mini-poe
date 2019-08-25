@@ -107,7 +107,7 @@ Page({
       }
     })
 
-    db.collection("authors").where({
+    db.collection("authors_all").where({
       authorname: {
         $regex: '.*' + e.detail.value,
         $options: 'i'

@@ -15,7 +15,7 @@ Page({
    */
   onLoad: function (options) {
     console.log("========" + options.AuthorId)
-    db.collection('authors').where({
+    db.collection('authors_all').where({
       authorid: Number(options.AuthorId)
     })
       .get({
