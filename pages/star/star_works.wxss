@@ -1,0 +1,9 @@
+/* pages/star/star_works.wxss */
+.author-name {
+  color: #aaa;
+  font-size: 0.7rem;
+}
+
+.works-item{
+  border-bottom: 1rpx solid #aaa;
+}

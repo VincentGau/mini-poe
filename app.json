@@ -8,7 +8,9 @@
     "pages/me/me",
     "pages/star/star",
     "pages/discover/discover",
-    "pages/author-detail/author-detail"
+    "pages/author-detail/author-detail",
+    "pages/star/star_authors",
+    "pages/star/star_works"
   ],
   "window": {
     "backgroundTextStyle": "light",

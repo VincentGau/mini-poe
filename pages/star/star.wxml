@@ -1,20 +1,11 @@
 <!--pages/star/star.wxml-->
-<wxs src="./../../wxs/tools.wxs" module="tools" />
-
-<view bindtap="shuffle">Click</view>
-
-<view class='works-item' wx:if="{{!emptyFlag}}" wx:key="{{works}}" bindtap="toDetail" data-text="{{item.WorkId}}">
-    <view>{{item.Title}}</view>
-    <view class="author-name">[{{item.Dynasty}}]{{item.AuthorName}}</view>
-    <view>{{tools.contentDigest(item.Content)}}。</view>
-</view>
-<view wx:if="{{emptyFlag}}" class="weui-loadmore weui-loadmore_line">
-    <view class="weui-loadmore__tips weui-loadmore__tips_in-line">暂无数据</view>
-</view>
-<view wx:if="{{!emptyFlag && !endFlag}}" class="weui-loadmore">
-    <view class="weui-loading"></view>
-    <view class="weui-loadmore__tips">正在加载</view>
-</view>
-<view wx:if="{{!emptyFlag && endFlag}}" class="weui-loadmore weui-loadmore_line weui-loadmore_dot">
-    <view class="weui-loadmore__tips weui-loadmore__tips_in-line weui-loadmore__tips_in-dot"></view>
+<view class="weui-cells weui-cells_after-title">
+    <navigator url="./star_authors" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view class="weui-cell__bd">作者</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
+    <navigator url="./star_works" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view class="weui-cell__bd">作品</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
 </view>

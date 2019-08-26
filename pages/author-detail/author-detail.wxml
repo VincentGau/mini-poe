@@ -1,5 +1,28 @@
 <!--pages/author-detail/author-detail.wxml-->
-<view>{{author.authorname}}</view>
+
 <!-- <view bindtap="starAuthor1" wx:if="{{!starFlag}}" data-authorid="{{author.authorid}}">STAR</view>
 <view bindtap="unstarAuthor1" wx:if="{{starFlag}}" data-authorid="{{author.authorid}}">UNSTAR</view> -->
 <view bindtap="toggleStar" data-authorid="{{author.authorid}}">{{starcontent}}</view>
+
+
+<!-- <view class="page__hd">
+    <view class="page__title">Article</view>
+    <view class="page__desc">文章</view>
+</view> -->
+<view class="page__bd">
+    <view class="weui-article">
+        <view class="weui-article__h1">{{author.authorname}}</view>
+        <view class="weui-article__p">
+            [{{author.dynasty}}] {{author.birthyear}} ~ {{author.deathyear}}
+        </view>
+        <view class="weui-article__section">
+            <view class="weui-article__h2">简介</view>
+            <view class="weui-article__section">
+                <view class="weui-article__h3">1.1 节标题</view>
+                <view class="weui-article__p">
+                    {{author.authordesc}}
+                </view>
+            </view>
+        </view>
+    </view>
+</view>
