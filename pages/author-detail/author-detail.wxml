@@ -1,2 +1,5 @@
 <!--pages/author-detail/author-detail.wxml-->
 <view>{{author.authorname}}</view>
+<!-- <view bindtap="starAuthor1" wx:if="{{!starFlag}}" data-authorid="{{author.authorid}}">STAR</view>
+<view bindtap="unstarAuthor1" wx:if="{{starFlag}}" data-authorid="{{author.authorid}}">UNSTAR</view> -->
+<view bindtap="toggleStar" data-authorid="{{author.authorid}}">{{starcontent}}</view>

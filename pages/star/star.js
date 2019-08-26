@@ -11,7 +11,7 @@ Page({
    * 页面的初始数据
    */
   data: {
-    bottominfo: "加载中...",
+    emptyFlag:true,
     pageindex: 1
   },
 
@@ -41,15 +41,24 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    db.collection('works-1').get({
+    console.log("star on load...")
+    var that = this
+    db.collection('works-empty').get({
       success: res => {
         console.log(res)
-        this.setData({
+        that.setData({
+          emptyFlag: false,
           works: res.data
+        })     
+      },
+      fail: res =>{
+        console.log("fail to load works")
+        that.setData({
+          emptyFlag: true,
         })
       }
     })
-
+    console.log("EMPTY FLAG: " + this.data.emptyFlag)
   },
 
   /**
@@ -105,12 +114,12 @@ Page({
     console.log(this.data.pageindex)
     let curpage = this.data.pageindex
     db.collection('works-1').skip(curpage * 20).limit(20).get({
-
       success: res => {
         console.log(res.data)
         if (res.data == '') {
           this.setData({
-            bottominfo: "没有更多数据了"
+            bottominfo: "没有更多数据了",
+            endFlag: true
           })
         }
         else {
