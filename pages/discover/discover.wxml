@@ -18,17 +18,28 @@
             <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="hideInput">取消</view>
         </view>
         <view class="weui-cells searchbar-result" wx:if="{{inputVal.length > 0}}">
-            <view class="weui-cells__title">作品</view>
-            <navigator url="../poe-detail/poe-detail?WorkId={{item.WorkId}}" wx:for="{{searchResultWorks}}" class="weui-cell" hover-class="weui-cell_active">
-                <view class="weui-cell__bd">
-                    <view>{{item.Title}}<text class="dynasty">[{{item.Dynasty}}]{{item.AuthorName}}</text></view>
-                </view>
-            </navigator>
-            <view class="weui-cells__title">作者</view>
+            <view class="weui-cells__title" wx:if="{{!noResultWork}}">作品</view>
+            <block wx:for="{{searchResultWorks}}" wx:for-index="i">
+              <navigator url="../poe-detail/poe-detail?WorkId={{item.WorkId}}" wx:if="{{i < 5}}" class="weui-cell" hover-class="weui-cell_active">
+                  <view class="weui-cell__bd">
+                      <view>{{item.Title}}<text class="dynasty">[{{item.Dynasty}}]{{item.AuthorName}}</text></view>
+                  </view>
+              </navigator>
+            </block>
+            <navigator url="../search/search_work" wx:if="{{hasMoreWorks}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+                  <view class="weui-cell__bd">更多作品...</view>
+                  <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+              </navigator>
+            
+            <view class="weui-cells__title" wx:if="{{!noResultAuthor}}">作者</view>
             <navigator url="../author-detail/author-detail?AuthorId={{item.authorid}}" wx:for="{{searchResultAuthors}}" class="weui-cell" hover-class="weui-cell_active">
                 <view class="weui-cell__bd">
                     <view>{{item.authorname}}<text class="dynasty">{{item.dynasty}}</text></view>
                 </view>
+            </navigator>
+            <navigator url="../search/search_author" wx:if="{{hasMoreAuthors}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+                <view class="weui-cell__bd">更多作者...</view>
+                <view class="weui-cell__ft weui-cell__ft_in-access"></view>
             </navigator>
         </view>
     </view>

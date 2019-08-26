@@ -10,7 +10,9 @@
     "pages/discover/discover",
     "pages/author-detail/author-detail",
     "pages/star/star_authors",
-    "pages/star/star_works"
+    "pages/star/star_works",
+    "pages/search/search_author",
+    "pages/search/search_work"
   ],
   "window": {
     "backgroundTextStyle": "light",

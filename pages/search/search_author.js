@@ -1,8 +1,4 @@
-// pages/poe-detail/poe-detail.js
-wx.cloud.init()
-
-const db = wx.cloud.database()
-
+// pages/search/search_author.js
 Page({
 
   /**
@@ -16,19 +12,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log("---" + options.WorkId)
-    
-    db.collection('works_all').where({
-      WorkId: Number(options.WorkId)
-    })
-    .get({
-      success: res => {
-        console.log(res.data)
-        this.setData({
-          work: res.data[0]
-        })
-      }
-    })    
+
   },
 
   /**

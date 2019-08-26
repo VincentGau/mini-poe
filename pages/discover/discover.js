@@ -8,7 +8,8 @@ Page({
    * Page initial data
    */
   data: {
-
+    hasMoreWorks: false,
+    hasMoreAuthors: false
   },
 
   /**
@@ -84,26 +85,95 @@ Page({
     });
   },
   inputTyping: function (e) {
+    this.setData({
+      hasMoreWorks: false,
+      hasMoreAuthors: false,
+      searchResultWorks: '',
+      searchResultAuthors: '',
+    })
+    
+    wx.showToast({
+      title: '数据加载中',
+      icon: 'loading',
+      duration:100000
+    })
+
+    console.log(e.detail.value)
     const _ = db.command
-    db.collection("works-1").where(_.or([
+    // db.collection("works_all").where(_.or([
+    //   {
+    //     Content: {
+    //       $regex: '.*' + e.detail.value,
+    //       $options: 'i'
+    //     }
+    //   },
+    //   {
+    //     Title: {
+    //       $regex: '.*' + e.detail.value,
+    //       $options: 'i'
+    //     }
+    //   }
+    // ])).orderBy('WorkId', 'asc').get({
+    //   success: res => {
+    //     console.log(res.data)
+    //     this.setData({
+    //       searchResultWorks: res.data
+    //     })
+        
+    //     if(res.data == ''){
+    //       this.setData({
+    //         noResultWork: true
+    //       })
+    //     }
+    //     else{
+    //       this.setData({
+    //         noResultWork: false
+    //       })
+    //       if (res.data.length > 4) {
+    //         this.setData({
+    //           hasMoreWorks: true
+    //         })
+    //       }
+    //     }
+    //   }
+    // })
+
+    db.collection("works_all").where(
       {
         Content: {
           $regex: '.*' + e.detail.value,
           $options: 'i'
         }
-      },
-      {
-        Title: {
-          $regex: '.*' + e.detail.value,
-          $options: 'i'
-        }
-      }
-    ])).get({
+      }).orderBy('WorkId', 'asc').get({
       success: res => {
+        console.log('0000000000')
         console.log(res.data)
         this.setData({
           searchResultWorks: res.data
         })
+
+        if (res.data == '') {
+          console.log("works null")
+          this.setData({
+            noResultWork: true
+          })
+        }
+        else {
+          this.setData({
+            noResultWork: false
+          })
+          if (res.data.length > 4) {
+            this.setData({
+              hasMoreWorks: true
+            })
+          }
+        }
+      },
+      fail:err=>{
+        console.error(err)
+      },
+      complete:()=>{
+        wx.hideToast()
       }
     })
 
@@ -112,17 +182,28 @@ Page({
         $regex: '.*' + e.detail.value,
         $options: 'i'
       }
-    }).get({
+    }).orderBy('authorid', 'asc').get({
       success: res => {
-        if(res.data != ''){
-          console.log("author not null")
-        }
-        else{
-          console.log("authors null")
-        }
         this.setData({
           searchResultAuthors: res.data
         })
+
+        if(res.data == ''){
+          console.log("authors null")
+          this.setData({
+            noResultAuthor: true
+          })
+        }
+        else{
+          this.setData({
+            noResultAuthor: false
+          })
+          if (res.data.length > 4) {
+            this.setData({
+              hasMoreAuthors: true
+            })
+          }
+        }        
       }
     })    
 
