@@ -1,5 +1,5 @@
-var contentDigest = function (d) {
-  return d.split("。")[0];
+var contentDigest = function (str) {
+  return str.split("。")[0] + "。";
 }
 
 module.exports = {

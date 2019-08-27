@@ -1,28 +1,44 @@
 <!--pages/author-detail/author-detail.wxml-->
+<wxs src="./../../wxs/tools.wxs" module="tools" />
 
-<!-- <view bindtap="starAuthor1" wx:if="{{!starFlag}}" data-authorid="{{author.authorid}}">STAR</view>
-<view bindtap="unstarAuthor1" wx:if="{{starFlag}}" data-authorid="{{author.authorid}}">UNSTAR</view> -->
-<view bindtap="toggleStar" data-authorid="{{author.authorid}}">{{starcontent}}</view>
-
-
-<!-- <view class="page__hd">
-    <view class="page__title">Article</view>
-    <view class="page__desc">文章</view>
-</view> -->
 <view class="page__bd">
     <view class="weui-article">
-        <view class="weui-article__h1">{{author.authorname}}</view>
+        <view class="weui-article__h1">{{author.authorname}}
+          <image class="weui-slideview__btn__icon svg_icon" src="{{like_icon}}" bindtap="toggleStar" data-authorid="{{author.authorid}}"></image>
+        </view>
         <view class="weui-article__p">
             [{{author.dynasty}}] {{author.birthyear}} ~ {{author.deathyear}}
         </view>
         <view class="weui-article__section">
-            <view class="weui-article__h2">简介</view>
+            <view class="red-tip">简介</view>
             <view class="weui-article__section">
-                <view class="weui-article__h3">1.1 节标题</view>
-                <view class="weui-article__p">
+                <view class="weui-article__p desc-content">
                     {{author.authordesc}}
                 </view>
             </view>
         </view>
     </view>
+</view>
+
+<view class="padding16">
+  <view class="red-tip">作品 / {{works_count}}</view>
+</view>
+
+
+<view class="weui-panel__bd" style="border-bottom:1rpx solid rgba(0,0,0,.1)" wx:for="{{works}}" wx:key="work" bindtap="toDetail" data-text="{{item.WorkId}}"v>
+    <view class="weui-media-box weui-media-box_text">
+        <view class="weui-media-box__title weui-media-box__title_in-text">{{item.Title}}</view>
+        <view class="weui-media-box__desc">{{tools.contentDigest(item.Content)}}</view>
+    </view>
+</view>
+
+<view wx:if="{{emptyFlag}}" class="weui-loadmore weui-loadmore_line">
+    <view class="weui-loadmore__tips weui-loadmore__tips_in-line">无作品数据</view>
+</view>
+<view wx:if="{{!emptyFlag && !endFlag}}" class="weui-loadmore">
+    <view class="weui-loading"></view>
+    <view class="weui-loadmore__tips">正在加载</view>
+</view>
+<view wx:if="{{!emptyFlag && endFlag}}" class="weui-loadmore weui-loadmore_line weui-loadmore_dot">
+    <view class="weui-loadmore__tips weui-loadmore__tips_in-line weui-loadmore__tips_in-dot"></view>
 </view>

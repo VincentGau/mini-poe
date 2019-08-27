@@ -2,6 +2,8 @@
 wx.cloud.init()
 const db = wx.cloud.database()
 const util = require('../../utils/util.js')
+const like_url = "../../images/like.svg"
+const like_filled_url = "../../images/like_filled.svg"
 Page({
 
   /**
@@ -9,10 +11,17 @@ Page({
    */
   data: {
     starFlag: false,
-    starcontent: "star"
+    like_icon: like_url,
+    emptyFlag: true,
+    pageindex: 1
   },
 
-  
+  toDetail: function (e) {
+    console.log(e.currentTarget.dataset.text)
+    wx.navigateTo({
+      url: '../poe-detail/poe-detail?WorkId=' + e.currentTarget.dataset.text,
+    })
+  },
 
   /**
    * Lifecycle function--Called when page load
@@ -28,7 +37,38 @@ Page({
             author: res.data[0]
           })
         }
-      })    
+      })
+
+    db.collection('works_all').where({
+      AuthorName:"李煜"
+    }).get({
+      success: res => {
+        console.log("aaaaaaaaaa")
+        console.log(res)
+        that.setData({
+          emptyFlag: false,
+          works: res.data
+        })
+      },
+      fail: err => {
+        console.log("fail to load works")
+        console.error(err)
+        that.setData({
+          emptyFlag: true,
+        })
+      }
+      })
+      
+    db.collection('works_all').where({
+      AuthorName: "李煜"
+    }).count({
+        success: res => {
+          console.log(res.total)
+          this.setData({
+            works_count: res.total
+          })
+        }
+      })
   },
 
   /**
@@ -70,7 +110,27 @@ Page({
    * Called when page reach bottom
    */
   onReachBottom: function () {
-
+    let curpage = this.data.pageindex
+    db.collection('works_all').where({
+      AuthorName: "李煜"
+    }).skip(curpage * 20).limit(20).get({
+      success: res => {
+        console.log(res.data)
+        if (res.data == '') {
+          this.setData({
+            bottominfo: "没有更多数据了",
+            endFlag: true
+          })
+        }
+        else {
+          curpage++
+          this.setData({
+            works: this.data.works.concat(res.data),
+            pageindex: curpage
+          })
+        }
+      }
+    })
   },
 
   /**
@@ -108,25 +168,11 @@ Page({
           console.log("NOT NULL")
           that.setData({
             starFlag: true,
-            starcontent:"unstar"
+            starcontent:"unstar",
+            like_icon:like_filled_url
           })
         }
       }
-    })
-  },
-
-  starAuthor1: function(e){
-    console.log("author star")
-    var that = this
-    db.collection("star_authors").add({
-      data:{
-        AuthorId: e.currentTarget.dataset.authorid,
-        StarDate: util.formatTime(new Date())
-      },
-      success: function(res){
-        console.log(res)
-      },
-      fail: console.error
     })
   },
 
@@ -141,31 +187,10 @@ Page({
         console.log(authorid + " starred")
         that.setData({
           starFlag: true,
-          starcontent: "UNSTAR"
+          like_icon: like_filled_url
         })
       },
       fail: console.error
-    })
-  },
-
-  unstarAuthor1: function (e) {
-    console.log("unauthor star")
-    console.log(e.currentTarget.dataset.authorid)
-    var that = this
-    db.collection("star_authors").where({
-      AuthorId: e.currentTarget.dataset.authorid
-    }).get({
-      success: res =>{
-        var delete_id = res.data[0]._id
-        console.log(delete_id)
-        
-        db.collection("star_authors").doc(delete_id).remove({
-          success: function (res) {
-            console.log("successfully removed")
-            console.log(res)
-          }
-        })
-      }
     })
   },
 
@@ -182,11 +207,22 @@ Page({
             console.log(authorid + " successfully removed")
             that.setData({
               starFlag: false,
-              starcontent: "STAR"
+              like_icon: like_url
             })
           }
         })
       }
     })
-  }
+  },
+
+  getWorks: authorid=>{
+    console.log("loading works for ")
+    db.collection("works_all").where({
+      AuthorName: "苏轼"
+    }).get({
+      success:res=>{
+
+      }
+    })
+  },
 })

@@ -7,7 +7,7 @@
       <text class="userinfo-nickname">{{userInfo.nickName}}</text>
     </block>
   </view>
-  <view class="usermotto">
-    <text class="user-motto">{{motto}}</text>
-  </view>
+  <navigator url="../author-detail/author-detail?AuthorId=10001" class="usermotto">
+    <text class="user-motto">苏轼</text>
+  </navigator> 
 </view>

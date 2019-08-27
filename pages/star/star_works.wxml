@@ -6,7 +6,7 @@
 <view class='works-item' wx:if="{{!emptyFlag}}" wx:key="{{works}}" bindtap="toDetail" data-text="{{item.WorkId}}">
     <view>{{item.Title}}</view>
     <view class="author-name">[{{item.Dynasty}}]{{item.AuthorName}}</view>
-    <view>{{tools.contentDigest(item.Content)}}。</view>
+    <view>{{tools.contentDigest(item.Content)}}</view>
 </view>
 <view wx:if="{{emptyFlag}}" class="weui-loadmore weui-loadmore_line">
     <view class="weui-loadmore__tips weui-loadmore__tips_in-line">暂无数据</view>
