@@ -10,4 +10,8 @@
   <navigator url="../author-detail/author-detail?AuthorId=10001" class="usermotto">
     <text class="user-motto">苏轼</text>
   </navigator> 
+  <navigator url="../poe-detail/poe-detail?WorkId=635456">
+    <text class="user-motto">欲问江梅瘦几分</text>
+  </navigator> 
+  
 </view>

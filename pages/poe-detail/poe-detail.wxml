@@ -1,4 +1,9 @@
 <!--pages/poe-detail/poe-detail.wxml-->
-<view>{{work.Title}}</view>
-<view>{{work.AuthorName}}</view>
-<view>{{work.Content}}</view>
+<wxs src="./../../wxs/tools.wxs" module="tools" />
+<view class='main'>
+  <view class="title">{{work.Title}}</view>
+  <view class='author'>[{{work.Dynasty}}] {{work.AuthorName}}</view>
+  <view class='content'>{{tools.contentDigest(work.Content)}}</view>
+  <!-- <view class='content'>{{tools.escLinebreak(work.Content)}}</view> -->
+  <!-- <view class='content'>{{work.Content}}</view> -->
+</view>

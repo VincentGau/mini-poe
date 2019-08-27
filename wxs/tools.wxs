@@ -2,6 +2,11 @@ var contentDigest = function (str) {
   return str.split("。")[0] + "。";
 }
 
+var escLinebreak = function(str){
+  return str.replace('\r\n', '<br>');
+}
+
 module.exports = {
   contentDigest: contentDigest,
+  escLinebreak: escLinebreak,
 };

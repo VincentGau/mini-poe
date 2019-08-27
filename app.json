@@ -12,7 +12,8 @@
     "pages/star/star_authors",
     "pages/star/star_works",
     "pages/search/search_author",
-    "pages/search/search_work"
+    "pages/search/search_work",
+    "pages/search/index"
   ],
   "window": {
     "backgroundTextStyle": "light",
