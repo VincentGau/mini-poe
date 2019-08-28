@@ -2,14 +2,14 @@
 <wxs src="./../../wxs/tools.wxs" module="tools" />
 
 <view class="page__bd">
-    <view class="weui-article">
+    <view class="weui-article" style="padding-bottom:0;">
         <view class="weui-article__h1">{{author.authorname}}
           <image class="weui-slideview__btn__icon svg_icon" src="{{like_icon}}" bindtap="toggleStar" data-authorid="{{author.authorid}}"></image>
         </view>
         <view class="weui-article__p">
             [{{author.dynasty}}] {{author.birthyear}} ~ {{author.deathyear}}
         </view>
-        <view class="weui-article__section">
+        <view class="weui-article__section" style="padding-bottom:0;">
             <view class="red-tip">简介</view>
             <view class="weui-article__section">
                 <view class="weui-article__p desc-content">
@@ -25,7 +25,7 @@
 </view>
 
 
-<view class="weui-panel__bd" style="border-bottom:1rpx solid rgba(0,0,0,.1)" wx:for="{{works}}" wx:key="work" bindtap="toDetail" data-text="{{item.WorkId}}"v>
+<view class="weui-panel__bd" style="border-bottom:1rpx solid rgba(0,0,0,.1)" wx:for="{{works}}" wx:key="work" bindtap="toDetail" data-text="{{item.WorkId}}">
     <view class="weui-media-box weui-media-box_text">
         <view class="weui-media-box__title weui-media-box__title_in-text">{{item.Title}}</view>
         <view class="weui-media-box__desc">{{tools.contentDigest(item.Content)}}</view>

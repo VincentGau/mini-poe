@@ -3,6 +3,8 @@ wx.cloud.init()
 
 const db = wx.cloud.database()
 
+var WxParse = require('../../wxParse/wxParse.js');
+
 Page({
 
   /**
@@ -16,19 +18,29 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log("---" + options.WorkId)
-    
+    console.log("----" + options.WorkId)
+    var that = this;
+
     db.collection('works_all').where({
       WorkId: Number(options.WorkId)
     })
     .get({
       success: res => {
         console.log(res.data)
+        let content = res.data[0].Content
+        let intro = res.data[0].Intro
+        let contentParse = that.parseTag(content)
+        let introParse = that.parseTag(intro)
+        WxParse.wxParse('content', 'html', contentParse, that);
+        WxParse.wxParse('intro', 'html', introParse, that);
         this.setData({
           work: res.data[0]
         })
+      },
+      fail:err=>{
+        console.error(err)
       }
-    })    
+    })
   },
 
   /**
@@ -78,5 +90,20 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  parseTag : function (str) {
+    console.log("line break " + str)
+    var p = str.split("\\r\\n")
+    var s = ""
+    
+    for (var i = 0; i < p.length; i++){
+      console.log(i)      
+    }
+
+    for (i = 0; i < p.length; i++) {
+      s = s + "<view class='p'>" + p[i] + "</view>"
+    }
+    return s
   }
 })

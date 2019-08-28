@@ -8,6 +8,7 @@
 
 .red-tip{
   color:darkred; 
+  margin-bottom: 6px;
 }
 
 .padding16{

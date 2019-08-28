@@ -1,14 +1,48 @@
 /* pages/poe-detail/poe-detail.wxss */
+.hwrapper{
+  padding: 16px;
+}
+
 .title{
   text-align: center;
   font-size:20px;
+  margin-bottom: 8px;
 }
 
 .author{
   text-align: center;
   font-size: 14px;
+  margin-bottom: 8px;
+  line-height: 1.6;
 }
 
-.content{
+/* .content{
   font-size: 16px;
+  line-height: 1.4;
+} */
+
+.content.indent .p{
+  text-indent: 2rem;
+  margin-bottom: 5px;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.content.center .p{
+  text-align: center;
+  margin-bottom: 5px;
+  font-size: 16px;
+  line-height: 1.8;
+}
+
+.intro .p{
+  font-size: 14px;
+  margin-bottom: 10px;
+}
+
+.title-red{
+  margin-top: 10px;
+  margin-bottom: 10px;
+  text-align: left;
+  color:darkred; 
 }
