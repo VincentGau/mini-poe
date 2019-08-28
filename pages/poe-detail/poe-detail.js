@@ -14,6 +14,12 @@ Page({
 
   },
 
+  toAuthor: function(e){
+    wx.navigateTo({
+      url: '../author-detail/author-detail?AuthorId=' + e.currentTarget.dataset.authorid,
+    })
+  },
+
   /**
    * 生命周期函数--监听页面加载
    */
@@ -23,7 +29,7 @@ Page({
 
     db.collection('works_all').where({
       WorkId: Number(options.WorkId)
-    })
+    }).orderBy('WorkId', 'asc').limit(10)
     .get({
       success: res => {
         console.log(res.data)

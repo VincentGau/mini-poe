@@ -1,7 +1,7 @@
 <!--pages/star/star_works.wxml-->
 <wxs src="./../../wxs/tools.wxs" module="tools" />
 
-<view bindtap="shuffle">Click</view>
+<!-- <view bindtap="shuffle">Click</view> -->
 
 <view class='works-item' wx:if="{{!emptyFlag}}" wx:key="{{works}}" bindtap="toDetail" data-text="{{item.WorkId}}">
     <view>{{item.Title}}</view>

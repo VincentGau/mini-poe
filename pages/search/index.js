@@ -185,6 +185,8 @@ Page({
       }
     }).orderBy('authorid', 'asc').get({
       success: res => {
+        console.log("------")
+        console.log(res.data)
         this.setData({
           searchResultAuthors: res.data
         })
