@@ -1,17 +1,19 @@
 // pages/poe-detail/poe-detail.js
 wx.cloud.init()
-
 const db = wx.cloud.database()
-
+const util = require('../../utils/util.js')
 var WxParse = require('../../wxParse/wxParse.js');
-
+const like_url = "../../images/like.svg"
+const like_filled_url = "../../images/like_filled.svg"
 Page({
+
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    completed: false,
+    like_icon: like_url,
   },
 
   toAuthor: function(e){
@@ -24,23 +26,33 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log("----" + options.WorkId)
     var that = this;
-
+    wx.showLoading({
+      title: '加载中',
+    })
+    this.starCheck(options.WorkId)
     db.collection('works_all').where({
       WorkId: Number(options.WorkId)
     }).orderBy('WorkId', 'asc').limit(10)
     .get({
       success: res => {
-        console.log(res.data)
         let content = res.data[0].Content
         let intro = res.data[0].Intro
-        let contentParse = that.parseTag(content)
-        let introParse = that.parseTag(intro)
-        WxParse.wxParse('content', 'html', contentParse, that);
-        WxParse.wxParse('intro', 'html', introParse, that);
+        if(content){
+          let contentParse = that.parseTag(content)
+          WxParse.wxParse('content', 'html', contentParse, that);
+        }        
+        if(intro){
+          let introParse = that.parseTag(intro)
+          WxParse.wxParse('intro', 'html', introParse, that);
+          this.setData({
+            introFlag:true,
+          })
+        }
+        wx.hideLoading()
         this.setData({
-          work: res.data[0]
+          work: res.data[0],
+          completed: true
         })
       },
       fail:err=>{
@@ -53,14 +65,14 @@ Page({
    * 生命周期函数--监听页面初次渲染完成
    */
   onReady: function () {
-
+    
   },
 
   /**
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    
   },
 
   /**
@@ -99,17 +111,80 @@ Page({
   },
 
   parseTag : function (str) {
-    console.log("line break " + str)
     var p = str.split("\\r\\n")
     var s = ""
-    
-    for (var i = 0; i < p.length; i++){
-      console.log(i)      
-    }
 
-    for (i = 0; i < p.length; i++) {
+
+    for (var i = 0; i < p.length; i++) {
       s = s + "<view class='p'>" + p[i] + "</view>"
     }
     return s
-  }
+  },
+
+  toggleStar: function (e) {
+    var workid = e.currentTarget.dataset.workid
+    if (this.data.starFlag) {
+      this.unstarWork(workid)
+
+    }
+    else {
+      this.starWork(workid)
+
+    }
+  },
+
+  // 判断是否已收藏
+  starCheck: function (workid) {
+    var that = this
+    db.collection("star_works").where({
+      WorkId: Number(workid)
+    }).get({
+      success: res => {
+        if (res.data != '') {
+          that.setData({
+            starFlag: true,
+            like_icon: like_filled_url
+          })
+        }
+      }
+    })
+  },
+
+  starWork: function (workid) {
+    var that = this
+    db.collection("star_works").add({
+      data: {
+        WorkId: workid,
+        StarDate: util.formatTime(new Date())
+      },
+      success: function (res) {
+        console.log(workid + " starred")
+        that.setData({
+          starFlag: true,
+          like_icon: like_filled_url
+        })
+      },
+      fail: console.error
+    })
+  },
+
+  unstarWork: function (workid) {
+    var that = this
+    db.collection("star_works").where({
+      WorkId: workid
+    }).get({
+      success: res => {
+        var delete_id = res.data[0]._id
+        db.collection("star_works").doc(delete_id).remove({
+          success: function (res) {
+            console.log(workid + " successfully removed")
+            that.setData({
+              starFlag: false,
+              like_icon: like_url
+            })
+          }
+        })
+      }
+    })
+  },
 })

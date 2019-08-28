@@ -15,7 +15,6 @@ Page({
   },
 
   toDetail:function(e){
-    console.log(e.currentTarget.dataset.text)
     wx.navigateTo({
       url: '../poe-detail/poe-detail?WorkId=' + e.currentTarget.dataset.text,
     })
@@ -27,7 +26,6 @@ Page({
   onLoad: function (options) {
     db.collection('works-1').get({
       success: res => {
-        console.log(res)
         this.setData({
           works: res.data
         })
@@ -68,30 +66,17 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    // console.log("2")
-    // db.collection('authors').skip(20).limit(20).get({
-    //   success: res => {
-    //     console.log(res.data)
-    //     this.setData({
-    //       authors: this.data.authors.concat(res.data)
-    //     })
-    //   }
-    // })
 
-    
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    console.log("bottom refreshing...")
-    console.log(this.data.pageindex)
     let curpage = this.data.pageindex
     db.collection('works-1').skip(curpage * 20).limit(20).get({
       
       success: res => {
-        console.log(res.data)
         if(res.data == ''){
           this.setData({
             bottominfo:"没有更多数据了"

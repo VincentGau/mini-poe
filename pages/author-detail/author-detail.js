@@ -10,6 +10,7 @@ Page({
    * Page initial data
    */
   data: {
+    completed: false,
     starFlag: false,
     like_icon: like_url,
     emptyFlag: true,
@@ -17,7 +18,6 @@ Page({
   },
 
   toDetail: function (e) {
-    console.log(e.currentTarget.dataset.text)
     wx.navigateTo({
       url: '../poe-detail/poe-detail?WorkId=' + e.currentTarget.dataset.text,
     })
@@ -28,30 +28,37 @@ Page({
    */
   onLoad: function (options) {
     var that = this
+    wx.showLoading({
+      title: '加载中',
+    })
+
+    this.setData({
+      authorid: options.AuthorId
+    })
+
     this.starCheck(options.AuthorId)
     db.collection('authors_all').where({
       authorid: Number(options.AuthorId)
     }).get({
         success: res => {
+          wx.hideLoading()
           this.setData({
-            author: res.data[0]
+            author: res.data[0],
+            completed: true
           })
         }
       })
 
     db.collection('works_all').where({
-      AuthorName:"李煜"
+      AuthorId: Number(options.AuthorId)
     }).get({
       success: res => {
-        console.log("aaaaaaaaaa")
-        console.log(res)
         that.setData({
           emptyFlag: false,
           works: res.data
         })
       },
       fail: err => {
-        console.log("fail to load works")
         console.error(err)
         that.setData({
           emptyFlag: true,
@@ -60,10 +67,9 @@ Page({
       })
       
     db.collection('works_all').where({
-      AuthorName: "李煜"
+      AuthorId: Number(options.AuthorId)
     }).count({
         success: res => {
-          console.log(res.total)
           this.setData({
             works_count: res.total
           })
@@ -109,13 +115,12 @@ Page({
   /**
    * Called when page reach bottom
    */
-  onReachBottom: function () {
+  onReachBottom: function () {    
     let curpage = this.data.pageindex
     db.collection('works_all').where({
-      AuthorName: "李煜"
+      AuthorId: Number(this.data.authorid)
     }).skip(curpage * 20).limit(20).get({
       success: res => {
-        console.log(res.data)
         if (res.data == '') {
           this.setData({
             bottominfo: "没有更多数据了",
@@ -155,17 +160,11 @@ Page({
   // 判断是否已收藏
   starCheck: function (authorid) {
     var that = this
-    console.log("running starred")
-    console.log(authorid)
     db.collection("star_authors").where({
       AuthorId: Number(authorid)
     }).get({
       success: res => {
-        console.log("RES")
-        console.log(res)
-        console.log(res.data)
         if (res.data != '') {
-          console.log("NOT NULL")
           that.setData({
             starFlag: true,
             starcontent:"unstar",
@@ -184,7 +183,6 @@ Page({
         StarDate: util.formatTime(new Date())
       },
       success: function (res) {
-        console.log(authorid + " starred")
         that.setData({
           starFlag: true,
           like_icon: like_filled_url
@@ -195,7 +193,6 @@ Page({
   },
 
   unstarAuthor: function (authorid) {
-    console.log("----unauthor star")
     var that = this
     db.collection("star_authors").where({
       AuthorId: authorid

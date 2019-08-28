@@ -1,7 +1,8 @@
 // pages/star/star_works.js
 wx.cloud.init()
-
 const db = wx.cloud.database()
+const star_works = db.collection("star_works")
+const works_all = db.collection("works_all")
 
 Page({
 
@@ -14,7 +15,6 @@ Page({
   },
 
   toDetail: function (e) {
-    console.log(e.currentTarget.dataset.text)
     wx.navigateTo({
       url: '../poe-detail/poe-detail?WorkId=' + e.currentTarget.dataset.text,
     })
@@ -39,24 +39,38 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log("star on load...")
-    var that = this
-    db.collection('works-empty').get({
-      success: res => {
-        console.log(res)
-        that.setData({
-          emptyFlag: false,
-          works: res.data
-        })
-      },
-      fail: res => {
-        console.log("fail to load works")
-        that.setData({
-          emptyFlag: true,
+    wx.showLoading({
+      title: '加载中',
+    })
+
+    var starWorkIds = []
+    star_works.get().then(res => {
+      if (res.data.length > 0) {
+        for (var i = 0; i < res.data.length; i++) {
+          starWorkIds.push(res.data[i].WorkId)
+        }
+        console.log(starWorkIds)
+        const _ = db.command
+        db.collection("works_all").where({
+          WorkId: _.in(starWorkIds)
+        }).get().then(res => {
+          wx.hideLoading()
+          this.setData({
+            starWorkList: res.data,
+            emptyFlag: false,
+            completed:true,
+          })
+        }).catch(err => {
+          console.error(err)
         })
       }
+      else {
+
+      }
+
+    }).catch(err => {
+      console.error(err)
     })
-    console.log("EMPTY FLAG: " + this.data.emptyFlag)
   },
 
   /**
@@ -91,30 +105,21 @@ Page({
    * 页面相关事件处理函数--监听用户下拉动作
    */
   onPullDownRefresh: function () {
-    // console.log("2")
-    // db.collection('authors').skip(20).limit(20).get({
-    //   success: res => {
-    //     console.log(res.data)
-    //     this.setData({
-    //       authors: this.data.authors.concat(res.data)
-    //     })
-    //   }
-    // })
-
-
+    
   },
 
   /**
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-    console.log("bottom refreshing...")
-    console.log(this.data.pageindex)
     let curpage = this.data.pageindex
-    db.collection('works-1').skip(curpage * 20).limit(20).get({
+    db.collection('works_all').where({
+      AuthorId:Number(this.data.authorid)
+    }).skip(curpage * 20).limit(20).get({
       success: res => {
         console.log(res.data)
         if (res.data == '') {
+          console.log("END")
           this.setData({
             bottominfo: "没有更多数据了",
             endFlag: true
@@ -123,7 +128,7 @@ Page({
         else {
           curpage++
           this.setData({
-            works: this.data.works.concat(res.data),
+            starWorkList: this.data.starWorkList.concat(res.data),
             pageindex: curpage
           })
         }

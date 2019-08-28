@@ -1,5 +1,4 @@
 var contentDigest = function (str) {
-  console.log("contentDigest " + str)
   return str.split("。")[0] + "。";
 }
 

@@ -1,12 +1,16 @@
 <!--pages/poe-detail/poe-detail.wxml-->
 <!-- <wxs src="./../../wxs/tools.wxs" module="tools" /> -->
 <import src="../../wxParse/wxParse.wxml"/>
-<view class='hwrapper'>
-  <view class="title">{{work.Title}}</view>
+<view class='hwrapper' hidden="{{!completed}}">
+  <view class="title">{{work.Title}}
+    <image class="weui-slideview__btn__icon svg_icon" src="{{like_icon}}" bindtap="toggleStar" data-workid="{{work.WorkId}}"></image>
+  </view>
   <view class='author' bindtap='toAuthor' data-authorid="{{work.AuthorId}}">[{{work.Dynasty}}] {{work.AuthorName}}</view>
   <view wx:if="{{work.Kind=='shi'}}" class='content center'><template is="wxParse" data="{{wxParseData:content.nodes}}"/></view>
   <view wx:else class='content indent'><template is="wxParse" data="{{wxParseData:content.nodes}}"/></view>
 
-  <view class="title-red">评析</view>
-  <view class='intro'><template is="wxParse" data="{{wxParseData:intro.nodes}}"/></view>
+  <view wx:if="{{introFlag}}">
+    <view class="title-red">评析</view>
+    <view class='intro'><template is="wxParse" data="{{wxParseData:intro.nodes}}"/></view>
+  </view>
 </view>

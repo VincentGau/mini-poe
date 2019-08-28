@@ -18,20 +18,24 @@ Page({
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
+    wx.showLoading({
+      title: '加载中',
+    })
     var starAuthorIds = []
     star_authors.get().then(res =>{
       if(res.data.length > 0){
         for (var i = 0; i < res.data.length; i++) {
-          console.log(res.data[i].AuthorId)
           starAuthorIds.push(res.data[i].AuthorId)
         }
         const _ = db.command
         db.collection("authors_all").where({
           authorid: _.in(starAuthorIds)
         }).get().then(res => {
+          wx.hideLoading()
           this.setData({
             starAuthorList: res.data,
-            emptyFlag: false
+            emptyFlag: false,
+            completed: true,
           })
         }).catch(err => {
           console.error(err)
@@ -80,10 +84,8 @@ Page({
   onPullDownRefresh: function () {
     var starAuthorIds = []
     star_authors.get().then(res => {
-      console.log(res)
       if (res.data.length > 0) {
         for (var i = 0; i < res.data.length; i++) {
-          console.log(res.data[i].AuthorId)
           starAuthorIds.push(res.data[i].AuthorId)
         }
         const _ = db.command

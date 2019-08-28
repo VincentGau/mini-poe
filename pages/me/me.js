@@ -65,7 +65,6 @@ Page({
   },
 
   toStar: function(){
-    console.log("heading star")
     wx.navigateTo({
       url: '../star/star',
     })

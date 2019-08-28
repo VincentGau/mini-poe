@@ -98,7 +98,6 @@ Page({
       duration:100000
     })
 
-    console.log(e.detail.value)
     const _ = db.command
     // db.collection("works_all").where(_.or([
     //   {
@@ -146,14 +145,11 @@ Page({
         }
       }).orderBy('WorkId', 'asc').get({
       success: res => {
-        console.log('0000000000')
-        console.log(res.data)
         this.setData({
           searchResultWorks: res.data
         })
 
         if (res.data == '') {
-          console.log("works null")
           this.setData({
             noResultWork: true
           })
@@ -189,7 +185,6 @@ Page({
         })
 
         if(res.data == ''){
-          console.log("authors null")
           this.setData({
             noResultAuthor: true
           })
