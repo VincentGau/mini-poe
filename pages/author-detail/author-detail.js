@@ -51,7 +51,7 @@ Page({
 
     db.collection('works_all').where({
       AuthorId: Number(options.AuthorId)
-    }).get({
+    }).orderBy('WorkId', 'asc').get({
       success: res => {
         if(res.data == ''){
           this.setData({

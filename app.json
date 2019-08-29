@@ -1,5 +1,6 @@
 {
   "pages": [
+    "pages/home/home",
     "pages/index/index",
     "pages/logs/logs",
     "pages/poe/poe",
@@ -22,16 +23,24 @@
     "navigationBarTextStyle": "black"
   },
   "tabBar": {
+    "color": "#dbdbdb",
+    "selectedColor": "#666666",
     "list": [
       {
-        "pagePath": "pages/index/index",
+        "selectedIconPath": "images/home_filled.png",
+        "iconPath": "images/home.png",
+        "pagePath": "pages/home/home",
         "text": "首页"
       },
       {
+        "selectedIconPath": "images/star_filled.png",
+        "iconPath": "images/star.png",
         "pagePath": "pages/discover/discover",
         "text": "发现"
       },
       {
+        "selectedIconPath": "images/me_filled.png",
+        "iconPath": "images/me.png",
         "pagePath": "pages/me/me",
         "text": "我"
       }

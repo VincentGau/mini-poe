@@ -1,4 +1,5 @@
 var contentDigest = function (str) {
+  str = str.replace('\\r\\n', '')
   return str.split("。")[0] + "。";
 }
 

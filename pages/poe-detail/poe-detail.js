@@ -38,10 +38,14 @@ Page({
       success: res => {
         let content = res.data[0].Content
         let intro = res.data[0].Intro
-        if(content){
+        if(res.data[0].Kind == 'shi'){
+          let contentParse = that.parseShi(content)
+          WxParse.wxParse('content', 'html', contentParse, that);
+        }
+        else{
           let contentParse = that.parseTag(content)
           WxParse.wxParse('content', 'html', contentParse, that);
-        }        
+        }
         if(intro){
           let introParse = that.parseTag(intro)
           WxParse.wxParse('intro', 'html', introParse, that);
@@ -114,6 +118,17 @@ Page({
     var p = str.split("\\r\\n")
     var s = ""
 
+    for (var i = 0; i < p.length; i++) {
+      s = s + "<view class='p'>" + p[i] + "</view>"
+    }
+    return s
+  },
+
+  parseShi: function (str) {
+    str = str.replace('\\r\\n', '')
+    var p = str.split(/(?<=[。！？])/)
+    var s = ""
+    console.log(p)
 
     for (var i = 0; i < p.length; i++) {
       s = s + "<view class='p'>" + p[i] + "</view>"

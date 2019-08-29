@@ -5,8 +5,10 @@
 
 .title{
   text-align: center;
-  font-size:20px;
+  font-size:22px;
   margin-bottom: 8px;
+  padding-left:25px;
+  padding-right:25px;
 }
 
 .author{
@@ -47,9 +49,10 @@
   color:darkred; 
 }
 
-.svg_icon{
+.star_icon{
   width:50rpx;
   height:50rpx;
-  float:right;
-  margin-right:10px;
+  position:fixed;
+  right:16px;
+  top:20px;
 }

@@ -9,7 +9,8 @@ Page({
    */
   data: {
     hasMoreWorks: false,
-    hasMoreAuthors: false
+    hasMoreAuthors: false,
+    completed:false,
   },
 
   /**
@@ -147,7 +148,8 @@ Page({
       }).orderBy('WorkId', 'asc').get({
         success: res => {
           this.setData({
-            searchResultWorks: res.data
+            searchResultWorks: res.data,
+            completed: true
           })
 
           if (res.data == '') {
@@ -182,7 +184,7 @@ Page({
     }).orderBy('authorid', 'asc').get({
       success: res => {
         this.setData({
-          searchResultAuthors: res.data
+          searchResultAuthors: res.data,
         })
 
         if (res.data == '') {

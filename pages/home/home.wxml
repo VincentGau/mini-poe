@@ -1,0 +1,12 @@
+<!--pages/home/home.wxml-->
+<import src="../../wxParse/wxParse.wxml"/>
+<view  style="height:{{wheight}}px" class='hwrapper'>
+  <view bindtap='toDetail' data-workid="{{work.WorkId}}" class='random-poe'>
+    <view wx:if="{{work.Kind=='shi'}}" class='content center'><template is="wxParse" data="{{wxParseData:content.nodes}}"/></view>
+    <view wx:else class='content indent'><template is="wxParse" data="{{wxParseData:content.nodes}}"/></view>
+  </view>
+  
+</view>
+
+<view bindtap='getRandom' class='next-btn'>Next</view>
+<!-- <view bindtap='getRandom' class='side-arrow'><image src="../../images/r-arrow.png"></image></view> -->
