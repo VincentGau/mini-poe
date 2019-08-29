@@ -13,7 +13,7 @@ Page({
     completed: false,
     starFlag: false,
     like_icon: like_url,
-    emptyFlag: true,
+    emptyFlag: false,
     pageindex: 1
   },
 
@@ -53,8 +53,12 @@ Page({
       AuthorId: Number(options.AuthorId)
     }).get({
       success: res => {
+        if(res.data == ''){
+          this.setData({
+            emptyFlag:true,
+          })
+        }
         that.setData({
-          emptyFlag: false,
           works: res.data
         })
       },
