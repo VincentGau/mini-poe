@@ -39,11 +39,11 @@ Page({
         let content = res.data[0].Content
         let intro = res.data[0].Intro
         if(res.data[0].Kind == 'shi'){
-          let contentParse = that.parseShi(content)
+          let contentParse = util.parseShi(content)
           WxParse.wxParse('content', 'html', contentParse, that);
         }
         else{
-          let contentParse = that.parseTag(content)
+          let contentParse = util.parseTag(content)
           WxParse.wxParse('content', 'html', contentParse, that);
         }
         if(intro){
@@ -112,29 +112,6 @@ Page({
    */
   onShareAppMessage: function () {
 
-  },
-
-  parseTag : function (str) {
-    var p = str.split("\\r\\n")
-    var s = ""
-
-    for (var i = 0; i < p.length; i++) {
-      s = s + "<view class='p'>" + p[i] + "</view>"
-    }
-    return s
-  },
-
-  parseShi: function (str) {
-    str = str.replace('\\r\\n', '')
-    const reg = new RegExp("(.*?[。！？])", 'gi')
-    var p = str.match(reg)
-    var s = ""
-    console.log(p)
-
-    for (var i = 0; i < p.length; i++) {
-      s = s + "<view class='p'>" + p[i] + "</view>"
-    }
-    return s
   },
 
   toggleStar: function (e) {

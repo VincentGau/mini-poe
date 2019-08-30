@@ -1,6 +1,7 @@
 // pages/home/home.js
 
 var WxParse = require('../../wxParse/wxParse.js');
+var util = require('../../utils/util.js')
 wx.cloud.init()
 const db = wx.cloud.database()
 
@@ -34,11 +35,11 @@ Page({
           success:res=>{
             let content = res.data[0].Content
             if (res.data[0].Kind == 'shi') {
-              let contentParse = that.parseShi(content)
+              let contentParse = util.parseShi(content)
               WxParse.wxParse('content', 'html', contentParse, that);
             }
             else {
-              let contentParse = that.parseTag(content)
+              let contentParse = util.parseTag(content)
               WxParse.wxParse('content', 'html', contentParse, that);
             }
             this.setData({
@@ -48,30 +49,7 @@ Page({
         })
       })
   },
-
-  parseTag: function (str) {
-    var p = str.split("\\r\\n")
-    var s = ""
-
-    for (var i = 0; i < p.length; i++) {
-      s = s + "<view class='p'>" + p[i] + "</view>"
-    }
-    return s
-  },
-
-  parseShi: function (str) {
-    str = str.replace('\\r\\n', '')
-    const reg = new RegExp("(.*?[。！？])", 'gi')
-    var p = str.match(reg)    
-    var s = ""
-    console.log(p)
-
-    for (var i = 0; i < p.length; i++) {
-      s = s + "<view class='p'>" + p[i] + "</view>"
-    }
-    return s
-  },
-
+  
   /**
    * 生命周期函数--监听页面加载
    */

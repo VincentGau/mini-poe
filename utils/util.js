@@ -18,7 +18,32 @@ const contentDigest = n => {
   return n.split("。")[0]
 }
 
+const parseShi = str=> {
+    str = str.replace('\\r\\n', '')
+    const reg = new RegExp("(.*?[。！？])", 'gi')
+    var p = str.match(reg)    
+    var s = ""
+    console.log(p)
+
+    for (var i = 0; i < p.length; i++) {
+      s = s + "<view class='p'>" + p[i] + "</view>"
+    }
+    return s
+}
+
+const parseTag = str => {
+  var p = str.split("\\r\\n")
+  var s = ""
+
+  for (var i = 0; i < p.length; i++) {
+    s = s + "<view class='p'>" + p[i] + "</view>"
+  }
+  return s
+}
+
 module.exports = {
   formatTime: formatTime,
-  contentDigest: contentDigest
+  contentDigest: contentDigest,
+  parseShi: parseShi,
+  parseTag: parseTag,
 }
