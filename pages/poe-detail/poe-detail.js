@@ -126,7 +126,8 @@ Page({
 
   parseShi: function (str) {
     str = str.replace('\\r\\n', '')
-    var p = str.split(/(?<=[。！？])/)
+    const reg = new RegExp("(.*?[。！？])", 'gi')
+    var p = str.match(reg)
     var s = ""
     console.log(p)
 

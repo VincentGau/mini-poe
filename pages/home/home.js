@@ -41,9 +41,6 @@ Page({
               let contentParse = that.parseTag(content)
               WxParse.wxParse('content', 'html', contentParse, that);
             }
-            // let contentParse = this.parseShi(res.data[0].Content)
-            // console.log(contentParse)
-            // WxParse.wxParse('content', 'html', contentParse, that);
             this.setData({
               work: res.data[0]
             })
@@ -64,7 +61,8 @@ Page({
 
   parseShi: function (str) {
     str = str.replace('\\r\\n', '')
-    var p = str.split(/(?<=[。！？])/)
+    const reg = new RegExp("(.*?[。！？])", 'gi')
+    var p = str.match(reg)    
     var s = ""
     console.log(p)
 
