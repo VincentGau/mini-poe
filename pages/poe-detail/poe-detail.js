@@ -47,7 +47,7 @@ Page({
           WxParse.wxParse('content', 'html', contentParse, that);
         }
         if(intro){
-          let introParse = that.parseTag(intro)
+          let introParse = util.parseTag(intro)
           WxParse.wxParse('intro', 'html', introParse, that);
           this.setData({
             introFlag:true,

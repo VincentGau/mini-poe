@@ -49,6 +49,36 @@ Page({
         })
       })
   },
+
+  randomCi300: function(){
+    var that = this
+    db.collection('ci_300')
+      .aggregate()
+      .sample({
+        size: 1
+      })
+      .end().then(res => {
+        var workid = res.list[0].workid
+        db.collection('works_all').where({
+          WorkId: workid
+        }).get({
+          success: res => {
+            let content = res.data[0].Content
+            if (res.data[0].Kind == 'shi') {
+              let contentParse = util.parseShi(content)
+              WxParse.wxParse('content', 'html', contentParse, that);
+            }
+            else {
+              let contentParse = util.parseTag(content)
+              WxParse.wxParse('content', 'html', contentParse, that);
+            }
+            this.setData({
+              work: res.data[0]
+            })
+          }
+        })
+      })
+  },
   
   /**
    * 生命周期函数--监听页面加载
@@ -64,7 +94,8 @@ Page({
         })
       }
     })
-    this.getRandom()
+    // this.getRandom()
+    this.randomCi300()
   },
 
   /**

@@ -8,5 +8,4 @@
   
 </view>
 
-<view bindtap='getRandom' class='next-btn'>Next</view>
-<!-- <view bindtap='getRandom' class='side-arrow'><image src="../../images/r-arrow.png"></image></view> -->
+<view bindtap='randomCi300' class='next-btn'>Next</view>
