@@ -12,7 +12,21 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    console.log(options)
+    console.log(options.keyword)
+    try {
+      var value = wx.getStorageSync('works20')
+      if (value) {
+        this.setData({
+          works:value
+        })
+      }
+    } catch (e) {
+      // Do something when catch error
+      console.log("get storage failed.")
+      console.log(e)
+    }
+    
   },
 
   /**
@@ -40,7 +54,7 @@ Page({
    * 生命周期函数--监听页面卸载
    */
   onUnload: function () {
-
+    
   },
 
   /**
@@ -62,5 +76,107 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  showInput: function () {
+    this.setData({
+      inputShowed: true
+    });
+  },
+  hideInput: function () {
+    this.setData({
+      inputVal: "",
+      inputShowed: false
+    });
+  },
+  clearInput: function () {
+    this.setData({
+      inputVal: ""
+    });
+  },
+  inputTyping: function (e) {
+    this.setData({
+      hasMoreWorks: false,
+      hasMoreAuthors: false,
+      searchResultWorks: '',
+      searchResultAuthors: '',
+    })
+
+    wx.showToast({
+      title: '数据加载中',
+      icon: 'loading',
+      duration: 100000
+    })
+
+    const _ = db.command
+    
+    db.collection("works_all").where(
+      {
+        Content: {
+          $regex: '.*' + e.detail.value,
+          $options: 'i'
+        }
+      }).orderBy('WorkId', 'asc').get({
+        success: res => {
+          this.setData({
+            searchResultWorks: res.data
+          })
+
+          if (res.data == '') {
+            this.setData({
+              noResultWork: true
+            })
+          }
+          else {
+            this.setData({
+              noResultWork: false
+            })
+            if (res.data.length > 4) {
+              this.setData({
+                hasMoreWorks: true
+              })
+            }
+          }
+        },
+        fail: err => {
+          console.error(err)
+        },
+        complete: () => {
+          wx.hideToast()
+        }
+      })
+
+    db.collection("authors_all").where({
+      authorname: {
+        $regex: '.*' + e.detail.value,
+        $options: 'i'
+      }
+    }).orderBy('authorid', 'asc').get({
+      success: res => {
+        this.setData({
+          searchResultAuthors: res.data
+        })
+
+        if (res.data == '') {
+          this.setData({
+            noResultAuthor: true
+          })
+        }
+        else {
+          this.setData({
+            noResultAuthor: false
+          })
+          if (res.data.length > 4) {
+            this.setData({
+              hasMoreAuthors: true
+            })
+          }
+        }
+      }
+    })
+
+    this.setData({
+      inputVal: e.detail.value
+    });
   }
 })

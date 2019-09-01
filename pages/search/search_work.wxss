@@ -1,1 +1,6 @@
 /* pages/search/search_work.wxss */
+.dynasty{
+  color:#666;
+  float:right;
+  font-size: 12px;
+}

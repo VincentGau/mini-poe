@@ -19,7 +19,7 @@ const contentDigest = n => {
 }
 
 const parseShi = str=> {
-    str = str.replace('\\r\\n', '')
+    str = str.replaceAll('\\r\\n', '')
     const reg = new RegExp("(.*?[。！？])", 'gi')
     var p = str.match(reg)    
     var s = ""
@@ -40,6 +40,11 @@ const parseTag = str => {
   }
   return s
 }
+
+String.prototype.replaceAll = function (search, replacement) {
+  var target = this;
+  return target.split(search).join(replacement);
+};
 
 module.exports = {
   formatTime: formatTime,

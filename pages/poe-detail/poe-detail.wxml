@@ -12,4 +12,9 @@
     <view class="title-red">评析</view>
     <view class='intro'><template is="wxParse" data="{{wxParseData:intro.nodes}}"/></view>
   </view>
+
+  <view wx:if="{{annoFlag}}">
+    <view class="title-red">注释</view>
+    <view class='intro'><template is="wxParse" data="{{wxParseData:anno.nodes}}"/></view>
+  </view>
 </view>

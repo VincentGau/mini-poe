@@ -92,6 +92,7 @@ Page({
       hasMoreAuthors: false,
       searchResultWorks: '',
       searchResultAuthors: '',
+      keyword :e.detail.value,
     })
 
     wx.showToast({
@@ -101,55 +102,30 @@ Page({
     })
 
     const _ = db.command
-    // db.collection("works_all").where(_.or([
-    //   {
-    //     Content: {
-    //       $regex: '.*' + e.detail.value,
-    //       $options: 'i'
-    //     }
-    //   },
-    //   {
-    //     Title: {
-    //       $regex: '.*' + e.detail.value,
-    //       $options: 'i'
-    //     }
-    //   }
-    // ])).orderBy('WorkId', 'asc').get({
-    //   success: res => {
-    //     console.log(res.data)
-    //     this.setData({
-    //       searchResultWorks: res.data
-    //     })
-
-    //     if(res.data == ''){
-    //       this.setData({
-    //         noResultWork: true
-    //       })
-    //     }
-    //     else{
-    //       this.setData({
-    //         noResultWork: false
-    //       })
-    //       if (res.data.length > 4) {
-    //         this.setData({
-    //           hasMoreWorks: true
-    //         })
-    //       }
-    //     }
-    //   }
-    // })
-
-    db.collection("works_all").where(
+    
+    db.collection("works_hot").where(_.or([
       {
         Content: {
           $regex: '.*' + e.detail.value,
           $options: 'i'
         }
-      }).orderBy('WorkId', 'asc').get({
+      },
+      {
+        Title: {
+          $regex: '.*' + e.detail.value,
+          $options: 'i'
+        }
+      }
+    ])).orderBy('LikesCount', 'desc').get({
         success: res => {
           this.setData({
             searchResultWorks: res.data,
             completed: true
+          })
+
+          wx.setStorage({
+            key: "works20",
+            data: res.data
           })
 
           if (res.data == '') {
@@ -175,6 +151,43 @@ Page({
           wx.hideToast()
         }
       })
+
+    // db.collection("works_hot").where(
+    //   {
+    //     Content: {
+    //       $regex: '.*' + e.detail.value,
+    //       $options: 'i'
+    //     }
+    //   }).orderBy('WorkId', 'asc').get({
+    //     success: res => {
+    //       this.setData({
+    //         searchResultWorks: res.data,
+    //         completed: true
+    //       })
+
+    //       if (res.data == '') {
+    //         this.setData({
+    //           noResultWork: true
+    //         })
+    //       }
+    //       else {
+    //         this.setData({
+    //           noResultWork: false
+    //         })
+    //         if (res.data.length > 4) {
+    //           this.setData({
+    //             hasMoreWorks: true
+    //           })
+    //         }
+    //       }
+    //     },
+    //     fail: err => {
+    //       console.error(err)
+    //     },
+    //     complete: () => {
+    //       wx.hideToast()
+    //     }
+    //   })
 
     db.collection("authors_all").where({
       authorname: {

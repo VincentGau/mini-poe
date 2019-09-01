@@ -38,19 +38,51 @@ Page({
       success: res => {
         let content = res.data[0].Content
         let intro = res.data[0].Intro
+        let anno = res.data[0].Annotation
+        let trans = res.data[0].Translation
+        let mcomment = res.data[0].MasterComment
+        let appre = res.data[0].Appreciation
         if(res.data[0].Kind == 'shi'){
           let contentParse = util.parseShi(content)
-          WxParse.wxParse('content', 'html', contentParse, that);
+          WxParse.wxParse('content', 'html', contentParse, that)
         }
         else{
           let contentParse = util.parseTag(content)
-          WxParse.wxParse('content', 'html', contentParse, that);
+          WxParse.wxParse('content', 'html', contentParse, that)
         }
         if(intro){
           let introParse = util.parseTag(intro)
-          WxParse.wxParse('intro', 'html', introParse, that);
+          WxParse.wxParse('intro', 'html', introParse, that)
           this.setData({
             introFlag:true,
+          })
+        }
+        if(anno){
+          let annoParse = util.parseTag(anno)
+          WxParse.wxParse('anno', 'html', annoParse, that)
+          this.setData({
+            annoFlag:true
+          })
+        }
+        if (trans) {
+          let transParse = util.parseTag(trans)
+          WxParse.wxParse('trans', 'html', transParse, that)
+          this.setData({
+            transFlag: true
+          })
+        }        
+        if (mcomment) {
+          let mcommentParse = util.parseTag(mcomment)
+          WxParse.wxParse('mcomment', 'html', mcommentParse, that)
+          this.setData({
+            mcommentFlag: true
+          })
+        }
+        if (appre) {
+          let appreParse = util.parseTag(appre)
+          WxParse.wxParse('appre', 'html', appreParse, that)
+          this.setData({
+            appreFlag: true
           })
         }
         wx.hideLoading()
