@@ -12,7 +12,18 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-
+    try {
+      var value = wx.getStorageSync('authors20')
+      if (value) {
+        this.setData({
+          authors: value
+        })
+      }
+    } catch (e) {
+      // Do something when catch error
+      console.log("get storage failed.")
+      console.log(e)
+    }
   },
 
   /**

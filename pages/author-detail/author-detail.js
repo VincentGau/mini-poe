@@ -58,6 +58,12 @@ Page({
             emptyFlag:true,
           })
         }
+        
+        if(res.data.length < 20){
+          this.setData({
+            endFlag:true
+          })
+        }
         that.setData({
           works: res.data
         })

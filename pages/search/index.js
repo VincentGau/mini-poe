@@ -196,6 +196,10 @@ Page({
       }
     }).orderBy('authorid', 'asc').get({
       success: res => {
+        wx.setStorage({
+          key: "authors20",
+          data: res.data 
+        })
         this.setData({
           searchResultAuthors: res.data,
         })

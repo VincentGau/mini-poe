@@ -20,17 +20,22 @@
         </view>
         <view class="weui-cells searchbar-result" wx:if="{{inputVal.length > 0}}"  hidden="{{!completed}}">
             <view class="weui-cells__title" wx:if="{{!noResultAuthor}}">作者</view>
-            <navigator url="../author-detail/author-detail?AuthorId={{item.authorid}}" wx:for="{{searchResultAuthors}}" class="weui-cell" hover-class="weui-cell_active">
-                <view class="weui-cell__bd">
-                    <view>{{item.authorname}}<text class="dynasty">{{item.dynasty}}</text></view>
-                </view>
-            </navigator>
+            
+            <block wx:for="{{searchResultAuthors}}" wx:for-index="i">
+              <navigator url="../author-detail/author-detail?AuthorId={{item.authorid}}" wx:if="{{i < 5}}" class="weui-cell" hover-class="weui-cell_active">
+                  <view class="weui-cell__bd">
+                      <view>{{item.authorname}}<text class="dynasty">[{{item.dynasty}}]</text></view>
+                  </view>
+              </navigator>
+            </block>
+            
             <navigator url="../search/search_author?keyowrd={{keyword}}" wx:if="{{hasMoreAuthors}}" class="weui-cell weui-cell_access" hover-class="weui-cell_active"  >
                 <view class="weui-cell__bd">更多作者...</view>
                 <view class="weui-cell__ft weui-cell__ft_in-access"></view>
             </navigator>
 
             <view class="weui-cells__title" wx:if="{{!noResultWork}}">作品</view>
+
             <block wx:for="{{searchResultWorks}}" wx:for-index="i">
               <navigator url="../poe-detail/poe-detail?WorkId={{item.WorkId}}" wx:if="{{i < 5}}" class="weui-cell" hover-class="weui-cell_active">
                   <view class="weui-cell__bd">
