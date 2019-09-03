@@ -6,7 +6,7 @@
             <view class="weui-search-bar__form">
                 <view class="weui-search-bar__box">
                     <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
-                    <input type="text" class="weui-search-bar__input" placeholder="搜索" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" />
+                    <input type="text" class="weui-search-bar__input" placeholder="搜索" value="{{inputVal}}" focus="{{inputShowed}}" bindinput="inputTyping" confirm-type="search" bindconfirm="confirm" />
                     <view class="weui-icon-clear" wx:if="{{inputVal.length > 0}}" bindtap="clearInput">
                         <icon type="clear" size="14"></icon>
                     </view>
@@ -18,6 +18,14 @@
             </view>
             <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="naviback">取消</view>
         </view>
+
+
+        <view class='searchHistory' wx:for="{{searchHistory}}" bindtap='doSearch' data-text="{{item}}" hidden="{{hideSearchHistory}}">
+          <view >{{item}}</view>
+        </view>
+        <view bindtap='clearSearchHistory' hidden="{{!showClear}}">清除历史记录</view>
+
+
         <view class="weui-cells searchbar-result" wx:if="{{inputVal.length > 0}}"  hidden="{{!completed}}">
             <view class="weui-cells__title" wx:if="{{!noResultAuthor}}">作者</view>
             
