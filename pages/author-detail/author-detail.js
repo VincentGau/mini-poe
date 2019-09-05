@@ -10,13 +10,14 @@ Page({
    * Page initial data
    */
   data: {
-    completed: false,
-    starFlag: false,
-    like_icon: like_url,
-    emptyFlag: false,
-    pageindex: 1
+    completed: false, //作者信息加载完成标记
+    starFlag: false, //是否收藏
+    like_icon: like_url, //心形图片地址（灰/红）
+    emptyFlag: false, //该作者是否有作品
+    pageindex: 1, //页数，每次加载20首作品
   },
 
+  // 转到作品详情页
   toDetail: function (e) {
     wx.navigateTo({
       url: '../poe-detail/poe-detail?WorkId=' + e.currentTarget.dataset.text,
@@ -28,6 +29,8 @@ Page({
    */
   onLoad: function (options) {
     var that = this
+
+    // 页面数据加载完成之前显示loading
     wx.showLoading({
       title: '加载中',
     })
@@ -133,7 +136,7 @@ Page({
       success: res => {
         if (res.data == '') {
           this.setData({
-            bottominfo: "没有更多数据了",
+            // bottominfo: "没有更多数据了",
             endFlag: true
           })
         }
@@ -155,11 +158,11 @@ Page({
 
   },
 
+  // 收藏与取消收藏
   toggleStar: function (e){
     var authorid = e.currentTarget.dataset.authorid
     if(this.data.starFlag){
-      this.unstarAuthor(authorid)
-      
+      this.unstarAuthor(authorid)      
     }
     else{
       this.starAuthor(authorid)
@@ -177,7 +180,7 @@ Page({
         if (res.data != '') {
           that.setData({
             starFlag: true,
-            starcontent:"unstar",
+            // starcontent:"unstar",
             like_icon:like_filled_url
           })
         }
@@ -185,6 +188,7 @@ Page({
     })
   },
 
+  // 收藏作者
   starAuthor: function (authorid) {
     var that = this
     db.collection("star_authors").add({
@@ -202,6 +206,7 @@ Page({
     })
   },
 
+  // 取消收藏
   unstarAuthor: function (authorid) {
     var that = this
     db.collection("star_authors").where({
@@ -209,6 +214,7 @@ Page({
     }).get({
       success: res => {
         var delete_id = res.data[0]._id
+        // 需先找到作者对应的_id再删除
         db.collection("star_authors").doc(delete_id).remove({
           success: function (res) {
             console.log(authorid + " successfully removed")
@@ -220,16 +226,5 @@ Page({
         })
       }
     })
-  },
-
-  getWorks: authorid=>{
-    console.log("loading works for ")
-    db.collection("works_all").where({
-      AuthorName: "苏轼"
-    }).get({
-      success:res=>{
-
-      }
-    })
-  },
+  },  
 })
