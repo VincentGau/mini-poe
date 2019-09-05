@@ -11,7 +11,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    touchS: [0, 0],
+    touchE: [0, 0]
   },
 
   toDetail: function (e) {
@@ -145,5 +146,36 @@ Page({
    */
   onShareAppMessage: function () {
 
+  },
+
+  touchStart:function(e){
+    var that = this
+    let sx = e.touches[0].pageX
+    let sy = e.touches[0].pageY
+    that.data.touchS = [sx, sy]
+  },
+
+  touchMove: function (e){
+    var that = this
+    let sx = e.touches[0].pageX
+    let sy = e.touches[0].pageY
+    that.data.touchE = [sx, sy]
+  },
+
+  touchEnd: function (e){
+    var that = this
+    let start = that.data.touchS
+    let end = that.data.touchE
+    console.log(start)
+    console.log(end)
+    if (start[0] < end[0] - 50) {
+      console.log('右滑')
+      this.getRandom()
+    } else if (start[0] > end[0] + 50) {
+      console.log('左滑')
+      this.getRandom()
+    } else {
+      console.log('静止')
+    }
   }
 })

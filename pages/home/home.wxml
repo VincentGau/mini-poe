@@ -1,11 +1,11 @@
 <!--pages/home/home.wxml-->
 <import src="../../wxParse/wxParse.wxml"/>
 <view  style="height:{{wheight}}px" class='hwrapper'>
-  <view bindtap='toDetail' data-workid="{{work.WorkId}}" class='random-poe'>
+  <view bindtap='toDetail' data-workid="{{work.WorkId}}" class='random-poe' bindtouchstart='touchStart' bindtouchmove='touchMove' bindtouchend='touchEnd'>
     <view wx:if="{{work.Kind=='shi'}}" class='content center'><template is="wxParse" data="{{wxParseData:content.nodes}}"/></view>
     <view wx:else class='content indent'><template is="wxParse" data="{{wxParseData:content.nodes}}"/></view>
   </view>
   
 </view>
 
-<view bindtap='randomCi300' class='next-btn'>Next</view>
+<!-- <view bindtap='randomCi300' class='next-btn'>Next</view> -->

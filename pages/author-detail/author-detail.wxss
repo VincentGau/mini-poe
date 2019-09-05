@@ -6,7 +6,7 @@
   margin-right:10px;
 }
 
-.red-tip{
+.title-2{
   color:darkred; 
   margin-bottom: 6px;
 }

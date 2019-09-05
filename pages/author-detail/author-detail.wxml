@@ -10,7 +10,7 @@
             [{{author.dynasty}}] {{author.birthyear}} ~ {{author.deathyear}}
         </view>
         <view class="weui-article__section" style="padding-bottom:0;">
-            <view class="red-tip">简介</view>
+            <view class="title-2">简介</view>
             <view class="weui-article__section">
                 <view class="weui-article__p desc-content">
                     {{author.authordesc}}
@@ -21,7 +21,7 @@
 
 
     <view class="padding16">
-      <view class="red-tip">作品 / {{works_count}}</view>
+      <view class="title-2">作品 / {{works_count}}</view>
     </view>
 
 
