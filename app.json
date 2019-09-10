@@ -11,7 +11,8 @@
     "pages/star/star_works",
     "pages/search/search_author",
     "pages/search/search_work",
-    "pages/search/index"
+    "pages/search/index",
+    "pages/test-swiper/test-swiper"
   ],
   "window": {
     "backgroundTextStyle": "light",

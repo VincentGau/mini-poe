@@ -1,0 +1,11 @@
+<!--pages/test-swiper/test-swiper.wxml-->
+<swiper  duration="{{duration}}" previous-margin="{{previousMargin}}px" next-margin="{{nextMargin}}px">
+  <block wx:for="{{works}}" wx:key="*this">
+    <swiper-item>
+      <view class="swiper-item ">
+        <view wx:if="{{item.Kind=='shi'}}" class='content center'>{{item.Content}}</view>
+        <view wx:else class='content indent'>{{item.Content}}</view>
+      </view>
+    </swiper-item>
+  </block>
+</swiper>
