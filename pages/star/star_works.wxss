@@ -7,3 +7,9 @@
 .works-item{
   border-bottom: 1rpx solid #aaa;
 }
+
+.dynasty{
+  color:#666;
+  float:right;
+  font-size: 12px;
+}

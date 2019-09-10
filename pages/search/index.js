@@ -99,7 +99,7 @@ Page({
     this.setData({
       inputVal: ""
     });
-  },
+  }, 
   inputTyping: function (e) {
     var that = this
     this.setData({

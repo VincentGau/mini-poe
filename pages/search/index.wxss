@@ -31,4 +31,5 @@
 
 .searchTag{
   margin-left: 9px;
+  margin-bottom: 4px;
 }

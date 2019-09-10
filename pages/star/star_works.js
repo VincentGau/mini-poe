@@ -65,7 +65,11 @@ Page({
         })
       }
       else {
-
+        wx.hideLoading()
+        this.setData({
+          emptyFlag:true,
+          completed:true,
+        })
       }
 
     }).catch(err => {

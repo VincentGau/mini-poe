@@ -2,7 +2,7 @@
 wx.cloud.init()
 const db = wx.cloud.database()
 const star_authors = db.collection("star_authors")
-const authors_all = db.collection("authors_all")
+const authors_all = db.collection("authors_new")
 
 Page({
 
@@ -28,7 +28,7 @@ Page({
           starAuthorIds.push(res.data[i].AuthorId)
         }
         const _ = db.command
-        db.collection("authors_all").where({
+        db.collection("authors_new").where({
           authorid: _.in(starAuthorIds)
         }).get().then(res => {
           wx.hideLoading()
@@ -42,7 +42,11 @@ Page({
         })
       }
       else{
-
+        wx.hideLoading()
+        this.setData({
+          emptyFlag: true,
+          completed: true,
+        })
       }
 
     }).catch(err =>{
@@ -89,7 +93,7 @@ Page({
           starAuthorIds.push(res.data[i].AuthorId)
         }
         const _ = db.command
-        db.collection("authors_all").where({
+        db.collection("authors_new").where({
           authorid: _.in(starAuthorIds)
         }).get().then(res => {
           this.setData({
