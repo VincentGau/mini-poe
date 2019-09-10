@@ -2,10 +2,7 @@
   "pages": [
     "pages/home/home",
     "pages/index/index",
-    "pages/logs/logs",
-    "pages/poe/poe",
     "pages/poe-detail/poe-detail",
-    "pages/random-poe/random-poe",
     "pages/me/me",
     "pages/star/star",
     "pages/discover/discover",

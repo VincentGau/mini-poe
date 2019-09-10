@@ -170,10 +170,10 @@ Page({
     console.log(end)
     if (start[0] < end[0] - 50) {
       console.log('右滑')
-      this.getRandom()
+      this.randomCi300()
     } else if (start[0] > end[0] + 50) {
       console.log('左滑')
-      this.getRandom()
+      this.randomCi300()
     } else {
       console.log('静止')
     }
