@@ -46,6 +46,11 @@ Page({
     var starWorkIds = []
     star_works.get().then(res => {
       if (res.data.length > 0) {
+        if (res.data.length < 20) {
+          this.setData({
+            endFlag: true,
+          })
+        }
         for (var i = 0; i < res.data.length; i++) {
           starWorkIds.push(res.data[i].WorkId)
         }
@@ -67,9 +72,10 @@ Page({
       else {
         wx.hideLoading()
         this.setData({
-          emptyFlag:true,
+          emptyFlag:true,          
           completed:true,
         })
+        
       }
 
     }).catch(err => {

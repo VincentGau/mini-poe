@@ -24,6 +24,12 @@ Page({
     var starAuthorIds = []
     star_authors.get().then(res =>{
       if(res.data.length > 0){
+        //结果小于20表示已经加载完
+        if(res.data.length < 20){
+          this.setData({
+            endFlag:true,
+          })
+        }
         for (var i = 0; i < res.data.length; i++) {
           starAuthorIds.push(res.data[i].AuthorId)
         }

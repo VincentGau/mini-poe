@@ -1,9 +1,0 @@
-<!--pages/poe/poe.wxml-->
-
-<wxs src="./../../wxs/tools.wxs" module="tools" />
-<view class='works-item' wx:for="{{works}}" bindtap="toDetail" data-text="{{item.WorkId}}">
-    <view>{{item.Title}}</view>
-    <view class="author-name">[{{item.Dynasty}}]{{item.AuthorName}}</view>
-    <view>{{tools.contentDigest(item.Content)}}。</view>
-</view>
-<view>{{bottominfo}}</view>
