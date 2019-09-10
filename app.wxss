@@ -1,6 +1,7 @@
 /**app.wxss**/
 @import "weui.wxss";
 @import "/wxParse/wxParse.wxss";
+@import "vant-weapp/dist/common/index.wxss";
 .container {
   height: 100%;
   display: flex;

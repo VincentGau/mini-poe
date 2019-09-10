@@ -19,11 +19,14 @@
             <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="naviback">取消</view>
         </view>
 
-
-        <view class='searchHistory' wx:for="{{searchHistory}}" bindtap='doSearch' data-text="{{item}}" hidden="{{hideSearchHistory}}">
-          <view >{{item}}</view>
+        
+        <view class='searchHistory' hidden="{{hideSearchHistory}}">
+          <view wx:for="{{searchHistory}}" bindtap='doSearch' data-text="{{item}}" >
+            <view class='searchTag'><van-tag plain size="large">{{item}}</van-tag></view>
+          </view>
         </view>
-        <view bindtap='clearSearchHistory' hidden="{{!showClear}}">清除历史记录</view>
+        
+        <view class="clearSearchHistory" bindtap='clearSearchHistory' hidden="{{!showClear}}">清除历史记录</view>
 
 
         <view class="weui-cells searchbar-result" wx:if="{{inputVal.length > 0}}"  hidden="{{!completed}}">

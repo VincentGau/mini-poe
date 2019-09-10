@@ -15,3 +15,20 @@
   float:right;
   font-size: 12px;
 }
+
+.clearSearchHistory{
+  text-align: center;
+  color:gainsboro;
+}
+
+.searchHistory{
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+
+.searchTag{
+  margin-left: 9px;
+}

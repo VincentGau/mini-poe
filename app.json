@@ -46,5 +46,8 @@
       }
     ]
   },
-  "sitemapLocation": "sitemap.json"
+  "sitemapLocation": "sitemap.json",
+  "usingComponents": {
+    "van-tag": "vant-weapp/dist/tag/index"
+  }
 }

@@ -8,12 +8,12 @@ Page({
    * Page initial data
    */
   data: {
-    hasMoreWorks: false, //是否显示查看更多作品
-    hasMoreAuthors: false, //是否显示查看更多作者
-    completed:false,
+    hasMoreWorks: false, //是否显示[查看更多作品]字样
+    hasMoreAuthors: false, //是否显示[查看更多作者]字样
+    completed:false, //是否已加载完成
     searchHistory:[], //搜索历史记录
-    hideSearchHistory:false,
-    hasSearchHistory:false,
+    hideSearchHistory:false, //是否显示搜索历史记录
+    hasSearchHistory:false, //是否存在搜索历史记录
   },
 
   /**
@@ -21,15 +21,16 @@ Page({
    */
   onLoad: function (options) {
     var a = wx.getStorageSync('searchHistory') 
-    console.log('STORAGE') 
-    console.log(a)
+    // 将搜索历史转为set，防止出现重复元素
+    let set_a = new Set(a)
+    
     this.setData({
       inputShowed:true,
-      searchHistory: wx.getStorageSync('searchHistory')  
+      searchHistory: [...set_a] //set再转换回array
     })
     if (wx.getStorageSync('searchHistory')){
       this.setData({
-        showClear:true,
+        showClear:true, // 是否显示清除历史记录字样
       })
     }
   },
@@ -88,6 +89,7 @@ Page({
       inputShowed: true
     });
   },
+  // 取消搜索
   naviback: function () {    
     wx.navigateBack({
       delta: 1
@@ -150,6 +152,7 @@ Page({
             completed: true
           })
 
+          // 将查询到的头20首作品放入缓存，以便在点击查看更多后直接显示在新的查询页上；
           wx.setStorage({
             key: "works20",
             data: res.data
@@ -216,7 +219,7 @@ Page({
     //     }
     //   })
 
-    db.collection("authors").where({
+    db.collection("authors_new").where({
       authorname: {
         $regex: '.*' + e.detail.value,
         $options: 'i'
@@ -263,6 +266,7 @@ Page({
     })
   },
 
+  // 直接点击搜索记录进行查询
   doSearch:function(e){
     var p = e.currentTarget.dataset.text
     var that = this
@@ -347,7 +351,7 @@ Page({
 
     
 
-    db.collection("authors_all").where({
+    db.collection("authors_new").where({
       authorname: {
         $regex: '.*' + p,
         $options: 'i'

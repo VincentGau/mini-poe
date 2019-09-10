@@ -40,7 +40,7 @@ Page({
     })
 
     this.starCheck(options.AuthorId)
-    db.collection('authors_all').where({
+    db.collection('authors_new').where({
       authorid: Number(options.AuthorId)
     }).get({
         success: res => {

@@ -1,6 +1,7 @@
 /* pages/home/home.wxss */
 .hwrapper{
-  padding: 16px;
+  padding-left: 16px;
+  padding-right: 16px;
 }
 
 .content.indent .p{
