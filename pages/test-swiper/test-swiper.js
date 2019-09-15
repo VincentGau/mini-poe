@@ -1,22 +1,27 @@
 // pages/test-swiper/test-swiper.js
 wx.cloud.init()
 const db = wx.cloud.database()
-
+const coll_shi300 = db.collection("shi_300")
+const coll_ci300 = db.collection("ci_300")
+const coll_starworks = db.collection("star_works")
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-    duration: 500,
-    previousMargin: 0,
-    nextMargin: 0
+    duration: 500, //swiper参数
+    previousMargin: 0, //swiper参数
+    nextMargin: 0, //swiper参数
+    cur: 0, //swiper参数 当前滑块index
+    pageIndex:0, //页数 
   },
+
 
   random10: function () {
     let workIds = []
-    db.collection('ci_300').aggregate().sample({
-      size: 10
+    db.collection('shi_300').aggregate().sample({
+      size: 5
     }).end().then(res => {
       console.log(res)
       for (var i = 0; i < res.list.length; i++) {
@@ -37,32 +42,57 @@ Page({
     })
   },
 
-  /**
-   * 生命周期函数--监听页面加载
-   */
-  onLoad: function (options) {
-    var starWorkIds = []
-    db.collection("star_works").get().then(res => {
-      if (res.data.length > 0) {
-       
-        for (var i = 0; i < res.data.length; i++) {
-          starWorkIds.push(res.data[i].WorkId)
+  toDetail: function (e) {
+    wx.navigateTo({
+      url: '../poe-detail/poe-detail?WorkId=' + e.currentTarget.dataset.workid,
+    })
+  },
+
+  // 滑动切换
+  swipeChange:function(e){
+    // console.log("Page: " + this.data.pageIndex)
+    // console.log("Total works: " + this.data.works.length)
+    let current = e.detail.current;
+    let source = e.detail.source
+    //console.log(source);
+    // console.log(current, this.data.index, this.data.cur)
+    // this.setData({
+    //   index: current
+    // })
+
+    let workIds = []
+    //滑动到最后一个swiper-item的时候加载新的作品
+    if((current+1) / 5 == this.data.pageIndex + 1){ 
+      db.collection('ci_300').aggregate().sample({
+        size: 5
+      }).end().then(res => {
+        this.data.pageIndex++
+        console.log(res)
+        for (var i = 0; i < res.list.length; i++) {
+          workIds.push(res.list[i].workid)
         }
-        console.log(starWorkIds)
+        console.log(workIds)
         const _ = db.command
         db.collection("works_all").where({
-          WorkId: _.in(starWorkIds)
+          WorkId: _.in(workIds)
         }).get().then(res => {
+          console.log(res.data)
           this.setData({
-            works: res.data,
+            works: this.data.works.concat(res.data),
           })
         }).catch(err => {
           console.error(err)
         })
-      }
-    }).catch(err => {
-      console.error(err)
-    })
+      })
+    }
+  },
+
+  /**
+   * 生命周期函数--监听页面加载
+   */
+  onLoad: function (options) {
+    
+    this.random10()
   },
 
   /**

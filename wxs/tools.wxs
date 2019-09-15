@@ -3,7 +3,12 @@ var contentDigest = function (str) {
   return str.split("。")[0] + "。";
 }
 
+var contentSplit = function(str){
+  //切分段落，最多保留前7段防止长诗显示不全
+  return str.split("\\r\\n", 7)
+}
 
 module.exports = {
   contentDigest: contentDigest,
+  contentSplit:contentSplit,
 };

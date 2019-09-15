@@ -1,10 +1,14 @@
 <!--pages/test-swiper/test-swiper.wxml-->
-<swiper  duration="{{duration}}" previous-margin="{{previousMargin}}px" next-margin="{{nextMargin}}px">
+<wxs src="./../../wxs/tools.wxs" module="tools" />
+<swiper duration="{{duration}}" previous-margin="{{previousMargin}}px" next-margin="{{nextMargin}}px" current="{{cur}}" bindchange="swipeChange">
   <block wx:for="{{works}}" wx:key="*this">
-    <swiper-item>
-      <view class="swiper-item ">
-        <view wx:if="{{item.Kind=='shi'}}" class='content center'>{{item.Content}}</view>
-        <view wx:else class='content indent'>{{item.Content}}</view>
+    <swiper-item  class="random-poe" >
+      <view class="swiper-item" bindtap="toDetail" data-workid="{{item.WorkId}}">
+        
+          <view wx:for="{{tools.contentSplit(item.Content)}}" wx:for-item="para" class="content {{item.Layout}}">
+            <view class='p'>{{para}}</view>
+          </view>
+        
       </view>
     </swiper-item>
   </block>

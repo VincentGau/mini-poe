@@ -1,5 +1,5 @@
 <!--pages/home/home.wxml-->
-<import src="../../wxParse/wxParse.wxml"/>
+<!-- <import src="../../wxParse/wxParse.wxml"/>
 
 <navigator url='../test-swiper/test-swiper'>test-swiper</navigator>
 <view  style="height:{{wheight}}px" class='hwrapper'>
@@ -8,6 +8,19 @@
     <view wx:else class='content indent'><template is="wxParse" data="{{wxParseData:content.nodes}}"/></view>
   </view>
   
-</view>
+</view> -->
 
-<!-- <view bindtap='randomCi300' class='next-btn'>Next</view> -->
+<wxs src="./../../wxs/tools.wxs" module="tools" />
+<swiper duration="{{duration}}" previous-margin="{{previousMargin}}px" next-margin="{{nextMargin}}px" current="{{cur}}" bindchange="swipeChange">
+  <block wx:for="{{works}}" wx:key="*this">
+    <swiper-item  class="random-poe" >
+      <view class="swiper-item" bindtap="toDetail" data-workid="{{item.WorkId}}">
+        
+          <view wx:for="{{tools.contentSplit(item.Content)}}" wx:for-item="para" class="content {{item.Layout}}">
+            <view class='p'>{{para}}</view>
+          </view>
+        
+      </view>
+    </swiper-item>
+  </block>
+</swiper>

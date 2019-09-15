@@ -11,8 +11,36 @@ Page({
    * 页面的初始数据
    */
   data: {
-    touchS: [0, 0],
-    touchE: [0, 0]
+    duration: 500, //swiper参数
+    previousMargin: 0, //swiper参数
+    nextMargin: 0, //swiper参数
+    cur: 0, //swiper参数 当前滑块index
+    pageIndex: 0, //页数 
+  },
+
+
+  random10: function () {
+    let workIds = []
+    db.collection('shi_300').aggregate().sample({
+      size: 5
+    }).end().then(res => {
+      console.log(res)
+      for (var i = 0; i < res.list.length; i++) {
+        workIds.push(res.list[i].workid)
+      }
+      console.log(workIds)
+      const _ = db.command
+      db.collection("works_all").where({
+        WorkId: _.in(workIds)
+      }).get().then(res => {
+        console.log(res.data)
+        this.setData({
+          works: res.data,
+        })
+      }).catch(err => {
+        console.error(err)
+      })
+    })
   },
 
   toDetail: function (e) {
@@ -21,82 +49,51 @@ Page({
     })
   },
 
-  getRandom:function(){
-    var that = this
-    db.collection('star_works')
-      .aggregate()
-      .sample({
-        size: 1
-      })
-      .end().then(res => {
-        var workid = res.list[0].WorkId
-        db.collection('works_all').where({
-          WorkId:workid
-        }).get({
-          success:res=>{
-            let content = res.data[0].Content
-            if (res.data[0].Kind == 'shi') {
-              let contentParse = util.parseShi(content)
-              WxParse.wxParse('content', 'html', contentParse, that);
-            }
-            else {
-              let contentParse = util.parseTag(content)
-              WxParse.wxParse('content', 'html', contentParse, that);
-            }
-            this.setData({
-              work: res.data[0]
-            })
-          }
+  // 滑动切换
+  swipeChange: function (e) {
+    // console.log("Page: " + this.data.pageIndex)
+    // console.log("Total works: " + this.data.works.length)
+    let current = e.detail.current;
+    let source = e.detail.source
+    //console.log(source);
+    // console.log(current, this.data.index, this.data.cur)
+    // this.setData({
+    //   index: current
+    // })
+
+    let workIds = []
+    //滑动到最后一个swiper-item的时候加载新的作品
+    if ((current + 1) / 5 == this.data.pageIndex + 1) {
+      db.collection('shi_300').aggregate().sample({
+        size: 5
+      }).end().then(res => {
+        this.data.pageIndex++
+        console.log(res)
+        for (var i = 0; i < res.list.length; i++) {
+          workIds.push(res.list[i].workid)
+        }
+        console.log(workIds)
+        const _ = db.command
+        db.collection("works_all").where({
+          WorkId: _.in(workIds)
+        }).get().then(res => {
+          console.log(res.data)
+          this.setData({
+            works: this.data.works.concat(res.data),
+          })
+        }).catch(err => {
+          console.error(err)
         })
       })
+    }
   },
 
-  randomCi300: function(){
-    var that = this
-    db.collection('ci_300')
-      .aggregate()
-      .sample({
-        size: 1
-      })
-      .end().then(res => {
-        var workid = res.list[0].workid
-        db.collection('works_all').where({
-          WorkId: workid
-        }).get({
-          success: res => {
-            let content = res.data[0].Content
-            if (res.data[0].Kind == 'shi') {
-              let contentParse = util.parseShi(content)
-              WxParse.wxParse('content', 'html', contentParse, that);
-            }
-            else {
-              let contentParse = util.parseTag(content)
-              WxParse.wxParse('content', 'html', contentParse, that);
-            }
-            this.setData({
-              work: res.data[0]
-            })
-          }
-        })
-      })
-  },
-  
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    var that = this
-    wx.getSystemInfo({
-      success: function (res) {
-        console.log(res)
-        console.log(res.windowHeight)
-        that.setData({
-          wheight: res.windowHeight
-        })
-      }
-    })
-    // this.getRandom()
-    this.randomCi300()
+    
+    this.random10()
   },
 
   /**
@@ -148,34 +145,5 @@ Page({
 
   },
 
-  touchStart:function(e){
-    var that = this
-    let sx = e.touches[0].pageX
-    let sy = e.touches[0].pageY
-    that.data.touchS = [sx, sy]
-  },
-
-  touchMove: function (e){
-    var that = this
-    let sx = e.touches[0].pageX
-    let sy = e.touches[0].pageY
-    that.data.touchE = [sx, sy]
-  },
-
-  touchEnd: function (e){
-    var that = this
-    let start = that.data.touchS
-    let end = that.data.touchE
-    console.log(start)
-    console.log(end)
-    if (start[0] < end[0] - 50) {
-      console.log('右滑')
-      this.randomCi300()
-    } else if (start[0] > end[0] + 50) {
-      console.log('左滑')
-      this.randomCi300()
-    } else {
-      console.log('静止')
-    }
-  }
+ 
 })
