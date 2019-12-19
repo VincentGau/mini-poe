@@ -1,0 +1,15 @@
+<!--pages/feihualing/shefu.wxml-->
+
+<demo-block title="高级用法">
+  <van-search
+    value="{{ value }}"
+    placeholder="倚杖听江声 云7"
+    use-action-slot
+    bind:change="onChange"
+    bind:search="onSearch"
+    label=""
+    shape="round"
+  >
+    <view slot="action" bind:tap="onClick">搜索</view>
+  </van-search>
+</demo-block>

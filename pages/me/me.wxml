@@ -6,3 +6,29 @@
         <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </navigator>
 </view>
+
+<view class="weui-cells__title">首页随机范围</view>
+<view class="weui-cells weui-cells_after-title">
+    <radio-group bindchange="radioChange">
+        <label class="weui-cell weui-check__label" wx:for="{{radioItems}}" wx:key="value">
+            <radio class="weui-check" value="{{item.value}}" checked="{{item.checked}}"/>
+
+            <view class="weui-cell__bd">{{item.name}}</view>
+            <view class="weui-cell__ft weui-cell__ft_in-radio" wx:if="{{item.checked}}">
+                <icon class="weui-icon-radio" type="success_no_circle" size="16"></icon>
+            </view>
+        </label>
+    </radio-group>
+</view>
+
+<view class="weui-cells__title">飞花令助手</view>
+<view class="weui-cells weui-cells_after-title">
+    <navigator url="../feihualing/shefu" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view class="weui-cell__bd">射覆</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
+    <navigator url="../feihualing/shuangfei" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view class="weui-cell__bd">双飞</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
+</view>
