@@ -65,7 +65,28 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
-
+    let curpage = this.data.pageindex
+    db.collection('authors_new').where({
+      AuthorId: Number(this.data.authorid)
+    }).skip(curpage * 20).limit(20).get({
+      success: res => {
+        console.log(res.data)
+        if (res.data == '') {
+          console.log("END")
+          this.setData({
+            bottominfo: "没有更多数据了",
+            endFlag: true
+          })
+        }
+        else {
+          curpage++
+          this.setData({
+            starWorkList: this.data.starWorkList.concat(res.data),
+            pageindex: curpage
+          })
+        }
+      }
+    })
   },
 
   /**
