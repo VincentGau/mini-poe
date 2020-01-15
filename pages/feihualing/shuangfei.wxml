@@ -1,2 +1,22 @@
 <!--pages/feihualing/shuangfei.wxml-->
-<text>pages/feihualing/shuangfei.wxml</text>
+<demo-block title="双飞">
+  <van-search
+    value="{{ value }}"
+    placeholder="敲门都不应，倚杖听江声"
+    use-action-slot
+    bind:change="onChange"
+    bind:search="onSearch"
+    label=""
+    shape="round"
+  >
+    <view slot="action" bind:tap="onSearch">搜索</view>
+  </van-search>
+</demo-block>
+
+<block wx:for="{{result}}" wx:for-index="i">
+  <navigator url="../poe-detail/poe-detail?WorkId={{item.workid}}" class="weui-cell" hover-class="weui-cell_active">
+      <view class="weui-cell__bd">
+          <view>{{item.content}}</view>
+      </view>
+  </navigator>
+</block>

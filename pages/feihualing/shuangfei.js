@@ -5,7 +5,8 @@ Page({
    * 页面的初始数据
    */
   data: {
-
+    value: '',
+    result: []
   },
 
   /**
@@ -13,6 +14,49 @@ Page({
    */
   onLoad: function (options) {
 
+  },
+
+  onChange(e) {
+    this.setData({
+      value: e.detail
+    });
+  },
+
+  onSearch() {
+    var that = this
+    if (this.data.value) {
+      
+      wx.request({
+        url: 'https://tc.hakucc.com/api/shuangfeiV2',
+        data: {
+          clue: this.data.value,
+        },
+        header: {
+          'content-type': 'application/json'
+        },
+        success(res) {
+          console.log(res.data.data)
+          that.setData({
+            result: res.data.data
+          })
+        }
+      })
+    }
+  },
+
+  
+  onCancel() {
+    wx.showToast({
+      title: '取消',
+      icon: 'none'
+    });
+  },
+
+  onClear() {
+    wx.showToast({
+      title: '清空',
+      icon: 'none'
+    });
   },
 
   /**
