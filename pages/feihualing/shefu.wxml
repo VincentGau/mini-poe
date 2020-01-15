@@ -1,6 +1,6 @@
 <!--pages/feihualing/shefu.wxml-->
 
-<demo-block title="高级用法">
+<demo-block title="射覆">
   <van-search
     value="{{ value }}"
     placeholder="倚杖听江声 云7"
@@ -10,6 +10,14 @@
     label=""
     shape="round"
   >
-    <view slot="action" bind:tap="onClick">搜索</view>
+    <view slot="action" bind:tap="onSearch">搜索</view>
   </van-search>
 </demo-block>
+
+<block wx:for="{{result}}" wx:for-index="i">
+  <navigator url="../poe-detail/poe-detail?WorkId={{item.workid}}" class="weui-cell" hover-class="weui-cell_active">
+      <view class="weui-cell__bd">
+          <view>{{item.content}}</view>
+      </view>
+  </navigator>
+</block>

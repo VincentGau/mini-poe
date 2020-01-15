@@ -9,7 +9,8 @@ Page({
    */
   data: {
     value: '',
-    howWorks: ''
+    howWorks: '',
+    result: []
   },
 
   onChange(e) {
@@ -19,25 +20,28 @@ Page({
   },
 
   onSearch() {
+    var that = this
     if (this.data.value) {
       
-      wx.showToast({
-        title: '搜索：' + this.shefu(),
-        icon: 'none'
-      });
+      wx.request({
+        url: 'https://tc.hakucc.com/api/shefuV2',
+        data: {
+          clue: this.data.value,
+        },
+        header: {
+          'content-type': 'application/json'
+        },
+        success(res) {
+          console.log(res.data.data)
+          that.setData({
+            result: res.data.data
+          })
+        }
+      })
     }
   },
 
-  onClick() {
-    if (this.data.value) {
-      this.shefu()
-      wx.showToast({
-        title: '搜索：' + this.shefu("123", "123"),
-        icon: 'none'
-      });
-    }
-  },
-
+  
   onCancel() {
     wx.showToast({
       title: '取消',
@@ -61,14 +65,16 @@ Page({
    */
   onLoad: function (options) {
     
-    db.collection('works_hot').orderBy('WorkId', 'asc').get({
-      success: res => {
-        console.log(res)
-        this.setData({
-          hotWorks: res.data,
-        })
-      }
-    })
+    // db.collection('works_hot').orderBy('WorkId', 'asc').get({
+    //   success: res => {
+    //     console.log(res)
+    //     this.setData({
+    //       hotWorks: res.data,
+    //     })
+    //   }
+    // })
+
+    
   },
 
   /**
