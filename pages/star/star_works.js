@@ -123,24 +123,41 @@ Page({
    */
   onReachBottom: function () {
     let curpage = this.data.pageindex
-    db.collection('works_all').where({
-      AuthorId:Number(this.data.authorid)
-    }).skip(curpage * 20).limit(20).get({
+    var starWorkIds = []
+    star_works.skip(curpage * 20).limit(20).get({
       success: res => {
-        console.log(res.data)
-        if (res.data == '') {
-          console.log("END")
-          this.setData({
-            bottominfo: "没有更多数据了",
-            endFlag: true
+        if(res.data.length > 0){
+          curpage++;
+          if (res.data.length < 20) {
+            this.setData({
+              endFlag: true,
+            })
+          }
+          for (var i = 0; i < res.data.length; i++) {
+            starWorkIds.push(res.data[i].WorkId)
+          }
+          console.log(starWorkIds)
+          const _ = db.command
+          db.collection("works_all").where({
+            WorkId: _.in(starWorkIds)
+          }).get().then(res => {
+            wx.hideLoading()
+            this.setData({
+              starWorkList: this.data.starWorkList.concat(res.data),
+              pageindex: curpage,
+              emptyFlag: false,
+              completed:true,
+            })
+          }).catch(err => {
+            console.error(err)
           })
         }
         else {
-          curpage++
-          this.setData({
-            starWorkList: this.data.starWorkList.concat(res.data),
-            pageindex: curpage
+          wx.hideLoading()
+          this.setData({         
+            completed:true,
           })
+          
         }
       }
     })

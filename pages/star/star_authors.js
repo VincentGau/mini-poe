@@ -126,7 +126,45 @@ Page({
    * Called when page reach bottom
    */
   onReachBottom: function () {
-
+    let curpage = this.data.pageindex
+    var starAuthorIds = []
+    star_authors.skip(curpage * 20).limit(20).get({
+      success: res => {
+        if(res.data.length > 0){
+          curpage++;
+          if (res.data.length < 20) {
+            this.setData({
+              endFlag: true,
+            })
+          }
+          for (var i = 0; i < res.data.length; i++) {
+            starAuthorIds.push(res.data[i].AuthorId)
+          }
+          console.log(starAuthorIds)
+          const _ = db.command
+          db.collection("authors_new").where({
+            authorid: _.in(starAuthorIds)
+          }).get().then(res => {
+            wx.hideLoading()
+            this.setData({
+              starAuthorList: this.data.starAuthorList.concat(res.data),
+              pageindex: curpage,
+              emptyFlag: false,
+              completed:true,
+            })
+          }).catch(err => {
+            console.error(err)
+          })
+        }
+        else {
+          wx.hideLoading()
+          this.setData({         
+            completed:true,
+          })
+          
+        }
+      }
+    })
   },
 
   /**
