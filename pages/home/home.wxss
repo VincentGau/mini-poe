@@ -11,12 +11,22 @@
   margin-bottom: 5px;
   font-size: 16px;
   line-height: 1.8;
+
+  display: -webkit-box;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  word-wrap: break-word;
+  white-space: normal !important;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
 }
 
 swiper{
   height:350px;
   padding-left: 16px;
   padding-right: 16px;
+
+  
 }
 
 .random-poe{
