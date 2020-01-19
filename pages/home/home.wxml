@@ -10,7 +10,7 @@
   
 </view> -->
 
-<wxs src="./../../wxs/tools.wxs" module="tools" />
+<!-- <wxs src="./../../wxs/tools.wxs" module="tools" />
 <swiper duration="{{duration}}" previous-margin="{{previousMargin}}px" next-margin="{{nextMargin}}px" current="{{cur}}" bindchange="swipeChange">
   <block wx:for="{{works}}" wx:key="*this">
     <swiper-item  class="random-poe" >
@@ -23,4 +23,13 @@
       </view>
     </swiper-item>
   </block>
-</swiper>
+</swiper> -->
+
+
+<import src="../../wxParse/wxParse.wxml"/>
+<view  style="height:{{wheight}}px" class='quote'>
+  <view bindtap='toDetail' data-workid="{{workId}}" class='random-poe' bindtouchstart='touchStart' bindtouchmove='touchMove' bindtouchend='touchEnd'>
+    <view class='content center'>{{quote}}</view>
+  </view>
+  
+</view>

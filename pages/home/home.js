@@ -16,6 +16,8 @@ Page({
     nextMargin: 0, //swiper参数
     cur: 0, //swiper参数 当前滑块index
     pageIndex: 0, //页数 
+
+
   },
 
 
@@ -41,6 +43,58 @@ Page({
         console.error(err)
       })
     })
+  },
+
+  // 随机获取一个quote
+  randomQuote: function(){
+    var that = this
+    wx.request({
+      url: 'https://localhost:8090/quote/random',
+      
+      header: {
+        'content-type': 'application/json'
+      },
+      success(res) {
+        console.log(res.data)
+        that.setData({
+          quote: res.data.quote,
+          authorName:res.data.authorName,
+          title: res.data.title,
+          workId: res.data.workId,
+        })
+      }
+    })
+  },
+
+  touchStart:function(e){
+    var that = this
+    let sx = e.touches[0].pageX
+    let sy = e.touches[0].pageY
+    that.data.touchS = [sx, sy]
+  },
+
+   touchMove: function (e){
+    var that = this
+    let sx = e.touches[0].pageX
+    let sy = e.touches[0].pageY
+    that.data.touchE = [sx, sy]
+  },
+
+   touchEnd: function (e){
+    var that = this
+    let start = that.data.touchS
+    let end = that.data.touchE
+    console.log(start)
+    console.log(end)
+    if (start[0] < end[0] - 50) {
+      console.log('右滑')
+      this.randomQuote()
+    } else if (start[0] > end[0] + 50) {
+      console.log('左滑')
+      this.randomQuote()
+    } else {
+      console.log('静止')
+    }
   },
 
   toDetail: function (e) {
@@ -93,7 +147,7 @@ Page({
    */
   onLoad: function (options) {
     
-    this.random10()
+    this.randomQuote();
   },
 
   /**
