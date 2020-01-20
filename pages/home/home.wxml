@@ -36,4 +36,6 @@
   </view>  
 </view>
 
-<view bindtap='randomQuote' class='next-btn'>Next</view>
+<view class='next-btn'>
+  <image class="refresh_icon" src="../../images/refresh.svg" bindtap="randomQuote"></image>
+</view>

@@ -13,6 +13,11 @@
   line-height: 1.8;
 }
 
+.refresh_icon{
+  width:30px;
+  height:30px;
+}
+
 swiper{
   height:350px;
   padding-left: 16px;

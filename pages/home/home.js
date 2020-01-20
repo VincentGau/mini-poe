@@ -49,7 +49,7 @@ Page({
   randomQuote: function(){
     var that = this
     wx.request({
-      url: 'https://localhost:8090/quote/random',
+      url: 'https://tc.hakucc.com/quote/random',
       
       header: {
         'content-type': 'application/json'
@@ -57,6 +57,7 @@ Page({
       success(res) {
         console.log(res.data)
         let quote = util.splitQuote(res.data.quote)
+        console.log(res.data.workId)
         that.setData({
           quote: quote,
           authorName:res.data.authorName,
