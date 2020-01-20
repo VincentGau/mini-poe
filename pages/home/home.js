@@ -56,45 +56,15 @@ Page({
       },
       success(res) {
         console.log(res.data)
+        let quote = util.splitQuote(res.data.quote)
         that.setData({
-          quote: res.data.quote,
+          quote: quote,
           authorName:res.data.authorName,
-          title: res.data.title,
+          title: res.data.workTitle,
           workId: res.data.workId,
         })
       }
     })
-  },
-
-  touchStart:function(e){
-    var that = this
-    let sx = e.touches[0].pageX
-    let sy = e.touches[0].pageY
-    that.data.touchS = [sx, sy]
-  },
-
-   touchMove: function (e){
-    var that = this
-    let sx = e.touches[0].pageX
-    let sy = e.touches[0].pageY
-    that.data.touchE = [sx, sy]
-  },
-
-   touchEnd: function (e){
-    var that = this
-    let start = that.data.touchS
-    let end = that.data.touchE
-    console.log(start)
-    console.log(end)
-    if (start[0] < end[0] - 50) {
-      console.log('右滑')
-      this.randomQuote()
-    } else if (start[0] > end[0] + 50) {
-      console.log('左滑')
-      this.randomQuote()
-    } else {
-      console.log('静止')
-    }
   },
 
   toDetail: function (e) {
@@ -148,6 +118,7 @@ Page({
   onLoad: function (options) {
     
     this.randomQuote();
+    // this.random10();
   },
 
   /**

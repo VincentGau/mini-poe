@@ -26,10 +26,14 @@
 </swiper> -->
 
 
-<import src="../../wxParse/wxParse.wxml"/>
-<view  style="height:{{wheight}}px" class='quote'>
-  <view bindtap='toDetail' data-workid="{{workId}}" class='random-poe' bindtouchstart='touchStart' bindtouchmove='touchMove' bindtouchend='touchEnd'>
-    <view class='content center'>{{quote}}</view>
-  </view>
-  
+
+<wxs src="./../../wxs/tools.wxs" module="tools" />
+<view bindtap='toDetail' data-workid="{{workId}}" class='quote'>
+  <view class='wrapper'>
+    <view wx:for="{{quote}}" wx:for-item="para" class='content center'>
+      <view class='p'>{{para}}</view>
+    </view>
+  </view>  
 </view>
+
+<view bindtap='randomQuote' class='next-btn'>Next</view>

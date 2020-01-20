@@ -31,6 +31,13 @@ const parseShi = str=> {
     return s
 }
 
+// 将摘录名句按标点符号拆分
+const splitQuote = str => {
+  const reg = new RegExp("(.*?[，。！？])", 'gi')
+  var p = str.match(reg)    
+  return p;
+}
+
 const parseTag = str => {
   var p = str.split("\\r\\n")
   var s = ""
@@ -51,4 +58,5 @@ module.exports = {
   contentDigest: contentDigest,
   parseShi: parseShi,
   parseTag: parseTag,
+  splitQuote: splitQuote,
 }
