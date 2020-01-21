@@ -1,0 +1,18 @@
+<!--pages/collection/index.wxml-->
+<wxs src="./../../wxs/tools.wxs" module="tools" />
+<block wx:for="{{works}}" wx:for-index="i">
+  <navigator url="../poe-detail/poe-detail?WorkId={{item.workId}}" class="weui-cell" hover-class="weui-cell_active">
+      <view class="weui-cell__bd">
+          <view>{{item.title}}<text class="dynasty"></text></view>
+          <view class="weui-media-box__desc">{{tools.contentDigest(item.content)}}</view>
+      </view>
+  </navigator>
+</block>
+
+<view wx:if="{{!emptyFlag && !endFlag}}" class="weui-loadmore">
+    <view class="weui-loading"></view>
+    <view class="weui-loadmore__tips">正在加载</view>
+</view>
+<view wx:if="{{!emptyFlag && endFlag}}" class="weui-loadmore weui-loadmore_line weui-loadmore_dot">
+    <view class="weui-loadmore__tips weui-loadmore__tips_in-line">没有更多了</view>
+</view>
