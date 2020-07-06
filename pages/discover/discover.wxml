@@ -1,5 +1,5 @@
 <!--pages/discover/discover.wxml-->
-<navigator url="../search/index" class="weui-search-bar">
+<!-- <navigator url="../search/search" class="weui-search-bar">
     <view class="weui-search-bar__form">
         <view class="weui-search-bar__box">
             <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
@@ -10,4 +10,16 @@
             <view class="weui-search-bar__text">搜索</view>
         </label>
     </view>    
+</navigator> -->
+
+
+<navigator url="../search/search">
+  <van-search
+    value="{{ value }}"
+    placeholder="诗句/作者"
+    use-action-slot
+    label=""
+    shape="round"
+  >
+  </van-search>
 </navigator>

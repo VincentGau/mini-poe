@@ -6,15 +6,15 @@ Page({
    */
   data: {
     radioItems: [
-      { name: '宋词三百首', value: '0', checked: true },
+      { name: '宋词三百首', value: '0'},
       { name: '唐诗三百首', value: '1' },
-      { name: '我收藏的作品', value: '2' },
+      { name: '我收藏的作品', value: '2', checked: true },
     ],
   },
 
   radioChange: function (e) {
     console.log('radio发生change事件，携带value值为：', e.detail.value);
-    wx.setStorageSync('home-content', e.detail.value)
+    wx.setStorageSync('homeRandom', e.detail.value)
 
     var radioItems = this.data.radioItems;
     for (var i = 0, len = radioItems.length; i < len; ++i) {

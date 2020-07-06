@@ -1,11 +1,14 @@
 // pages/search/search_work.js
+wx.cloud.init()
+const db = wx.cloud.database()
 Page({
 
   /**
    * 页面的初始数据
    */
   data: {
-
+    emptyFlag: true,
+    pageindex: 2
   },
 
   /**
@@ -18,8 +21,12 @@ Page({
       var value = wx.getStorageSync('works20')
       if (value) {
         this.setData({
-          works:value
+          works:value,
+          keyword:options.keyword
         })
+      }
+      for (var i = 0; i < value; i++) {
+        this.searchWorkIds.push(i.workid)
       }
     } catch (e) {
       // Do something when catch error
@@ -68,7 +75,62 @@ Page({
    * 页面上拉触底事件的处理函数
    */
   onReachBottom: function () {
+    let curpage = this.data.pageindex
+    var searchWorkIds = []
 
+    console.log('00000000' + this.data.keyword)
+
+    const _ = db.command
+    db.collection("works_hot").where(_.or([
+      {
+        Content: {
+          $regex: '.*' + this.data.keyword,
+          $options: 'i'
+        }
+      },
+      {
+        Title: {
+          $regex: '.*' + this.data.keyword,
+          $options: 'i'
+        }
+      }
+    ])).orderBy('LikesCount', 'desc').skip(curpage * 20).limit(20).get({
+      success: res => {
+        if(res.data.length > 0){
+          curpage++;
+          if (res.data.length < 20) {
+            this.setData({
+              endFlag: true,
+            })
+          }
+          for (var i = 0; i < res.data.length; i++) {
+            searchWorkIds.push(res.data[i].WorkId)
+          }
+          console.log(searchWorkIds)
+          const _ = db.command
+          db.collection("works_all").where({
+            WorkId: _.in(searchWorkIds)
+          }).get().then(res => {
+            wx.hideLoading()
+            this.setData({
+              works: this.data.works.concat(res.data),
+              pageindex: curpage,
+              emptyFlag: false,
+              completed:true,
+            })
+          }).catch(err => {
+            console.error(err)
+          })
+        }
+        else {
+          wx.hideLoading()
+          this.setData({         
+            completed:true,
+          })
+          
+        }
+      }
+    })
   },
 
   /**
@@ -110,17 +172,24 @@ Page({
 
     const _ = db.command
     
-    db.collection("works_all").where(
+    db.collection("works_hot").where(_.or([
       {
         Content: {
-          $regex: '.*' + e.detail.value,
+          $regex: '.*' + e.detail,
           $options: 'i'
         }
-      }).orderBy('WorkId', 'asc').get({
+      },
+      {
+        Title: {
+          $regex: '.*' + e.detail,
+          $options: 'i'
+        }
+      }
+    ])).orderBy('LikesCount', 'desc').get({
         success: res => {
           this.setData({
-            searchResultWorks: res.data
-          })
+            works: res.data
+          })         
 
           if (res.data == '') {
             this.setData({
@@ -130,12 +199,7 @@ Page({
           else {
             this.setData({
               noResultWork: false
-            })
-            if (res.data.length > 4) {
-              this.setData({
-                hasMoreWorks: true
-              })
-            }
+            })            
           }
         },
         fail: err => {
@@ -146,37 +210,8 @@ Page({
         }
       })
 
-    db.collection("authors_new").where({
-      authorname: {
-        $regex: '.*' + e.detail.value,
-        $options: 'i'
-      }
-    }).orderBy('authorid', 'asc').get({
-      success: res => {
-        this.setData({
-          searchResultAuthors: res.data
-        })
-
-        if (res.data == '') {
-          this.setData({
-            noResultAuthor: true
-          })
-        }
-        else {
-          this.setData({
-            noResultAuthor: false
-          })
-          if (res.data.length > 4) {
-            this.setData({
-              hasMoreAuthors: true
-            })
-          }
-        }
-      }
-    })
-
     this.setData({
-      inputVal: e.detail.value
+      inputVal: e.detail
     });
   }
 })

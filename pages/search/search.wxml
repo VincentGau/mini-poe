@@ -1,8 +1,8 @@
-<!--pages/search/index.wxml-->
+<!--pages/search/search.wxml-->
 <wxs src="./../../wxs/tools.wxs" module="tools" />
 <view class="page">
     <view class="page__bd">
-        <view class="weui-search-bar">
+        <!-- <view class="weui-search-bar">
             <view class="weui-search-bar__form">
                 <view class="weui-search-bar__box">
                     <icon class="weui-icon-search_in-box" type="search" size="14"></icon>
@@ -17,7 +17,18 @@
                 </label>
             </view>
             <view class="weui-search-bar__cancel-btn" hidden="{{!inputShowed}}" bindtap="naviback">取消</view>
-        </view>
+        </view> -->
+        <van-search
+            value="{{ inputVal }}"
+            placeholder="诗词/作者"
+            use-action-slot
+            bind:change="inputTyping"
+            bind:search="onSearch"
+            label=""
+            shape="round"
+        >
+            <view slot="action" bind:tap="onSearch">搜索</view>
+        </van-search>
 
         
         <view class='searchHistory' hidden="{{hideSearchHistory}}">

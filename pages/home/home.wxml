@@ -37,5 +37,5 @@
 </view>
 
 <view class='next-btn'>
-  <image class="refresh_icon" src="../../images/refresh.svg" bindtap="randomQuote"></image>
+  <image class="refresh_icon" src="../../images/refresh.svg" bindtap="randomRefresh"></image>
 </view>

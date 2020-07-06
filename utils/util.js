@@ -33,6 +33,8 @@ const parseShi = str=> {
 
 // 将摘录名句按标点符号拆分
 const splitQuote = str => {
+  //先删除\r\n
+  str = str.replaceAll('\\r\\n', '')
   const reg = new RegExp("(.*?[，。！？])", 'gi')
   var p = str.match(reg)    
   return p;
@@ -48,6 +50,13 @@ const parseTag = str => {
   return s
 }
 
+// 获取作品首句 用于首页随机展示
+const firstSentence = str => {
+  const reg = new RegExp("(.*?[。！？；])", 'gi')
+  var p = str.match(reg)
+  return p[0]
+}
+
 String.prototype.replaceAll = function (search, replacement) {
   var target = this;
   return target.split(search).join(replacement);
@@ -59,4 +68,5 @@ module.exports = {
   parseShi: parseShi,
   parseTag: parseTag,
   splitQuote: splitQuote,
+  firstSentence: firstSentence,
 }

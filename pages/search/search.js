@@ -1,4 +1,4 @@
-// pages/search/index.js
+// pages/search/search.js
 wx.cloud.init()
 const db = wx.cloud.database()
 
@@ -101,25 +101,27 @@ Page({
     });
   }, 
   inputTyping: function (e) {
+    console.log(123)
+    console.log(e.detail)
     var that = this
     this.setData({
       hasMoreWorks: false,
       hasMoreAuthors: false,
       searchResultWorks: '',
       searchResultAuthors: '',
-      keyword :e.detail.value,
+      keyword :e.detail,
       showClear:false,
       hideSearchHistory:true,
     })
 
     // 搜索后将搜索记录缓存到本地
-    if ("" != e.detail.value) {
+    if ("" != e.detail) {
       var searchHistory = that.data.searchHistory;
       if(searchHistory == ''){
         searchHistory = []
       }
       // 使用队列，保证在查看搜索历史记录时最近搜索内容在顶部
-      searchHistory.unshift(e.detail.value);
+      searchHistory.unshift(e.detail);
       wx.setStorageSync('searchHistory', searchHistory);
     }
 
@@ -135,13 +137,13 @@ Page({
     db.collection("works_hot").where(_.or([
       {
         Content: {
-          $regex: '.*' + e.detail.value,
+          $regex: '.*' + e.detail,
           $options: 'i'
         }
       },
       {
         Title: {
-          $regex: '.*' + e.detail.value,
+          $regex: '.*' + e.detail,
           $options: 'i'
         }
       }
@@ -221,7 +223,7 @@ Page({
 
     db.collection("authors_new").where({
       authorname: {
-        $regex: '.*' + e.detail.value,
+        $regex: '.*' + e.detail,
         $options: 'i'
       }
     }).orderBy('authorid', 'asc').get({
@@ -253,7 +255,7 @@ Page({
     })
 
     this.setData({
-      inputVal: e.detail.value
+      inputVal: e.detail
     });
   },
 

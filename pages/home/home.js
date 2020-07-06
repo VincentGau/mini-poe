@@ -16,8 +16,6 @@ Page({
     nextMargin: 0, //swiper参数
     cur: 0, //swiper参数 当前滑块index
     pageIndex: 0, //页数 
-
-
   },
 
 
@@ -56,7 +54,7 @@ Page({
       },
       success(res) {
         console.log(res.data)
-        let quote = util.splitQuote(res.data.quote)
+        let quote = util.splitQuote(res.data.quote)        
         console.log(res.data.workId)
         that.setData({
           quote: quote,
@@ -66,6 +64,47 @@ Page({
         })
       }
     })
+  },
+
+  // 随机获取收藏过的诗词
+  randomLike: function(){
+    db.collection('star_works').aggregate().sample({
+      size:1
+    }).end().then(res =>{
+      console.log(res)
+      db.collection("works_all").where({
+        WorkId: res.list[0].WorkId
+      }).get().then(res => {
+        // console.log(res.data)
+        let firstSen = util.firstSentence(res.data[0].Content)
+        
+        let quote = util.splitQuote(firstSen)    
+        this.setData({
+          quote:quote,
+          workId:res.data[0].WorkId
+        })
+      }).catch(err => {
+        console.error(err)
+      })
+    }).catch(err => {
+      console.error(err)
+    })
+  },
+
+  // 首页随机来一首
+  randomRefresh: function(){
+    let homeRandom = wx.getStorageSync('homeRandom')
+    switch(homeRandom){
+      case 0:
+        this.randomQuote()
+        break;
+      case 1:
+        this.randomLike()
+        break;
+      default:
+        this.randomLike()
+        break;
+    }
   },
 
   toDetail: function (e) {
@@ -117,9 +156,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    
-    this.randomQuote();
-    // this.random10();
+    this.randomRefresh()
   },
 
   /**

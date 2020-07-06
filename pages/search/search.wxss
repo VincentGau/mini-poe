@@ -1,4 +1,4 @@
-/* pages/search/index.wxss */
+/* pages/search/search.wxss */
 .searchbar-result{
     margin-top: 0;
     font-size: 14px;
