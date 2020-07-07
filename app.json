@@ -15,7 +15,9 @@
     "pages/test-swiper/test-swiper",
     "pages/feihualing/shuangfei",
     "pages/feihualing/shefu",
-    "pages/other/dongdong"
+    "pages/other/dongdong",
+    "pages/collection/index"
+
   ],
   "window": {
     "backgroundTextStyle": "light",

@@ -1,5 +1,6 @@
 <!--pages/discover/discover.wxml-->
 
+
 <navigator url="../search/search">
   <van-search
     value="{{ value }}"
@@ -10,3 +11,19 @@
   >
   </van-search>
 </navigator>
+
+
+
+<view class='wrapper'>
+    <navigator url="../collection/index?collectionid=1">
+        <view class='lalala'>
+            唐诗三百首
+        </view>
+    </navigator>
+    <navigator url="../collection/index?collectionid=2">
+        <view class='lalala'>
+            宋词三百首
+        </view>
+    </navigator>
+</view>
+
