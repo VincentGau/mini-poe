@@ -14,7 +14,8 @@
     "pages/search/search",
     "pages/test-swiper/test-swiper",
     "pages/feihualing/shuangfei",
-    "pages/feihualing/shefu"
+    "pages/feihualing/shefu",
+    "pages/other/dongdong"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -49,6 +50,7 @@
   "sitemapLocation": "sitemap.json",
   "usingComponents": {
     "van-tag": "vant-weapp/dist/tag/index",
-    "van-search": "vant-weapp/dist/search/index"
+    "van-search": "vant-weapp/dist/search/index",
+    "van-button": "vant-weapp/dist/button/index"
   }
 }

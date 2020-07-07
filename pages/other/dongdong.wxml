@@ -1,0 +1,10 @@
+<!--pages/other/dongdong.wxml-->
+<button class='button' bindtap="countStart">开始/重置</button>
+<p>{{startTime}}</p>
+
+<button bindtap='dongdong'>咚咚</button>
+<p>次数：{{dongdongCount}}</p>
+<!-- <p>{{dongdongRecord}}</p> -->
+<block wx:for="{{dongdongRecord}}" data-text="{{item}}">
+  <p>{{item}}</p>
+</block>

@@ -1,0 +1,4 @@
+/* pages/other/dongdong.wxss */
+p{
+  display: block;
+}

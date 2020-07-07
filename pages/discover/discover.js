@@ -1,6 +1,7 @@
 // pages/discover/discover.js
 wx.cloud.init()
 const db = wx.cloud.database()
+const util = require('../../utils/util.js')
 
 Page({
 
