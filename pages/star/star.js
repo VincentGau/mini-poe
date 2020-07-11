@@ -7,7 +7,8 @@ Page({
    * Page initial data
    */
   data: {
-    
+    starAuthorCount: '-',
+    starWorkCount: '-'
   },
 
   /**
