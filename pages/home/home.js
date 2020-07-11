@@ -5,6 +5,9 @@ var util = require('../../utils/util.js')
 wx.cloud.init()
 const db = wx.cloud.database()
 
+//获取应用实例
+const app = getApp()
+
 Page({
 
   /**
@@ -16,6 +19,18 @@ Page({
     nextMargin: 0, //swiper参数
     cur: 0, //swiper参数 当前滑块index
     pageIndex: 0, //页数 
+    userInfo: {},
+    hasUserInfo: false,
+    canIUse: wx.canIUse('button.open-type.getUserInfo')
+  },
+
+  getUserInfo: function(e) {
+    console.log(e)
+    app.globalData.userInfo = e.detail.userInfo
+    this.setData({
+      userInfo: e.detail.userInfo,
+      hasUserInfo: true
+    })
   },
 
 
@@ -91,18 +106,45 @@ Page({
     })
   },
 
+  // 随机唐诗三百首或宋词三百首，注意和收藏过的诗词列表中workid大小写的不同
+  randomShiCi: function(source){
+    source.aggregate().sample({
+      size:1
+    }).end().then(res =>{
+      console.log(res.list[0].workid)
+      db.collection("works_all").where({
+        WorkId: res.list[0].workid
+      }).get().then(res => {
+        // console.log(res.data)
+        let firstSen = util.firstSentence(res.data[0].Content)
+        
+        let quote = util.splitQuote(firstSen)    
+        this.setData({
+          quote:quote,
+          workId:res.data[0].WorkId
+        })
+      }).catch(err => {
+        console.error(err)
+      })
+    }).catch(err => {
+      console.error(err)
+    })
+  },
+
   // 首页随机来一首
   randomRefresh: function(){
     let homeRandom = wx.getStorageSync('homeRandom')
     switch(homeRandom){
-      case 0:
-        this.randomQuote()
+      case '0':        
+        this.randomShiCi(db.collection('ci_300'))
         break;
-      case 1:
+      case '1':
+        this.randomShiCi(db.collection('shi_300'))
+        break;
+      case '2':
         this.randomLike()
-        break;
       default:
-        this.randomLike()
+        this.randomShiCi(db.collection('shi_300'))
         break;
     }
   },
@@ -157,6 +199,38 @@ Page({
    */
   onLoad: function (options) {
     this.randomRefresh()
+    console.log("UserInfo: " + app.globalData.userInfo)
+    if (app.globalData.userInfo) {
+      this.setData({
+        userInfo: app.globalData.userInfo,
+        hasUserInfo: true
+      })
+      wx.setStorageSync('nickname', this.data.userInfo.nickName)
+    } else if (this.data.canIUse){
+      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
+      // 所以此处加入 callback 以防止这种情况
+      app.userInfoReadyCallback = res => {
+        // console.log(res.userInfo)
+        this.setData({
+          userInfo: res.userInfo,
+          hasUserInfo: true
+        })
+        wx.setStorageSync('nickname', this.data.userInfo.nickName)
+      }
+    } else {
+      // 在没有 open-type=getUserInfo 版本的兼容处理
+      wx.getUserInfo({
+        success: res => {
+          app.globalData.userInfo = res.userInfo
+          this.setData({
+            userInfo: res.userInfo,
+            hasUserInfo: true
+          })
+          wx.setStorageSync('nickname', this.data.userInfo.nickName)
+        }
+      })
+    }
+    
   },
 
   /**

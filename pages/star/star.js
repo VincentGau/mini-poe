@@ -1,17 +1,30 @@
 // pages/star/star.js
+// wx.cloud.init()
+const db = wx.cloud.database()
 Page({
 
   /**
    * Page initial data
    */
   data: {
-
+    
   },
 
   /**
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
+    db.collection('star_works').count().then(res => {
+      this.setData({
+        starWorkCount: res.total
+      })
+    })
+
+    db.collection('star_authors').count().then(res => {
+      this.setData({
+        starAuthorCount: res.total
+      })
+    })
 
   },
 

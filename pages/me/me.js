@@ -8,8 +8,9 @@ Page({
     radioItems: [
       { name: '宋词三百首', value: '0'},
       { name: '唐诗三百首', value: '1' },
-      { name: '我收藏的作品', value: '2', checked: true },
+      { name: '我收藏的作品', value: '2'},
     ],
+    nickname: wx.getStorageSync('nickname')
   },
 
   radioChange: function (e) {
@@ -31,6 +32,12 @@ Page({
    */
   onLoad: function (options) {
 
+    let checkedRadio = wx.getStorageSync('homeRandom')
+    var radioItems = this.data.radioItems;
+    radioItems[Number(checkedRadio)].checked = true    
+    this.setData({
+      radioItems: radioItems
+    });
   },
 
   /**

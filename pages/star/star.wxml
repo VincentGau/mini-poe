@@ -1,11 +1,11 @@
 <!--pages/star/star.wxml-->
 <view class="weui-cells weui-cells_after-title">
     <navigator url="./star_authors" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-        <view class="weui-cell__bd">作者</view>
+        <view class="weui-cell__bd">作者 ({{starAuthorCount}})</view>
         <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </navigator>
     <navigator url="./star_works" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
-        <view class="weui-cell__bd">作品</view>
+        <view class="weui-cell__bd">作品 ({{starWorkCount}})</view>
         <view class="weui-cell__ft weui-cell__ft_in-access"></view>
     </navigator>
 </view>

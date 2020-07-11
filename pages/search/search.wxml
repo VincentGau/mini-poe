@@ -29,7 +29,6 @@
         >
             <view slot="action" bind:tap="onSearch">搜索</view>
         </van-search>
-
         
         <view class='searchHistory' hidden="{{hideSearchHistory}}">
           <view wx:for="{{searchHistory}}" bindtap='doSearch' data-text="{{item}}" >

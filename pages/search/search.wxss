@@ -19,6 +19,7 @@
 .clearSearchHistory{
   text-align: center;
   color:gainsboro;
+  padding-bottom: 10px;
 }
 
 .searchHistory{
