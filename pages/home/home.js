@@ -111,7 +111,7 @@ Page({
     source.aggregate().sample({
       size:1
     }).end().then(res =>{
-      console.log(res.list[0].workid)
+      // console.log(res.list[0].workid)
       db.collection("works_all").where({
         WorkId: res.list[0].workid
       }).get().then(res => {
@@ -143,6 +143,7 @@ Page({
         break;
       case '2':
         this.randomLike()
+        break;
       default:
         this.randomShiCi(db.collection('shi_300'))
         break;

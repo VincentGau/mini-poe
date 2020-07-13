@@ -20,7 +20,6 @@
     value="{{ inputVal }}"
     placeholder="作品"
     use-action-slot
-    bind:change="inputTyping"
     bind:search="onSearch"
     label=""
     shape="round"

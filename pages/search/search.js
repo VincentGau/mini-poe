@@ -184,43 +184,6 @@ Page({
         }
       })
 
-    // db.collection("works_hot").where(
-    //   {
-    //     Content: {
-    //       $regex: '.*' + e.detail.value,
-    //       $options: 'i'
-    //     }
-    //   }).orderBy('WorkId', 'asc').get({
-    //     success: res => {
-    //       this.setData({
-    //         searchResultWorks: res.data,
-    //         completed: true
-    //       })
-
-    //       if (res.data == '') {
-    //         this.setData({
-    //           noResultWork: true
-    //         })
-    //       }
-    //       else {
-    //         this.setData({
-    //           noResultWork: false
-    //         })
-    //         if (res.data.length > 4) {
-    //           this.setData({
-    //             hasMoreWorks: true
-    //           })
-    //         }
-    //       }
-    //     },
-    //     fail: err => {
-    //       console.error(err)
-    //     },
-    //     complete: () => {
-    //       wx.hideToast()
-    //     }
-    //   })
-
     db.collection("authors_new").where({
       authorname: {
         $regex: '.*' + e.detail,
@@ -322,6 +285,7 @@ Page({
           completed: true
         })
 
+        // 将查询到的头20首作品放入缓存，以便在点击查看更多后直接显示在新的查询页上；
         wx.setStorage({
           key: "works20",
           data: res.data

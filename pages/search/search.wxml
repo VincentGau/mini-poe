@@ -22,7 +22,6 @@
             value="{{ inputVal }}"
             placeholder="诗词/作者"
             use-action-slot
-            bind:change="inputTyping"
             bind:search="onSearch"
             label=""
             shape="round"
@@ -37,6 +36,7 @@
         </view>
         
         <view class="clearSearchHistory" bindtap='clearSearchHistory' hidden="{{!showClear}}">清除历史记录</view>
+        <view class="clearSearchHistory" hidden="{{showClear}}">暂无搜索记录</view>
 
 
         <view class="weui-cells searchbar-result" wx:if="{{inputVal.length > 0}}"  hidden="{{!completed}}">

@@ -33,7 +33,8 @@
     </navigator>
 </view>
 
-<block wx:if="{{nickname=='shining_FTD' || nickname=='Haku高明'}}">
+<!-- <block wx:if="{{nickname=='shining_FTD' || nickname=='Haku高明'}}"> -->
+<block>
 <view class="weui-cells__title">咚咚</view>
 <view class="weui-cells weui-cells_after-title">
     <navigator url="../other/dongdong" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
