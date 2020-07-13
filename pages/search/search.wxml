@@ -25,18 +25,19 @@
             bind:search="onSearch"
             label=""
             shape="round"
+            focus="true"
         >
-            <view slot="action" bind:tap="onSearch">搜索</view>
+            <view slot="action" bind:tap="doSearch">搜索</view>
         </van-search>
         
         <view class='searchHistory' hidden="{{hideSearchHistory}}">
-          <view wx:for="{{searchHistory}}" bindtap='doSearch' data-text="{{item}}" >
+          <view wx:for="{{searchHistory}}" bindtap='clickHistory' data-text="{{item}}" >
             <view class='searchTag'><van-tag plain size="large">{{item}}</van-tag></view>
           </view>
         </view>
         
         <view class="clearSearchHistory" bindtap='clearSearchHistory' hidden="{{!showClear}}">清除历史记录</view>
-        <view class="clearSearchHistory" hidden="{{showClear}}">暂无搜索记录</view>
+        <view class="clearSearchHistory" hidden="{{!showHint}}">暂无搜索记录</view>
 
 
         <view class="weui-cells searchbar-result" wx:if="{{inputVal.length > 0}}"  hidden="{{!completed}}">

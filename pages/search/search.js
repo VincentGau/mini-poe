@@ -14,6 +14,9 @@ Page({
     searchHistory:[], //搜索历史记录
     hideSearchHistory:false, //是否显示搜索历史记录
     hasSearchHistory:false, //是否存在搜索历史记录
+    inputVal: '', // 搜索关键词
+    showClear: false, //是否显示清除历史记录字样
+    showHint: false, //是否显示无搜索记录字样
   },
 
   /**
@@ -31,6 +34,7 @@ Page({
     if (wx.getStorageSync('searchHistory')){
       this.setData({
         showClear:true, // 是否显示清除历史记录字样
+        showHint:false,
       })
     }
   },
@@ -227,13 +231,16 @@ Page({
     wx.removeStorageSync('searchHistory')
     this.setData({
       hideSearchHistory:true,
-      showClear:false
+      showClear:false,
+      showHint: true,
     })
   },
 
-  // 直接点击搜索记录进行查询
-  doSearch:function(e){
-    var p = e.currentTarget.dataset.text
+
+
+  // 搜索逻辑
+  doSearch:function(){
+    var p = this.data.inputVal
     var that = this
     this.setData({
       hasMoreWorks: false,
@@ -242,6 +249,7 @@ Page({
       searchResultAuthors: '',
       keyword: p,
       showClear: false,
+      showHint: false,
       hideSearchHistory: true,
     })
 
@@ -353,5 +361,23 @@ Page({
     this.setData({
       inputVal: p
     });
+  },
+
+  // 回车搜索
+  onSearch:function(e){
+    var p = e.detail
+    this.setData({
+      inputVal: p
+    })
+    this.doSearch()
+  },
+
+  // 直接点击搜索记录进行查询
+  clickHistory:function(e){
+    var p = e.currentTarget.dataset.text
+    this.setData({
+      inputVal: p
+    })   
+    this.doSearch() 
   },
 })
