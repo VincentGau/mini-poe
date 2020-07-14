@@ -8,7 +8,7 @@
     bind:change="onChange"
     bind:search="onSearch"
     bind:clear="onClear"
-    bind:calcel="onCancel"
+    bind:cancel="onCancel"
     shape="round"
   >
     <!-- <view slot="action" bind:tap="onSearch">搜索</view> -->
