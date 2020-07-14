@@ -33,6 +33,10 @@ Page({
   onLoad: function (options) {
 
     let checkedRadio = wx.getStorageSync('homeRandom')
+    // 默认选择唐诗三百首
+    if (!checkedRadio){
+      checkedRadio = 1
+    }
     var radioItems = this.data.radioItems;
     radioItems[Number(checkedRadio)].checked = true    
     this.setData({

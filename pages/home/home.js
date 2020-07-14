@@ -200,7 +200,7 @@ Page({
    */
   onLoad: function (options) {
     this.randomRefresh()
-    console.log("UserInfo: " + app.globalData.userInfo)
+    // console.log("UserInfo: " + app.globalData.userInfo)
     if (app.globalData.userInfo) {
       this.setData({
         userInfo: app.globalData.userInfo,

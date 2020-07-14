@@ -17,4 +17,9 @@
     <view class="title-red">注释</view>
     <view class='intro'><template is="wxParse" data="{{wxParseData:anno.nodes}}"/></view>
   </view>
+
+  <view wx:if="{{transFlag}}">
+    <view class="title-red">翻译</view>
+    <view class='intro'><template is="wxParse" data="{{wxParseData:trans.nodes}}"/></view>
+  </view>
 </view>
