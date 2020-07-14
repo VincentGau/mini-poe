@@ -6,7 +6,8 @@ Page({
    */
   data: {
     value: '',
-    result: []
+    result: [],
+    showRule: true,
   },
 
   /**
@@ -37,7 +38,8 @@ Page({
         success(res) {
           console.log(res.data.data)
           that.setData({
-            result: res.data.data
+            result: res.data.data,
+            showRule: false,
           })
         }
       })
@@ -45,18 +47,20 @@ Page({
   },
 
   
+  // 点击搜索框右侧取消
   onCancel() {
-    wx.showToast({
-      title: '取消',
-      icon: 'none'
-    });
+    this.setData({
+      result:[],
+      showRule: true,
+    })
   },
 
+  // 点击搜索框的×
   onClear() {
-    wx.showToast({
-      title: '清空',
-      icon: 'none'
-    });
+    this.setData({
+      result:[],
+      showRule: true,
+    })
   },
 
   /**

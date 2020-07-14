@@ -4,17 +4,25 @@
   <van-search
     value="{{ value }}"
     placeholder="倚杖听江声 云7"
-    use-action-slot
+    show-action
     bind:change="onChange"
     bind:search="onSearch"
-    label=""
+    bind:clear="onClear"
+    bind:calcel="onCancel"
     shape="round"
   >
-    <view slot="action" bind:tap="onSearch">搜索</view>
+    <!-- <view slot="action" bind:tap="onSearch">搜索</view> -->
   </van-search>
 </demo-block>
 
-<block wx:for="{{result}}" wx:for-index="i">
+<block wx:if="{{showRule}}">
+<p>射覆规则：</p>
+<p>例：倚杖听江声 云7</p>
+<p>参考答案：半入江风半入云</p>
+<p>其中“7”是字数，答案诗句中必须有“云”字和“倚杖听江声”中至少一字。</p>
+</block>
+
+<block wx:for="{{result}}" wx:for-index="i" wx:key="item">
   <navigator url="../poe-detail/poe-detail?WorkId={{item.workid}}" class="weui-cell" hover-class="weui-cell_active">
       <view class="weui-cell__bd">
           <view>{{item.content}}</view>

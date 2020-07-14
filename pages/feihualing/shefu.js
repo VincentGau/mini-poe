@@ -10,7 +10,8 @@ Page({
   data: {
     value: '',
     howWorks: '',
-    result: []
+    result: [],
+    showRule: true,
   },
 
   onChange(e) {
@@ -34,26 +35,28 @@ Page({
         success(res) {
           console.log(res.data.data)
           that.setData({
-            result: res.data.data
+            result: res.data.data,
+            showRule: false
           })
         }
       })
     }
   },
 
-  
+  // 点击搜索框右侧取消
   onCancel() {
-    wx.showToast({
-      title: '取消',
-      icon: 'none'
-    });
+    this.setData({
+      result:[],
+      showRule: true,
+    })
   },
 
+  // 点击搜索框的×
   onClear() {
-    wx.showToast({
-      title: '清空',
-      icon: 'none'
-    });
+    this.setData({
+      result:[],
+      showRule: true,
+    })
   },
 
 

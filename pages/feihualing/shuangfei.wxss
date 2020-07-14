@@ -1,1 +1,7 @@
 /* pages/feihualing/shuangfei.wxss */
+p{
+  display: block;
+  padding-left:20px;
+  padding-right: 20px;
+  color: darkgrey;
+}

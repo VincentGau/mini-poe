@@ -30,7 +30,7 @@
 <wxs src="./../../wxs/tools.wxs" module="tools" />
 <view bindtap='toDetail' data-workid="{{workId}}" class='quote'>
   <view class='wrapper'>
-    <view wx:for="{{quote}}" wx:key="key" wx:for-item="para" class='content center'>
+    <view wx:for="{{quote}}" wx:key="item" wx:for-item="para" class='content center'>
       <view class='p'>{{para}}</view>
     </view>
   </view>  
