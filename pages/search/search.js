@@ -39,6 +39,12 @@ Page({
     }
   },
 
+  onCancel: function(){
+    wx.navigateBack({
+      delta: 1
+    })
+  },
+
   /**
    * Lifecycle function--Called when page is initially rendered
    */
@@ -93,12 +99,7 @@ Page({
       inputShowed: true
     });
   },
-  // 取消搜索
-  naviback: function () {    
-    wx.navigateBack({
-      delta: 1
-    })
-  },
+
   clearInput: function () {
     this.setData({
       inputVal: ""
