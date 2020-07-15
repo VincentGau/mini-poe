@@ -37,10 +37,19 @@ Page({
         },
         success(res) {
           console.log(res.data.data)
-          that.setData({
-            result: res.data.data,
-            showRule: false,
-          })
+          if(res.data.code=="0000"){
+            that.setData({
+              result: res.data.data,
+              showRule: false
+            })
+          }
+          else{
+            wx.showToast({
+              title: res.data.msg,
+              icon: "none",
+              duration: 1000
+            })
+          }
         }
       })
     }
