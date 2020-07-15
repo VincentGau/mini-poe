@@ -199,6 +199,33 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
+    wx.login({
+      success: res =>{
+        console.log(res)
+        var code = res.code
+        if (code){
+          wx.request({
+            url: 'https://tc.hakucc.com/wechat/getOpenId',
+            method: 'post',
+            data:{
+              code: res.code
+            },
+            header:{
+              "Content-Type": "application/x-www-form-urlencoded"
+            },
+            success: function (res) {
+              console.log(res.data)
+              wx.setStorageSync('openid', res.data.openid);
+            }
+          })
+        }
+        else{
+          console.log('获取code失败。')
+        }
+        
+      }
+    })
+
     this.randomRefresh()
     // console.log("UserInfo: " + app.globalData.userInfo)
     if (app.globalData.userInfo) {
@@ -211,7 +238,7 @@ Page({
       // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
       // 所以此处加入 callback 以防止这种情况
       app.userInfoReadyCallback = res => {
-        // console.log(res.userInfo)
+        console.log(res.userInfo)
         this.setData({
           userInfo: res.userInfo,
           hasUserInfo: true
@@ -230,8 +257,7 @@ Page({
           wx.setStorageSync('nickname', this.data.userInfo.nickName)
         }
       })
-    }
-    
+    }    
   },
 
   /**
