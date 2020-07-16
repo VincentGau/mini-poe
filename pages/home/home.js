@@ -199,65 +199,86 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    wx.login({
-      success: res =>{
-        console.log(res)
-        var code = res.code
-        if (code){
-          wx.request({
-            url: 'https://tc.hakucc.com/wechat/getOpenId',
-            method: 'post',
-            data:{
-              code: res.code
-            },
-            header:{
-              "Content-Type": "application/x-www-form-urlencoded"
-            },
-            success: function (res) {
-              console.log(res.data)
-              wx.setStorageSync('openid', res.data.openid);
-            }
-          })
+    if(!wx.getStorageSync('userinfo') && !wx.getStorageSync('openid')){
+      console.log("login")
+      wx.login({
+        success: res =>{
+          if(!wx.getStorageSync('userinfo')){
+            wx.getUserInfo({
+              success: res => {
+                app.globalData.userInfo = res.userInfo
+                this.setData({
+                  userInfo: res.userInfo,
+                  hasUserInfo: true
+                })
+                wx.setStorageSync('userinfo', this.data.userInfo)
+
+                wx.request({
+                  url: 'https://tc.hakucc.com/wechat/getOpenId',
+                  method: 'post',
+                  data:{
+                    code: res.code
+                  },
+                  header:{
+                    "Content-Type": "application/x-www-form-urlencoded"
+                  },
+                  success: function (res) {
+                    wx.setStorageSync('openid', res.data.openid);
+
+                    wx.request({
+                      url: 'https://tc.hakucc.com/wechat/record',
+                      method:'POST',
+                      data:{
+                        openid: wx.getStorageSync('openid'),
+                        nickname: wx.getStorageSync('userinfo').nickName,
+                        avatarUrl: wx.getStorageSync('userinfo').avatarUrl,
+                        country: wx.getStorageSync('userinfo').country,
+                        province: wx.getStorageSync('userinfo').province,
+                        gender: wx.getStorageSync('userinfo').gender,
+                        lang: wx.getStorageSync('userinfo').language,
+                        page: '/home',
+                      },
+                      header:{
+                        "Content-Type": "application/x-www-form-urlencoded"
+                      },
+                      success:function(r){
+                        console.log(r.data)
+                      }
+                    })
+                  }
+                })
+              }
+            })
+          }
         }
-        else{
-          console.log('获取code失败。')
+      })
+    }
+    else{
+      let openid = wx.getStorageSync('openid')
+      let userinfo = wx.getStorageSync('userinfo')
+      wx.request({
+        url: 'https://tc.hakucc.com/wechat/record',
+        method:'POST',
+        data:{
+          openid: openid,
+          nickname: userinfo.nickName,
+          avatarUrl: userinfo.avatarUrl,
+          country: userinfo.country,
+          province: userinfo.province,
+          gender: userinfo.gender,
+          lang: userinfo.language,
+          page: '/home',
+        },
+        header:{
+          "Content-Type": "application/x-www-form-urlencoded"
+        },
+        success:function(r){
+          console.log(r.data)
         }
-        
-      }
-    })
+      })
+    }
 
     this.randomRefresh()
-    // console.log("UserInfo: " + app.globalData.userInfo)
-    if (app.globalData.userInfo) {
-      this.setData({
-        userInfo: app.globalData.userInfo,
-        hasUserInfo: true
-      })
-      wx.setStorageSync('nickname', this.data.userInfo.nickName)
-    } else if (this.data.canIUse){
-      // 由于 getUserInfo 是网络请求，可能会在 Page.onLoad 之后才返回
-      // 所以此处加入 callback 以防止这种情况
-      app.userInfoReadyCallback = res => {
-        console.log(res.userInfo)
-        this.setData({
-          userInfo: res.userInfo,
-          hasUserInfo: true
-        })
-        wx.setStorageSync('nickname', this.data.userInfo.nickName)
-      }
-    } else {
-      // 在没有 open-type=getUserInfo 版本的兼容处理
-      wx.getUserInfo({
-        success: res => {
-          app.globalData.userInfo = res.userInfo
-          this.setData({
-            userInfo: res.userInfo,
-            hasUserInfo: true
-          })
-          wx.setStorageSync('nickname', this.data.userInfo.nickName)
-        }
-      })
-    }    
   },
 
   /**

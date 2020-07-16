@@ -16,8 +16,8 @@
     "pages/feihualing/shuangfei",
     "pages/feihualing/shefu",
     "pages/other/dongdong",
-    "pages/collection/collection"
-
+    "pages/collection/collection",
+    "pages/about/about"
   ],
   "window": {
     "backgroundTextStyle": "light",
@@ -53,6 +53,7 @@
   "usingComponents": {
     "van-tag": "vant-weapp/dist/tag/index",
     "van-search": "vant-weapp/dist/search/index",
-    "van-button": "vant-weapp/dist/button/index"
+    "van-button": "vant-weapp/dist/button/index",
+    "van-cell": "vant-weapp/dist/cell/index"
   }
 }

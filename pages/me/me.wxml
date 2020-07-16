@@ -33,6 +33,8 @@
     </navigator>
 </view>
 
+<van-cell title="关于" is-link link-type="navigateTo" url="/pages/about/about" />
+
 <block wx:if="{{nickname=='Ying' || nickname=='Haku高明'}}">
 <view class="weui-cells__title">咚咚</view>
 <view class="weui-cells weui-cells_after-title">

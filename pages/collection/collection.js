@@ -50,7 +50,7 @@ Page({
         curWorkIds.push(res.data[i].workid)
       }
       const _ = db.command
-      db.collection("works_hot").where({
+      db.collection("works_all").where({
         WorkId: _.in(curWorkIds)
       }).get().then(res1 => {
         curWorks = res1.data
