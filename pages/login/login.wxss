@@ -1,0 +1,19 @@
+/* pages/login/login.wxss */
+.authBtn {
+  margin-left: 25px;  
+  margin-right: 25px;  
+}
+
+.text{
+  font-size: 14px;  
+  color: #666;    
+  text-align: center;
+  margin: 50px 25px 50px;
+}
+
+image{
+  display: block;
+  margin:150px auto 0px;
+  width: 80px;
+  height:80px;
+}

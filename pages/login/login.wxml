@@ -1,0 +1,6 @@
+<!--pages/login/login.wxml-->
+<view wx:if="{{canIUse}}">
+  <image src='/images/mini.jpg' mode='scaleToFill'></image>
+  <view class='text'>Haku Poe 申请获取您的公开信息(昵称,头像)</view>
+  <button class="authBtn" type='primary' open-type='getUserInfo' bindgetuserinfo='bindGetUserInfo'>授权登录</button>
+</view>

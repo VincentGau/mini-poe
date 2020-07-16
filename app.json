@@ -1,7 +1,9 @@
 {
   "pages": [
+
     "pages/home/home",
     "pages/index/index",
+    "pages/login/login",
     "pages/poe-detail/poe-detail",
     "pages/me/me",
     "pages/star/star",

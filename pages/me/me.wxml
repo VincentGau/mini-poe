@@ -33,7 +33,14 @@
     </navigator>
 </view>
 
-<van-cell title="关于" is-link link-type="navigateTo" url="/pages/about/about" />
+<!-- <van-cell title="关于" is-link link-type="navigateTo" url="/pages/about/about" /> -->
+<view class="weui-cells__title">关于</view>
+<view class="weui-cells weui-cells_after-title">
+    <navigator url="/pages/about/about" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
+        <view class="weui-cell__bd">关于</view>
+        <view class="weui-cell__ft weui-cell__ft_in-access"></view>
+    </navigator>
+</view>
 
 <block wx:if="{{nickname=='Ying' || nickname=='Haku高明'}}">
 <view class="weui-cells__title">咚咚</view>

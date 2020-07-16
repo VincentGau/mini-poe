@@ -24,7 +24,7 @@ Page({
     canIUse: wx.canIUse('button.open-type.getUserInfo')
   },
 
-  getUserInfo: function(e) {
+  getUserInfo: function (e) {
     console.log(e)
     app.globalData.userInfo = e.detail.userInfo
     this.setData({
@@ -59,21 +59,21 @@ Page({
   },
 
   // 随机获取一个quote
-  randomQuote: function(){
+  randomQuote: function () {
     var that = this
     wx.request({
       url: 'https://tc.hakucc.com/quote/random',
-      
+
       header: {
         'content-type': 'application/json'
       },
       success(res) {
         console.log(res.data)
-        let quote = util.splitQuote(res.data.quote)        
+        let quote = util.splitQuote(res.data.quote)
         console.log(res.data.workId)
         that.setData({
           quote: quote,
-          authorName:res.data.authorName,
+          authorName: res.data.authorName,
           title: res.data.workTitle,
           workId: res.data.workId,
         })
@@ -82,21 +82,21 @@ Page({
   },
 
   // 随机获取收藏过的诗词
-  randomLike: function(){
+  randomLike: function () {
     db.collection('star_works').aggregate().sample({
-      size:1
-    }).end().then(res =>{
+      size: 1
+    }).end().then(res => {
       console.log(res)
       db.collection("works_all").where({
         WorkId: res.list[0].WorkId
       }).get().then(res => {
         // console.log(res.data)
         let firstSen = util.firstSentence(res.data[0].Content)
-        
-        let quote = util.splitQuote(firstSen)    
+
+        let quote = util.splitQuote(firstSen)
         this.setData({
-          quote:quote,
-          workId:res.data[0].WorkId
+          quote: quote,
+          workId: res.data[0].WorkId
         })
       }).catch(err => {
         console.error(err)
@@ -107,21 +107,21 @@ Page({
   },
 
   // 随机唐诗三百首或宋词三百首，注意和收藏过的诗词列表中workid大小写的不同
-  randomShiCi: function(source){
+  randomShiCi: function (source) {
     source.aggregate().sample({
-      size:1
-    }).end().then(res =>{
+      size: 1
+    }).end().then(res => {
       // console.log(res.list[0].workid)
       db.collection("works_all").where({
         WorkId: res.list[0].workid
       }).get().then(res => {
         // console.log(res.data)
         let firstSen = util.firstSentence(res.data[0].Content)
-        
-        let quote = util.splitQuote(firstSen)    
+
+        let quote = util.splitQuote(firstSen)
         this.setData({
-          quote:quote,
-          workId:res.data[0].WorkId
+          quote: quote,
+          workId: res.data[0].WorkId
         })
       }).catch(err => {
         console.error(err)
@@ -132,10 +132,10 @@ Page({
   },
 
   // 首页随机来一首
-  randomRefresh: function(){
+  randomRefresh: function () {
     let homeRandom = wx.getStorageSync('homeRandom')
-    switch(homeRandom){
-      case '0':        
+    switch (homeRandom) {
+      case '0':
         this.randomShiCi(db.collection('ci_300'))
         break;
       case '1':
@@ -199,32 +199,43 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    if(!wx.getStorageSync('userinfo') && !wx.getStorageSync('openid')){
-      console.log("login")
-      wx.login({
-        success: res =>{
-          if(!wx.getStorageSync('userinfo')){
-            wx.getUserInfo({
-              success: res => {
-                app.globalData.userInfo = res.userInfo
-                this.setData({
-                  userInfo: res.userInfo,
-                  hasUserInfo: true
-                })
-                wx.setStorageSync('userinfo', this.data.userInfo)
+    console.log("onLoad")
+    this.randomRefresh()
+  },
 
+  /**
+   * 生命周期函数--监听页面初次渲染完成
+   */
+  onReady: function () {
+
+  },
+
+  /**
+   * 生命周期函数--监听页面显示
+   */
+  onShow: function () {
+    console.log("onShow")
+    if (!wx.getStorageSync('userinfo') || !wx.getStorageSync('openid')) {
+      wx.getUserInfo({
+        success: (res) => {
+          app.globalData.userInfo = res.userInfo
+          wx.setStorageSync('userinfo', res.userInfo)
+          wx.login({
+            success: res=>{
+              var code = res.code
+              if(code){
                 wx.request({
                   url: 'https://tc.hakucc.com/wechat/getOpenId',
                   method: 'post',
                   data:{
-                    code: res.code
+                    code: code
                   },
                   header:{
                     "Content-Type": "application/x-www-form-urlencoded"
                   },
                   success: function (res) {
                     wx.setStorageSync('openid', res.data.openid);
-
+  
                     wx.request({
                       url: 'https://tc.hakucc.com/wechat/record',
                       method:'POST',
@@ -248,8 +259,17 @@ Page({
                   }
                 })
               }
-            })
-          }
+              else{
+                console.log('登录失败！' + res.errMsg)
+              }
+              
+            }
+          })
+        },
+        fail: () => {
+          wx.navigateTo({
+            url: '../login/login',
+          })
         }
       })
     }
@@ -272,27 +292,11 @@ Page({
         header:{
           "Content-Type": "application/x-www-form-urlencoded"
         },
-        success:function(r){
-          console.log(r.data)
+        success:function(res){
+          console.log(res.data)
         }
       })
     }
-
-    this.randomRefresh()
-  },
-
-  /**
-   * 生命周期函数--监听页面初次渲染完成
-   */
-  onReady: function () {
-
-  },
-
-  /**
-   * 生命周期函数--监听页面显示
-   */
-  onShow: function () {
-
   },
 
   /**
@@ -330,5 +334,5 @@ Page({
 
   },
 
- 
+
 })
