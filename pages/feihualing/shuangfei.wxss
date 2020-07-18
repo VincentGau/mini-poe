@@ -5,3 +5,9 @@ p{
   padding-right: 20px;
   color: darkgrey;
 }
+
+.hint{
+  text-align: center;
+  color:gainsboro;
+  padding-bottom: 10px;
+}

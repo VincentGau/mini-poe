@@ -14,6 +14,8 @@
   </van-search>
 </demo-block>
 
+<view class="hint" wx:if="{{showNoResult}}">这也太难了...</view>
+
 <block wx:if="{{showRule}}">
 <p>双飞花令规则：</p>
 <p>例：敲门都不应，倚杖听江声</p>

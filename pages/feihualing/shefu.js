@@ -12,6 +12,7 @@ Page({
     howWorks: '',
     result: [],
     showRule: true,
+    showNoResult: false,
   },
 
   onChange(e) {
@@ -35,13 +36,17 @@ Page({
           'content-type': 'application/json'
         },
         success(res) {
-          console.log(res.data.data)
           wx.hideLoading()
           if(res.data.code=="0000"){
             that.setData({
               result: res.data.data,
               showRule: false
             })
+            if(res.data.count == 0){
+              that.setData({
+                showNoResult: true
+              })
+            }
           }
           else{
             wx.showToast({
@@ -58,9 +63,8 @@ Page({
 
   // 点击搜索框右侧取消
   onCancel() {
-    this.setData({
-      result:[],
-      showRule: true,
+    wx.switchTab({
+      url: '/pages/me/me',
     })
   },
 
@@ -69,6 +73,7 @@ Page({
     this.setData({
       result:[],
       showRule: true,
+      showNoResult: false,
     })
   },
 
