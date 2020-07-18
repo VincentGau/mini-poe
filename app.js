@@ -1,12 +1,6 @@
 //app.js
 App({
   onLaunch: function () {
-    console.log("onLaunch")
-    // 展示本地存储能力
-    // var logs = wx.getStorageSync('logs') || []
-    // logs.unshift(Date.now())
-    // wx.setStorageSync('logs', logs)
-
     // 登录
     wx.login({
       success: res => {
@@ -22,28 +16,13 @@ App({
             header:{
               "Content-Type": "application/x-www-form-urlencoded"
             },
-            success: function (res) {
+            success: res => {
+              this.globalData.openid = res.data.openid
               wx.setStorageSync('openid', res.data.openid);
-              wx.request({
-                url: 'https://tc.hakucc.com/wechat/record',
-                method:'POST',
-                data:{
-                  openid: wx.getStorageSync('openid'),
-                  nickname: wx.getStorageSync('userinfo').nickName || '',
-                  avatarUrl: wx.getStorageSync('userinfo').avatarUrl || '',
-                  country: wx.getStorageSync('userinfo').country || '',
-                  province: wx.getStorageSync('userinfo').province || '',
-                  gender: Number(wx.getStorageSync('userinfo').gender) || -2,
-                  lang: wx.getStorageSync('userinfo').language || '',
-                  page: 'onLaunch',
-                },
-                header:{
-                  "Content-Type": "application/x-www-form-urlencoded"
-                },
-                success:function(r){
-                  // console.log(r.data)
-                }
-              })
+              if(this.openidCallback){
+                console.log("callback...")
+                this.openidCallback(res.data.openid)
+              }              
             }
           })
         }
@@ -53,19 +32,11 @@ App({
       }
     })
 
-    // wx.getUserInfo({
-    //   success: (res) => {},
-    //   fail: res =>{
-    //     wx.navigateTo({
-    //       url: '../login/login',
-    //     })
-    //   }
-    // })
-
     // 获取用户信息
     wx.getSetting({
       success: res => {
         if (res.authSetting['scope.userInfo']) {
+          console.log("已授权")
           // 已经授权，可以直接调用 getUserInfo 获取头像昵称，不会弹框
           wx.getUserInfo({
             success: res => {
@@ -85,6 +56,7 @@ App({
     })
   },
   globalData: {
-    userInfo: null
+    userInfo: null,
+    openid: ''
   }
 })

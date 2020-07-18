@@ -77,6 +77,11 @@ Page({
           title: res.data.workTitle,
           workId: res.data.workId,
         })
+      },
+      fail: res=>{
+        wx.showToast({
+          title: '获取随机诗词失败',
+        })
       }
     })
   },
@@ -156,52 +161,16 @@ Page({
     })
   },
 
-  // 滑动切换
-  swipeChange: function (e) {
-    // console.log("Page: " + this.data.pageIndex)
-    // console.log("Total works: " + this.data.works.length)
-    let current = e.detail.current;
-    let source = e.detail.source
-    //console.log(source);
-    // console.log(current, this.data.index, this.data.cur)
-    // this.setData({
-    //   index: current
-    // })
-
-    let workIds = []
-    //滑动到最后一个swiper-item的时候加载新的作品
-    if ((current + 1) / 5 == this.data.pageIndex + 1) {
-      db.collection('shi_300').aggregate().sample({
-        size: 5
-      }).end().then(res => {
-        this.data.pageIndex++
-        console.log(res)
-        for (var i = 0; i < res.list.length; i++) {
-          workIds.push(res.list[i].workid)
-        }
-        console.log(workIds)
-        const _ = db.command
-        db.collection("works_all").where({
-          WorkId: _.in(workIds)
-        }).get().then(res => {
-          console.log(res.data)
-          this.setData({
-            works: this.data.works.concat(res.data),
-          })
-        }).catch(err => {
-          console.error(err)
-        })
-      })
-    }
-  },
-
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
     console.log("onLoad")
     this.randomRefresh()
-    if (wx.getStorageSync('openid')){
+
+    if(app.globalData.openid && app.globalData.openid != ''){
+      // 表示onlaunch接口调用成功，已经获得openid
+      // console.log("onload after onlaunch")
       wx.request({
         url: 'https://tc.hakucc.com/wechat/record',
         method:'POST',
@@ -219,7 +188,30 @@ Page({
           "Content-Type": "application/x-www-form-urlencoded"
         }
       })
-    }    
+    }
+    else{
+      // 给app定义一个回调函数
+      // console.log("onload before onlaunch, define callback")
+      app.openidCallback = openid => {
+        wx.request({
+          url: 'https://tc.hakucc.com/wechat/record',
+          method:'POST',
+          data:{
+            openid: openid,
+            nickname: wx.getStorageSync('userinfo').nickName || '',
+            avatarUrl: wx.getStorageSync('userinfo').avatarUrl || '',
+            country: wx.getStorageSync('userinfo').country || '',
+            province: wx.getStorageSync('userinfo').province || '',
+            gender: Number(wx.getStorageSync('userinfo').gender) || -2,
+            lang: wx.getStorageSync('userinfo').language || '',
+            page: '/home',
+          },
+          header:{
+            "Content-Type": "application/x-www-form-urlencoded"
+          }
+        })
+      }
+    }
   },
 
   /**

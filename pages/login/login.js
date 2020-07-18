@@ -26,13 +26,14 @@ Page({
 
   bindGetUserInfo: function (e) {
     if (e.detail.userInfo) {
+      wx.setStorageSync('userinfo', e.detail.userInfo)
       //用户按了允许授权按钮      
       wx.navigateBack({
         delta: 1
       })
       //授权成功后,通过改变 isHide 的值，让实现页面显示出来，把授权页面隐藏起来
     } else {
-      //用户按了拒绝按钮  
+      //用户按了拒绝按钮
       wx.showModal({
         title: '',
         content: '您点击了拒绝授权，将无法进入小程序，请授权之后再进入!',

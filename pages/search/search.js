@@ -17,13 +17,14 @@ Page({
     inputVal: '', // 搜索关键词
     showClear: false, //是否显示清除历史记录字样
     showHint: false, //是否显示无搜索记录字样
+    showNoResult: false, // 是否展示没有找到相关诗句字样
   },
 
   /**
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
-    var a = wx.getStorageSync('searchHistory') 
+    var a = wx.getStorageSync('searchHistory')
     // 将搜索历史转为set，防止出现重复元素
     let set_a = new Set(a)
     
@@ -42,6 +43,23 @@ Page({
   onCancel: function(){
     wx.navigateBack({
       delta: 1
+    })
+  },
+
+  // 点击搜索框的×
+  onClear:function(){
+    this.setData({
+      hasMoreWorks: false,
+      hasMoreAuthors: false,
+      searchResultWorks: '',
+      searchResultAuthors: '',
+      keyword: '',
+      showClear: true,
+      showHint: false,
+      hideSearchHistory: false,
+      showNoResult: false,
+      inputVal: '',
+      completed:false,
     })
   },
 
@@ -105,6 +123,8 @@ Page({
       inputVal: ""
     });
   }, 
+
+  // deprecated
   inputTyping: function (e) {
     console.log(123)
     console.log(e.detail)
@@ -131,10 +151,9 @@ Page({
     }
 
     // 停止输入时显示加载中提示，查询完成后隐藏
-    wx.showToast({
+    wx.showLoading({
       title: '数据加载中',
       icon: 'loading',
-      duration: 100000
     })
 
     const _ = db.command
@@ -185,7 +204,7 @@ Page({
           console.error(err)
         },
         complete: () => {
-          wx.hideToast()
+          wx.hideLoading()
         }
       })
 
@@ -252,6 +271,7 @@ Page({
       showClear: false,
       showHint: false,
       hideSearchHistory: true,
+      showNoResult: false,
     })
 
     // 搜索后将搜索记录缓存到本地
@@ -262,14 +282,18 @@ Page({
       }
       // 使用队列，保证在查看搜索历史记录时最近搜索内容在顶部
       searchHistory.unshift(p);
+      let set_a = new Set(searchHistory)
+      searchHistory = [...set_a]
       wx.setStorageSync('searchHistory', searchHistory);
+      this.setData({
+        searchHistory: searchHistory
+      })
     }
 
     // 停止输入时显示加载中提示，查询完成后隐藏
-    wx.showToast({
+    wx.showLoading({
       title: '数据加载中',
       icon: 'loading',
-      duration: 100000
     })
 
     const _ = db.command
@@ -291,8 +315,13 @@ Page({
       success: res => {
         this.setData({
           searchResultWorks: res.data,
-          completed: true
+          workCompleted: true
         })
+        if(this.data.authorCompleted){
+          this.setData({
+            completed: true
+          })
+        }
 
         // 将查询到的头20首作品放入缓存，以便在点击查看更多后直接显示在新的查询页上；
         wx.setStorage({
@@ -301,6 +330,13 @@ Page({
         })
 
         if (res.data == '') {
+          // 如果同时也没有搜到作者，则提示无结果
+          if(this.data.noResultAuthor){
+            this.setData({
+              showNoResult: true,
+              completed: true,
+            })
+          }
           this.setData({
             noResultWork: true
           })
@@ -320,7 +356,7 @@ Page({
         console.error(err)
       },
       complete: () => {
-        wx.hideToast()
+        wx.hideLoading()
       }
     })
 
@@ -339,9 +375,22 @@ Page({
         })
         this.setData({
           searchResultAuthors: res.data,
+          authorCompleted: true
         })
+        if(this.data.workCompleted){
+          this.setData({
+            completed: true
+          })
+        }
 
         if (res.data == '') {
+          // 如果作品结果也为空则提示无结果
+          if(this.data.noResultWork){
+            this.setData({
+              showNoResult: true,
+              completed: true,
+            })
+          }
           this.setData({
             noResultAuthor: true
           })

@@ -8,6 +8,7 @@
             show-action
             bind:search="onSearch"
             bind:cancel="onCancel"
+            bind:clear="onClear"
             shape="round"
             focus="true"
         >
@@ -15,7 +16,7 @@
         </van-search>
         
         <view class='searchHistory' hidden="{{hideSearchHistory}}">
-          <view wx:for="{{searchHistory}}" bindtap='clickHistory' data-text="{{item}}" >
+          <view wx:for="{{searchHistory}}" wx:key="item" bindtap='clickHistory' data-text="{{item}}" >
             <view class='searchTag'><van-tag plain size="large">{{item}}</van-tag></view>
           </view>
         </view>
@@ -23,11 +24,13 @@
         <view class="clearSearchHistory" bindtap='clearSearchHistory' hidden="{{!showClear}}">清除历史记录</view>
         <view class="clearSearchHistory" hidden="{{!showHint}}">暂无搜索记录</view>
 
+        <view class="clearSearchHistory" hidden="{{!showNoResult}}">没有找到相关内容</view>
 
-        <view class="weui-cells searchbar-result" wx:if="{{inputVal.length > 0}}"  hidden="{{!completed}}">
+        <!-- <view class="weui-cells searchbar-result" wx:if="{{inputVal.length > 0}}"  hidden="{{!completed}}"> -->
+        <view class="weui-cells searchbar-result" wx:if="{{!showNoResult && completed}}">
             <view class="weui-cells__title" wx:if="{{!noResultAuthor}}">作者</view>
             
-            <block wx:for="{{searchResultAuthors}}" wx:for-index="i">
+            <block wx:for="{{searchResultAuthors}}" wx:for-index="i" wx:key="item">
               <navigator url="../author-detail/author-detail?AuthorId={{item.authorid}}" wx:if="{{i < 5}}" class="weui-cell" hover-class="weui-cell_active">
                   <view class="weui-cell__bd">
                       <view>{{item.authorname}}<text class="dynasty">[{{item.dynasty}}]</text></view>
@@ -42,7 +45,7 @@
 
             <view class="weui-cells__title" wx:if="{{!noResultWork}}">作品</view>
 
-            <block wx:for="{{searchResultWorks}}" wx:for-index="i">
+            <block wx:for="{{searchResultWorks}}" wx:for-index="i" wx:key="item">
               <navigator url="../poe-detail/poe-detail?WorkId={{item.WorkId}}" wx:if="{{i < 5}}" class="weui-cell" hover-class="weui-cell_active">
                   <view class="weui-cell__bd">
                       <view>{{item.Title}}<text class="dynasty">[{{item.Dynasty}}] {{item.AuthorName}}</text></view>

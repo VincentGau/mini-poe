@@ -1,1 +1,24 @@
 /* pages/me/me.wxss */
+.avatar{
+  width:70px;
+  height:70px;
+  border-radius: 50%;
+  border: 2px solid #fff;  
+  /* box-shadow: 3px 3px 10px rgba(0, 0, 0, 0.2);   */
+}
+
+.login-btn{
+  display: inline;
+  background-color: white;
+  border-radius: 0;
+  /* color:black; */
+  margin-left: 0rpx;
+  padding-left: 0rpx;
+  line-height: 60rpx;
+}
+
+.login-btn::after{
+  border: none;
+  border-radius: 0;
+}
+
