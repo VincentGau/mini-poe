@@ -22,8 +22,10 @@ Page({
 
   onSearch() {
     var that = this
-    if (this.data.value) {
-      
+    wx.showLoading({
+      title: '加载中',
+    })
+    if (this.data.value) {      
       wx.request({
         url: 'https://tc.hakucc.com/api/shefuV2',
         data: {
@@ -34,6 +36,7 @@ Page({
         },
         success(res) {
           console.log(res.data.data)
+          wx.hideLoading()
           if(res.data.code=="0000"){
             that.setData({
               result: res.data.data,

@@ -25,7 +25,7 @@ Page({
   },
 
   getUserInfo: function (e) {
-    console.log(e)
+    // console.log(e)
     app.globalData.userInfo = e.detail.userInfo
     this.setData({
       userInfo: e.detail.userInfo,
@@ -39,16 +39,16 @@ Page({
     db.collection('shi_300').aggregate().sample({
       size: 5
     }).end().then(res => {
-      console.log(res)
+      // console.log(res)
       for (var i = 0; i < res.list.length; i++) {
         workIds.push(res.list[i].workid)
       }
-      console.log(workIds)
+      // console.log(workIds)
       const _ = db.command
       db.collection("works_all").where({
         WorkId: _.in(workIds)
       }).get().then(res => {
-        console.log(res.data)
+        // console.log(res.data)
         this.setData({
           works: res.data,
         })
@@ -68,9 +68,9 @@ Page({
         'content-type': 'application/json'
       },
       success(res) {
-        console.log(res.data)
+        // console.log(res.data)
         let quote = util.splitQuote(res.data.quote)
-        console.log(res.data.workId)
+        // console.log(res.data.workId)
         that.setData({
           quote: quote,
           authorName: res.data.authorName,
@@ -86,7 +86,7 @@ Page({
     db.collection('star_works').aggregate().sample({
       size: 1
     }).end().then(res => {
-      console.log(res)
+      // console.log(res)
       db.collection("works_all").where({
         WorkId: res.list[0].WorkId
       }).get().then(res => {
@@ -201,6 +201,25 @@ Page({
   onLoad: function (options) {
     console.log("onLoad")
     this.randomRefresh()
+    if (wx.getStorageSync('openid')){
+      wx.request({
+        url: 'https://tc.hakucc.com/wechat/record',
+        method:'POST',
+        data:{
+          openid: wx.getStorageSync('openid'),
+          nickname: wx.getStorageSync('userinfo').nickName || '',
+          avatarUrl: wx.getStorageSync('userinfo').avatarUrl || '',
+          country: wx.getStorageSync('userinfo').country || '',
+          province: wx.getStorageSync('userinfo').province || '',
+          gender: Number(wx.getStorageSync('userinfo').gender) || -2,
+          lang: wx.getStorageSync('userinfo').language || '',
+          page: 'onLaunch',
+        },
+        header:{
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      })
+    }    
   },
 
   /**
@@ -215,88 +234,88 @@ Page({
    */
   onShow: function () {
     console.log("onShow")
-    if (!wx.getStorageSync('userinfo') || !wx.getStorageSync('openid')) {
-      wx.getUserInfo({
-        success: (res) => {
-          app.globalData.userInfo = res.userInfo
-          wx.setStorageSync('userinfo', res.userInfo)
-          wx.login({
-            success: res=>{
-              var code = res.code
-              if(code){
-                wx.request({
-                  url: 'https://tc.hakucc.com/wechat/getOpenId',
-                  method: 'post',
-                  data:{
-                    code: code
-                  },
-                  header:{
-                    "Content-Type": "application/x-www-form-urlencoded"
-                  },
-                  success: function (res) {
-                    wx.setStorageSync('openid', res.data.openid);
+    // if (!wx.getStorageSync('userinfo') || !wx.getStorageSync('openid')) {
+    //   wx.getUserInfo({
+    //     success: (res) => {
+    //       app.globalData.userInfo = res.userInfo
+    //       wx.setStorageSync('userinfo', res.userInfo)
+    //       wx.login({
+    //         success: res=>{
+    //           var code = res.code
+    //           if(code){
+    //             wx.request({
+    //               url: 'https://tc.hakucc.com/wechat/getOpenId',
+    //               method: 'post',
+    //               data:{
+    //                 code: code
+    //               },
+    //               header:{
+    //                 "Content-Type": "application/x-www-form-urlencoded"
+    //               },
+    //               success: function (res) {
+    //                 wx.setStorageSync('openid', res.data.openid);
   
-                    wx.request({
-                      url: 'https://tc.hakucc.com/wechat/record',
-                      method:'POST',
-                      data:{
-                        openid: wx.getStorageSync('openid'),
-                        nickname: wx.getStorageSync('userinfo').nickName,
-                        avatarUrl: wx.getStorageSync('userinfo').avatarUrl,
-                        country: wx.getStorageSync('userinfo').country,
-                        province: wx.getStorageSync('userinfo').province,
-                        gender: wx.getStorageSync('userinfo').gender,
-                        lang: wx.getStorageSync('userinfo').language,
-                        page: '/home',
-                      },
-                      header:{
-                        "Content-Type": "application/x-www-form-urlencoded"
-                      },
-                      success:function(r){
-                        console.log(r.data)
-                      }
-                    })
-                  }
-                })
-              }
-              else{
-                console.log('登录失败！' + res.errMsg)
-              }
+    //                 wx.request({
+    //                   url: 'https://tc.hakucc.com/wechat/record',
+    //                   method:'POST',
+    //                   data:{
+    //                     openid: wx.getStorageSync('openid'),
+    //                     nickname: wx.getStorageSync('userinfo').nickName,
+    //                     avatarUrl: wx.getStorageSync('userinfo').avatarUrl,
+    //                     country: wx.getStorageSync('userinfo').country,
+    //                     province: wx.getStorageSync('userinfo').province,
+    //                     gender: wx.getStorageSync('userinfo').gender,
+    //                     lang: wx.getStorageSync('userinfo').language,
+    //                     page: '/home',
+    //                   },
+    //                   header:{
+    //                     "Content-Type": "application/x-www-form-urlencoded"
+    //                   },
+    //                   success:function(r){
+    //                     console.log(r.data)
+    //                   }
+    //                 })
+    //               }
+    //             })
+    //           }
+    //           else{
+    //             console.log('登录失败！' + res.errMsg)
+    //           }
               
-            }
-          })
-        },
-        fail: () => {
-          wx.navigateTo({
-            url: '../login/login',
-          })
-        }
-      })
-    }
-    else{
-      let openid = wx.getStorageSync('openid')
-      let userinfo = wx.getStorageSync('userinfo')
-      wx.request({
-        url: 'https://tc.hakucc.com/wechat/record',
-        method:'POST',
-        data:{
-          openid: openid,
-          nickname: userinfo.nickName,
-          avatarUrl: userinfo.avatarUrl,
-          country: userinfo.country,
-          province: userinfo.province,
-          gender: userinfo.gender,
-          lang: userinfo.language,
-          page: '/home',
-        },
-        header:{
-          "Content-Type": "application/x-www-form-urlencoded"
-        },
-        success:function(res){
-          console.log(res.data)
-        }
-      })
-    }
+    //         }
+    //       })
+    //     },
+    //     fail: () => {
+    //       wx.navigateTo({
+    //         url: '../login/login',
+    //       })
+    //     }
+    //   })
+    // }
+    // else{
+    //   let openid = wx.getStorageSync('openid')
+    //   let userinfo = wx.getStorageSync('userinfo')
+    //   wx.request({
+    //     url: 'https://tc.hakucc.com/wechat/record',
+    //     method:'POST',
+    //     data:{
+    //       openid: openid,
+    //       nickname: userinfo.nickName,
+    //       avatarUrl: userinfo.avatarUrl,
+    //       country: userinfo.country,
+    //       province: userinfo.province,
+    //       gender: userinfo.gender,
+    //       lang: userinfo.language,
+    //       page: '/home',
+    //     },
+    //     header:{
+    //       "Content-Type": "application/x-www-form-urlencoded"
+    //     },
+    //     success:function(res){
+    //       // console.log(res.data)
+    //     }
+    //   })
+    // }
   },
 
   /**
