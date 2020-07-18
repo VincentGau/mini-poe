@@ -213,7 +213,7 @@ Page({
           province: wx.getStorageSync('userinfo').province || '',
           gender: Number(wx.getStorageSync('userinfo').gender) || -2,
           lang: wx.getStorageSync('userinfo').language || '',
-          page: 'onLaunch',
+          page: '/home',
         },
         header:{
           "Content-Type": "application/x-www-form-urlencoded"
