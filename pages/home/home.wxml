@@ -28,14 +28,27 @@
 
 
 <wxs src="./../../wxs/tools.wxs" module="tools" />
-<view bindtap='toDetail' data-workid="{{workId}}" class='quote'>
-  <view class='wrapper'>
-    <view wx:for="{{quote}}" wx:key="item" wx:for-item="para" class='content center'>
-      <view class='p'>{{para}}</view>
+<block wx:if="{{!noStarYet}}">
+  <view bindtap='toDetail' data-workid="{{workId}}" class='quote'>
+    <view class='wrapper'>
+      <view wx:for="{{quote}}" wx:key="item" wx:for-item="para" class='content center'>
+        <view class='p'>{{para}}</view>
+      </view>
     </view>
-  </view>  
-</view>
+  </view>
 
-<view class='next-btn'>
-  <image class="refresh_icon" src="../../images/refresh.svg" bindtap="randomRefresh"></image>
-</view>
+  <view class='next-btn'>
+    <image class="refresh_icon" src="../../images/refresh.svg" bindtap="randomRefresh"></image>
+  </view>
+</block>
+
+<block wx:else>
+  <view class='quote'>
+    <view class='wrapper '>
+      <view class="content center">
+        <view class='p'>暂无收藏，</view>
+        <view class='p'>请先收藏喜欢的作品吧</view>        
+      </view>
+    </view>
+  </view>
+</block>

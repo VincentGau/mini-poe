@@ -21,7 +21,8 @@ Page({
     pageIndex: 0, //页数 
     userInfo: {},
     hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo')
+    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    noStarYet: false, // 尚未收藏任何作品
   },
 
   getUserInfo: function (e) {
@@ -107,6 +108,10 @@ Page({
         console.error(err)
       })
     }).catch(err => {
+      console.log("no star")
+      this.setData({
+        noStarYet: true
+      })
       console.error(err)
     })
   },
