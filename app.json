@@ -56,6 +56,9 @@
     "van-tag": "vant-weapp/dist/tag/index",
     "van-search": "vant-weapp/dist/search/index",
     "van-button": "vant-weapp/dist/button/index",
-    "van-cell": "vant-weapp/dist/cell/index"
+    "van-cell": "vant-weapp/dist/cell/index",
+    "van-cell-group": "vant-weapp/dist/cell-group/index",
+    "van-radio": "vant-weapp/dist/radio/index",
+    "van-radio-group": "vant-weapp/dist/radio-group/index"
   }
 }

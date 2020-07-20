@@ -145,13 +145,13 @@ Page({
   randomRefresh: function () {
     let homeRandom = wx.getStorageSync('homeRandom')
     switch (homeRandom) {
-      case '0':
+      case 0:
         this.randomShiCi(db.collection('ci_300'))
         break;
-      case '1':
+      case 1:
         this.randomShiCi(db.collection('shi_300'))
         break;
-      case '2':
+      case 3:
         this.randomLike()
         break;
       default:

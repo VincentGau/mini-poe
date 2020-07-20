@@ -13,10 +13,9 @@ Page({
       { name: '唐诗三百首', value: '1' },
       { name: '我收藏的作品', value: '2'},
     ],
-    checkedRadio: wx.getStorageSync('homeRandom') || 1,
-    // nickname: wx.getStorageSync('nickname'),
     loggedIn: false,
-    userinfo: wx.getStorageSync('userinfo')
+    userinfo: wx.getStorageSync('userinfo'),
+    radio: wx.getStorageSync('homeRandom') || 1,
   },
 
   bindGetUserInfo: function(){
@@ -34,45 +33,30 @@ Page({
     })
   },
 
-  radioChange: function (e) {
-    console.log('radio发生change事件，携带value值为：', e.detail.value);
-
-    // 如果选择的是我收藏的作品，先判断一下是否有过收藏
-    if(e.detail.value == 2){
-      db.collection('star_works_empty').count().then(res=>{
+  onRadioClick(event) {
+    const { name } = event.currentTarget.dataset;
+    if(name == 2){
+      db.collection('star_works').count().then(res=>{
         if(res.total == 0){
           wx.showModal({
             content: '暂无收藏，\r\n请先收藏喜欢的作品吧~',
             showCancel: false,
-          })
-          this.data.radioItems[Number(this.data.checkedRadio)].checked = true
+          })          
         }
         else{
-          wx.setStorageSync('homeRandom', e.detail.value)
-
-          var radioItems = this.data.radioItems;
-          for (var i = 0, len = radioItems.length; i < len; ++i) {
-            radioItems[i].checked = radioItems[i].value == e.detail.value;
-          }
-      
+          wx.setStorageSync('homeRandom', name)
           this.setData({
-            radioItems: radioItems
+            radio: name,
           });
         }
       })
     }
     else{
-      wx.setStorageSync('homeRandom', e.detail.value)
-
-      var radioItems = this.data.radioItems;
-      for (var i = 0, len = radioItems.length; i < len; ++i) {
-        radioItems[i].checked = radioItems[i].value == e.detail.value;
-      }
-  
+      wx.setStorageSync('homeRandom', name)
       this.setData({
-        radioItems: radioItems
+        radio: name,
       });
-    }    
+    }   
   },
 
   /**
@@ -97,17 +81,10 @@ Page({
         }
       }
     })
-
-    let checkedRadio = wx.getStorageSync('homeRandom')
-    // 默认选择唐诗三百首
-    if (!checkedRadio){
-      checkedRadio = 1
-    }
-    var radioItems = this.data.radioItems;
-    radioItems[Number(checkedRadio)].checked = true    
+ 
     this.setData({
-      radioItems: radioItems,
-      userinfo: wx.getStorageSync('userinfo')
+      userinfo: wx.getStorageSync('userinfo'),
+      radio: wx.getStorageSync('homeRandom')
     });
   },
 
