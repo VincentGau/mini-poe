@@ -1,6 +1,24 @@
 //app.js
+wx.cloud.init()
+const db = wx.cloud.database()
+const MAX_LIMIT = 20
+
 App({
   onLaunch: function () {
+    // 查看本地存储是否已经有热门作品
+    let hotworksInStorage = wx.getStorage({
+      key: 'hotworks',
+    })
+    if(hotworksInStorage){
+      console.log(123)
+      this.globalData.allHotWorkRecords = hotworksInStorage
+    }
+    else{
+      console.log(234)
+      this.getAllHotWorks();
+    }
+    
+
     // 登录
     wx.login({
       success: res => {
@@ -55,8 +73,47 @@ App({
       }
     })
   },
+
+  // 获取所有热门作品
+  getAllHotWorks:function (){
+    var that = this
+    db.collection("works_hot").count().then(async res =>{
+      let total = res.total
+      console.log("hot works count: " + total)
+
+      // 计算需要分几次获取全部数据 每次请求最多可以20条数据（云函数可以100条）
+      let batchTimes = Math.ceil(total / MAX_LIMIT)
+      batchTimes = 200  // 控制最多返回200 * 20 = 4000条记录
+      console.log(batchTimes)
+
+      // 按WorkId升序排序，
+      for(let i = 0; i < batchTimes; i++){
+        await db.collection("works_hot").field({
+          WorkId: true,
+          Content: true
+        }).orderBy("WorkId", "asc").skip(i * MAX_LIMIT).limit(MAX_LIMIT).get().then(async res =>{
+          let tmp_data = res.data
+          // console.log("-----"+tmp_data[0].WorkId)
+
+          
+          let cur_data = that.globalData.allHotWorkRecords
+          // console.log(cur_data)
+          that.globalData.allHotWorkRecords = cur_data.concat(tmp_data)
+          
+        })
+      }
+
+      // 将热门作品放入localstorage
+      wx.setStorage({
+        data: that.globalData.allHotWorkRecords,
+        key: 'hotworks',
+      })
+    })
+  },
+
   globalData: {
     userInfo: null,
-    openid: ''
+    openid: '',
+    allHotWorkRecords: [],
   }
 })
