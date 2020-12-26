@@ -6,18 +6,27 @@ const MAX_LIMIT = 20
 App({
   onLaunch: function () {
     // 查看本地存储是否已经有热门作品
-    let hotworksInStorage = wx.getStorage({
-      key: 'hotworks',
+    // wx.getStorage({
+    //   key: 'hotworks',
+    // }).then(data => {
+    //   this.globalData.allHotWorkRecords = data
+    // }).catch(err => {
+    //   this.getAllHotWorks();
+    // })
+
+    wx.getStorage({
+      key: "hotworks",
+      success: function(res){
+        console.log("1111111111111111")
+        this.globalData.allHotWorkRecords = res
+      },
+      fail:(err) => {
+        console.log("222222222222222")
+        console.log(err)
+        this.getAllHotWorks();
+      }
     })
-    if(hotworksInStorage){
-      console.log(123)
-      this.globalData.allHotWorkRecords = hotworksInStorage
-    }
-    else{
-      console.log(234)
-      this.getAllHotWorks();
-    }
-    
+        
 
     // 登录
     wx.login({
