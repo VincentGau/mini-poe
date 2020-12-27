@@ -170,7 +170,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log("onLoad")
+    // console.log("onLoad")
     this.randomRefresh()
 
     if(app.globalData.openid && app.globalData.openid != ''){
@@ -230,7 +230,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    console.log("onShow")
+    // console.log("onShow")
     // if (!wx.getStorageSync('userinfo') || !wx.getStorageSync('openid')) {
     //   wx.getUserInfo({
     //     success: (res) => {

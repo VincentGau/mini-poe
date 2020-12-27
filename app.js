@@ -5,23 +5,16 @@ const MAX_LIMIT = 20
 
 App({
   onLaunch: function () {
-    // 查看本地存储是否已经有热门作品
-    // wx.getStorage({
-    //   key: 'hotworks',
-    // }).then(data => {
-    //   this.globalData.allHotWorkRecords = data
-    // }).catch(err => {
-    //   this.getAllHotWorks();
-    // })
-
+    // 获取热门作品，先查看本地存储是否已经有热门作品
+    var that = this
     wx.getStorage({
       key: "hotworks",
       success: function(res){
-        console.log("1111111111111111")
-        this.globalData.allHotWorkRecords = res
+        console.log("Got hot works from local storage")
+        that.globalData.allHotWorkRecords = res
       },
       fail:(err) => {
-        console.log("222222222222222")
+        console.log("Hot works not in local storage, get hot works from db.")
         console.log(err)
         this.getAllHotWorks();
       }
