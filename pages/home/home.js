@@ -151,7 +151,7 @@ Page({
       case 1:
         this.randomShiCi(db.collection('shi_300'))
         break;
-      case 3:
+      case 2:
         this.randomLike()
         break;
       default:
