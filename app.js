@@ -5,20 +5,37 @@ const MAX_LIMIT = 20
 
 App({
   onLaunch: function () {
-    // 获取热门作品，先查看本地存储是否已经有热门作品
-    var that = this
-    wx.getStorage({
-      key: "hotworks",
-      success: function(res){
-        console.log("Got hot works from local storage")
-        that.globalData.allHotWorkRecords = res
+    wx.cloud.callFunction({
+      // 云函数名称
+      name: 'getHotWorks',
+      // 传给云函数的参数
+      data: {},
+      success: function(res) {
+        console.log("[getHotWorks] CALL CLOUD FUNCTION SUCCESS!")
+        wx.setStorage({
+          data: res,
+          key: 'hotworks',
+        })
       },
-      fail:(err) => {
-        console.log("Hot works not in local storage, get hot works from db.")
-        console.log(err)
-        this.getAllHotWorks();
-      }
+      fail: console.error
     })
+
+
+
+    // 获取热门作品，先查看本地存储是否已经有热门作品 （弃用 改用云函数）
+    // var that = this
+    // wx.getStorage({
+    //   key: "hotworks",
+    //   success: function(res){
+    //     console.log("Got hot works from local storage")
+    //     that.globalData.allHotWorkRecords = res
+    //   },
+    //   fail:(err) => {
+    //     console.log("Hot works not in local storage, get hot works from db.")
+    //     console.log(err)
+    //     this.getAllHotWorks();
+    //   }
+    // })
         
 
     // 登录

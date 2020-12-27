@@ -35,6 +35,7 @@
 	"simulatorType": "wechat",
 	"simulatorPluginLibVersion": {},
 	"cloudfunctionTemplateRoot": "cloudfunctionTemplate",
+	"cloudfunctionRoot": "cloudfunctions/",
 	"condition": {
 		"search": {
 			"current": -1,
