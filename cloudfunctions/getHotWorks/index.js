@@ -14,9 +14,11 @@ exports.main = async (event, context) => {
   console.log(countResult)
   const total = countResult.total
   // 计算需分几次取
-  const batchTimes = Math.ceil(total / MAX_LIMIT)
+  var batchTimes = Math.ceil(total / MAX_LIMIT)
+  batchTimes = 100 // 防止并发超过一定数量 Promise.all + reduce也算并发
   // 承载所有读操作的 promise 的数组
   const tasks = []
+  const _ = db.command
   for (let i = 0; i < batchTimes; i++) {
     //get()操作返回的是Promise对象，每获取一个Promise就压栈进入tasks数组
     const promise = db.collection('works_hot').field({
