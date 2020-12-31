@@ -16,6 +16,8 @@ App({
           data: res,
           key: 'hotworks',
         })
+        // var tmp = wx.getStorageSync('hotworks')
+        // console.log("[gethotworks] ", tmp)
       },
       fail: console.error
     })

@@ -15,7 +15,7 @@ exports.main = async (event, context) => {
   const total = countResult.total
   // 计算需分几次取
   var batchTimes = Math.ceil(total / MAX_LIMIT)
-  batchTimes = 100 // 防止并发超过一定数量 Promise.all + reduce也算并发
+  batchTimes = 50 // 防止并发超过一定数量 Promise.all + reduce也算并发
   // 承载所有读操作的 promise 的数组
   const tasks = []
   const _ = db.command
