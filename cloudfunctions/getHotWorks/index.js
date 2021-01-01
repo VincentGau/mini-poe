@@ -15,7 +15,7 @@ exports.main = async (event, context) => {
   const total = countResult.total
   // 计算需分几次取
   var batchTimes = Math.ceil(total / MAX_LIMIT)
-  batchTimes = 50 // 防止并发超过一定数量 Promise.all + reduce也算并发
+  batchTimes = 40 // 防止并发超过一定数量 Promise.all + reduce也算并发
   // 承载所有读操作的 promise 的数组
   const tasks = []
   const _ = db.command
@@ -24,6 +24,8 @@ exports.main = async (event, context) => {
     const promise = db.collection('works_hot').field({
       WorkId: true,
       Content: true
+    }).where({
+      Kind: _.or(_.eq('shi'), _.eq('ci'))
     }).orderBy("WorkId", "asc").skip(i * MAX_LIMIT).limit(MAX_LIMIT).get()
     tasks.push(promise)
   }

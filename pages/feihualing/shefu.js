@@ -166,7 +166,7 @@ Page({
 
     // var hotworks = app.globalData.allHotWorkRecords
     var hotworks = wx.getStorageSync('hotworks').result.data
-    console.log("BBBBBB ", hotworks)
+    // console.log("BBBBBB ", hotworks)
     var that = this
     // 循环处理hotworks中的作品
     hotworks.forEach(function (work, index){
