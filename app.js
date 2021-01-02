@@ -5,22 +5,28 @@ const MAX_LIMIT = 20
 
 App({
   onLaunch: function () {
-    wx.cloud.callFunction({
-      // 云函数名称
-      name: 'getHotWorks',
-      // 传给云函数的参数
-      data: {},
-      success: function(res) {
-        console.log("[getHotWorks] CALL CLOUD FUNCTION SUCCESS!")
-        wx.setStorage({
-          data: res,
-          key: 'hotworks',
-        })
-        // var tmp = wx.getStorageSync('hotworks')
-        // console.log("[gethotworks] ", tmp)
-      },
-      fail: console.error
-    })
+    if(wx.getStorageSync('hotworks')){
+      console.log("hot works already in local storage")
+    }
+    else{
+      wx.cloud.callFunction({
+        // 云函数名称
+        name: 'getHotWorks',
+        // 传给云函数的参数
+        data: {},
+        success: function(res) {
+          console.log("[getHotWorks] CALL CLOUD FUNCTION SUCCESS!")
+          wx.setStorage({
+            data: res,
+            key: 'hotworks',
+          })
+          // var tmp = wx.getStorageSync('hotworks')
+          // console.log("[gethotworks] ", tmp)
+        },
+        fail: console.error
+      })
+    }
+    
 
 
 
