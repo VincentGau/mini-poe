@@ -149,16 +149,16 @@ App({
 
     console.log("set localstorage [hotworks]")
 
-    setTimeout(() => {
-      this.getAllHotWorksCloud2()
-    }, 5000);
+    // setTimeout(() => {
+    //   this.getAllHotWorksCloud2()
+    // }, 5000);
   },
 
   async getAllHotWorksCloud2(){
     let hotworksArr = []
     let promiseArr = []
     // 12459总数量
-    for(let i = 5; i < 10; i++){
+    for(let i = 5; i < 9; i++){
       promiseArr.push(new Promise((resolve, reject) =>{
           wx.cloud.callFunction({
             name: "getHotWorks",
@@ -191,9 +191,9 @@ App({
 
     console.log("set localstorage [hotworks]2")
 
-    setTimeout(() => {
-      this.getAllHotWorksCloud3()
-    }, 5000);
+    // setTimeout(() => {
+    //   this.getAllHotWorksCloud3()
+    // }, 5000);
   },
 
   async getAllHotWorksCloud3(){
