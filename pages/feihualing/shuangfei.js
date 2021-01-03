@@ -156,11 +156,10 @@ Page({
       sections.forEach(function(section, index){
         if(util.stringIntersect(section, clues[0]) && util.stringIntersect(section, clues[1])){
           var sentences = util.splitParagraph(section)
-          // 区域内句子书
-          var bound = sentences.length - 1
+          
           // 如果section只有一句，则无法满则双飞规则
           if(sentences.length > 1){
-            for(let index = 0; index < bound; index++){
+            for(let index = 0; index < sentences.length - 1; index++){
               if((util.stringIntersect(sentences[index], clues[0]) && util.stringIntersect(sentences[index + 1], clues[1]) && sentences[index] != clues[0]) || (util.stringIntersect(sentences[index], clues[1]) && util.stringIntersect(sentences[index + 1], clues[0]) && sentences[index] != clues[1])){
                 var objResult = new Object;
                 objResult.workid = work.WorkId;
