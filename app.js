@@ -10,7 +10,11 @@ App({
       console.log("hot works already in local storage")
     }
     else{
+      
       this.getAllHotWorksCloud()
+      // setTimeout(() => {
+      //   this.getAllHotWorksCloud2()
+      // }, 5000);
     }
     // else{
     //   const countResult = 12459 // 热门作品数量
@@ -110,43 +114,124 @@ App({
   },
 
   async getAllHotWorksCloud(){
+    console.log("==================")
     let hotworksArr = []
     let promiseArr = []
     // 12459总数量
     for(let i = 0; i < 5; i++){
       promiseArr.push(new Promise((resolve, reject) =>{
-        wx.cloud.callFunction({
-          name: "getHotWorks",
-          data:{
-            "startBatch": i * 30,
-            "endBatch": (i + 1) * 30
-          },
-          success: res =>{
-            console.log("Success: ", i)
-            resolve(res)
-            hotworksArr = hotworksArr.concat(res.result.data)
-
-            // 最后一次请求完成后设置缓存
-            if(i == 4){
-              wx.setStorage({
-                data: hotworksArr,
-                key: 'hotworks',
-              })
-
-              console.log("set localstorage [hotworks]")
+          wx.cloud.callFunction({
+            name: "getHotWorks",
+            data:{
+              "startBatch": i * 10,
+              "endBatch": (i + 1) * 10
+            },
+            success: res =>{
+              console.log("Success: ", i)
+              resolve(res)
+              hotworksArr = hotworksArr.concat(res.result.data)
+            },
+            fail: err =>{
+              console.log("failed: ", err)
+              reject(err)
             }
-          },
-          fail: err =>{
-            console.log("failed: ", err)
-            reject(err)
-          }
-        })
+          })
+        
       }))
     }
 
     await Promise.all(promiseArr)
     console.log(hotworksArr)
-    return hotworksArr
+    wx.setStorage({
+      data: hotworksArr,
+      key: 'hotworks',
+    })
+
+    console.log("set localstorage [hotworks]")
+
+    setTimeout(() => {
+      this.getAllHotWorksCloud2()
+    }, 5000);
+  },
+
+  async getAllHotWorksCloud2(){
+    let hotworksArr = []
+    let promiseArr = []
+    // 12459总数量
+    for(let i = 5; i < 10; i++){
+      promiseArr.push(new Promise((resolve, reject) =>{
+          wx.cloud.callFunction({
+            name: "getHotWorks",
+            data:{
+              "startBatch": i * 10,
+              "endBatch": (i + 1) * 10
+            },
+            success: res =>{
+              console.log("Success: ", i)
+              resolve(res)
+              hotworksArr = hotworksArr.concat(res.result.data)
+            },
+            fail: err =>{
+              console.log("failed: ", err)
+              reject(err)
+            }
+          })
+        
+      }))
+    }
+
+    await Promise.all(promiseArr)
+    console.log(hotworksArr)
+
+    var tmp = wx.getStorageSync('hotworks')
+    wx.setStorage({
+      data: tmp.concat(hotworksArr),
+      key: 'hotworks',
+    })
+
+    console.log("set localstorage [hotworks]2")
+
+    setTimeout(() => {
+      this.getAllHotWorksCloud3()
+    }, 5000);
+  },
+
+  async getAllHotWorksCloud3(){
+    let hotworksArr = []
+    let promiseArr = []
+    // 12459总数量
+    for(let i = 10; i < 15; i++){
+      promiseArr.push(new Promise((resolve, reject) =>{
+          wx.cloud.callFunction({
+            name: "getHotWorks",
+            data:{
+              "startBatch": i * 10,
+              "endBatch": (i + 1) * 10
+            },
+            success: res =>{
+              console.log("Success: ", i)
+              resolve(res)
+              hotworksArr = hotworksArr.concat(res.result.data)
+            },
+            fail: err =>{
+              console.log("failed: ", err)
+              reject(err)
+            }
+          })
+        
+      }))
+    }
+
+    await Promise.all(promiseArr)
+    console.log(hotworksArr)
+
+    var tmp = wx.getStorageSync('hotworks')
+    wx.setStorage({
+      data: tmp.concat(hotworksArr),
+      key: 'hotworks',
+    })
+
+    console.log("set localstorage [hotworks]3")
   },
 
   // 获取所有热门作品
