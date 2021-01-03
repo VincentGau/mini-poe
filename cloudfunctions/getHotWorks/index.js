@@ -10,6 +10,7 @@ const MAX_LIMIT = 100
 
 exports.main = async (event, context) => {
   // collection 上的 get 方法会返回一个 Promise，因此云函数会在数据库异步取完数据后返回结果
+  console.log(event.startBatch + " - " + event.endBatch)
   const countResult = await db.collection('works_hot').count()
   console.log(countResult)
   const total = countResult.total
@@ -19,7 +20,7 @@ exports.main = async (event, context) => {
   // 承载所有读操作的 promise 的数组
   const tasks = []
   const _ = db.command
-  for (let i = 0; i < batchTimes; i++) {
+  for (let i = event.startBatch; i < event.endBatch; i++) {
     //get()操作返回的是Promise对象，每获取一个Promise就压栈进入tasks数组
     const promise = db.collection('works_hot').field({
       WorkId: true,

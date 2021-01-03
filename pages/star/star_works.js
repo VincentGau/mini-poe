@@ -44,7 +44,7 @@ Page({
     })
 
     var starWorkIds = []
-    star_works.get().then(res => {
+    star_works.orderBy("StarDate", "desc").get().then(res => {
       if (res.data.length > 0) {
         if (res.data.length < 20) {
           this.setData({
@@ -124,7 +124,7 @@ Page({
   onReachBottom: function () {
     let curpage = this.data.pageindex
     var starWorkIds = []
-    star_works.skip(curpage * 20).limit(20).get({
+    star_works.skip(curpage * 20).limit(20).orderBy("StarDate", "desc").get({
       success: res => {
         if(res.data.length > 0){
           curpage++;

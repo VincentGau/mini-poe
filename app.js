@@ -2,6 +2,7 @@
 wx.cloud.init()
 const db = wx.cloud.database()
 const MAX_LIMIT = 20
+const MAX_LIMIT_CLOUD = 100
 
 App({
   onLaunch: function () {
@@ -9,23 +10,30 @@ App({
       console.log("hot works already in local storage")
     }
     else{
-      wx.cloud.callFunction({
-        // 云函数名称
-        name: 'getHotWorks',
-        // 传给云函数的参数
-        data: {},
-        success: function(res) {
-          console.log("[getHotWorks] CALL CLOUD FUNCTION SUCCESS!")
-          wx.setStorage({
-            data: res,
-            key: 'hotworks',
-          })
-          // var tmp = wx.getStorageSync('hotworks')
-          // console.log("[gethotworks] ", tmp)
-        },
-        fail: console.error
-      })
+      this.getAllHotWorksCloud()
     }
+    // else{
+    //   const countResult = 12459 // 热门作品数量
+    //   wx.cloud.callFunction({
+    //     // 云函数名称
+    //     name: 'getHotWorks',
+    //     // 传给云函数的参数
+    //     data: {
+    //       "startBatch": 0,
+    //       "endBatch": 70
+    //     },
+    //     success: function(res) {
+    //       console.log("[getHotWorks] CALL CLOUD FUNCTION SUCCESS!")
+    //       wx.setStorage({
+    //         data: res.result.data,
+    //         key: 'hotworks',
+    //       })
+    //       // var tmp = wx.getStorageSync('hotworks')
+    //       // console.log("[gethotworks] ", tmp)
+    //     },
+    //     fail: console.error
+    //   })
+    // }
     
 
 
@@ -99,6 +107,46 @@ App({
         }
       }
     })
+  },
+
+  async getAllHotWorksCloud(){
+    let hotworksArr = []
+    let promiseArr = []
+    // 12459总数量
+    for(let i = 0; i < 5; i++){
+      promiseArr.push(new Promise((resolve, reject) =>{
+        wx.cloud.callFunction({
+          name: "getHotWorks",
+          data:{
+            "startBatch": i * 30,
+            "endBatch": (i + 1) * 30
+          },
+          success: res =>{
+            console.log("Success: ", i)
+            resolve(res)
+            hotworksArr = hotworksArr.concat(res.result.data)
+
+            // 最后一次请求完成后设置缓存
+            if(i == 4){
+              wx.setStorage({
+                data: hotworksArr,
+                key: 'hotworks',
+              })
+
+              console.log("set localstorage [hotworks]")
+            }
+          },
+          fail: err =>{
+            console.log("failed: ", err)
+            reject(err)
+          }
+        })
+      }))
+    }
+
+    await Promise.all(promiseArr)
+    console.log(hotworksArr)
+    return hotworksArr
   },
 
   // 获取所有热门作品
