@@ -60,7 +60,28 @@ const firstSentence = str => {
 String.prototype.replaceAll = function (search, replacement) {
   var target = this;
   return target.split(search).join(replacement);
-};
+}
+
+// 判断两个字符串是否有交集
+// this.stringIntersect("夜饮东坡醒复醉", "归来仿佛醉三更")
+const stringIntersect = (s1, s2) => {
+  let ls1 = s1.split("")
+  let ls2 = s2.split("")
+  var intersect = ls1.filter((val)=>new Set(ls2).has(val));
+  return intersect.length > 0
+}
+
+// 将整段作品文字拆分成单句
+const splitParagraph = para => {
+  var sentences = para.split(/[，。！？：；,.!?:;\s]/)
+  return sentences
+}
+
+// 将整段文字按句号拆分成区域，不同区域的诗句不能作为上下句处理
+const splitWithEnd = para => {
+  var sections = para.split(/[。]/)
+  return sections
+}
 
 module.exports = {
   formatTime: formatTime,
@@ -69,4 +90,7 @@ module.exports = {
   parseTag: parseTag,
   splitQuote: splitQuote,
   firstSentence: firstSentence,
+  stringIntersect: stringIntersect,
+  splitParagraph: splitParagraph,
+  splitWithEnd: splitWithEnd,
 }

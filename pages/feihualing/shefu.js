@@ -1,5 +1,6 @@
 // pages/feihualing/shefu.js
 wx.cloud.init()
+import util from '../../utils/util.js';
 const db = wx.cloud.database()
 const MAX_LIMIT = 20
 var app = getApp()
@@ -172,7 +173,7 @@ Page({
     hotworks.forEach(function (work, index){
       // console.log(work.Content)
       // 将作品拆分成单句
-      var sentences = that.splitParagraph(work.Content)
+      var sentences = util.splitParagraph(work.Content)
       sentences.forEach(function(sentence, index){
         // 如果sentence符合射覆规则，则加入结果集，否则继续处理下一句
         if(that.fitShefu(sentence, clues[0], clues[1], clues[2]) == 1){
@@ -199,10 +200,10 @@ Page({
   },
 
   // 将整段文字拆分成单句
-  splitParagraph: function(para){
-    var sentences = para.split(/[，。！？]/)
-    return sentences
-  },
+  // splitParagraph: function(para){
+  //   var sentences = para.split(/[，。！？]/)
+  //   return sentences
+  // },
 
   /**
    * 生命周期函数--监听页面加载
