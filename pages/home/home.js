@@ -188,6 +188,8 @@ Page({
           gender: Number(wx.getStorageSync('userinfo').gender) || -2,
           lang: wx.getStorageSync('userinfo').language || '',
           page: '/home',
+          actionType: '',
+          actionDetail: '',
         },
         header:{
           "Content-Type": "application/x-www-form-urlencoded"
@@ -210,6 +212,8 @@ Page({
             gender: Number(wx.getStorageSync('userinfo').gender) || -2,
             lang: wx.getStorageSync('userinfo').language || '',
             page: '/home',
+            actionType: '',
+            actionDetail: '',
           },
           header:{
             "Content-Type": "application/x-www-form-urlencoded"
