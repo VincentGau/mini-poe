@@ -1,91 +1,112 @@
 // pages/me/me.js
+import util from '../../utils/util.js';
 
 var app = getApp()
 const db = wx.cloud.database()
+
 Page({
 
   /**
    * Page initial data
    */
   data: {
-    radioItems: [
-      { name: '宋词三百首', value: '0'},
-      { name: '唐诗三百首', value: '1' },
-      { name: '我收藏的作品', value: '2'},
+    radioItems: [{
+        name: '宋词三百首',
+        value: '0'
+      },
+      {
+        name: '唐诗三百首',
+        value: '1'
+      },
+      {
+        name: '我收藏的作品',
+        value: '2'
+      },
     ],
     loggedIn: false,
     userinfo: wx.getStorageSync('userinfo'),
-    radio: wx.getStorageSync('homeRandom') || 1,
+    radio: wx.getStorageSync('homeRandom') || 0,
   },
 
-  bindGetUserInfo: function(){
-    var that=this
-    wx.getUserInfo({
+  // 更新用户信息
+  updateUserProfile(){
+    wx.getUserProfile({
+      desc: "获取你的昵称、头像、地区及性别",
       success: res => {
-        // 可以将 res 发送给后台解码出 unionId
-        app.globalData.userInfo = res.userInfo
+        console.log(res)
         wx.setStorageSync('userinfo', res.userInfo)
-        that.onLoad()
+
+        this.setData({
+          userinfo: wx.getStorageSync('userinfo'),
+          radio: wx.getStorageSync('homeRandom') || 0
+        });
       },
-      fail: e => {
-        console.log("eeeeeee : " + e.detail)
+      fail: res => {
+        //拒绝授权
+        return;
       }
     })
   },
 
   onRadioClick(event) {
-    const { name } = event.currentTarget.dataset;
-    if(name == 2){
-      db.collection('star_works').count().then(res=>{
-        if(res.total == 0){
+    const {
+      name
+    } = event.currentTarget.dataset;
+    if (name == 2) {
+      db.collection('star_works').count().then(res => {
+        if (res.total == 0) {
           wx.showModal({
             content: '暂无收藏，\r\n请先收藏喜欢的作品吧~',
             showCancel: false,
-          })          
-        }
-        else{
+          })
+        } else {
           wx.setStorageSync('homeRandom', name)
           this.setData({
             radio: name,
           });
         }
       })
-    }
-    else{
+    } else {
       wx.setStorageSync('homeRandom', name)
       this.setData({
         radio: name,
       });
-    }   
+    }
   },
 
   /**
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
-    if(wx.getStorageSync('userinfo') && wx.getStorageSync('userinfo') != {}){
-      this.setData({
-        loggedIn:true
+    
+    if (wx.getStorageSync('userinfo') && wx.getStorageSync('userinfo') != {}) {
+      console.log("me: userinfo already exist.")
+    } else {
+      wx.showModal({
+        title: '温馨提示',
+        content: 'Haku Poe申请获取您的昵称等信息',
+        showCancel: false,
+        success() {
+          wx.getUserProfile({
+            desc: "获取你的昵称、头像、地区及性别",
+            success: res => {
+              console.log(res)
+              wx.setStorageSync('userinfo', res.userInfo)
+
+              this.setData({
+                userinfo: wx.getStorageSync('userinfo'),
+                radio: wx.getStorageSync('homeRandom') || 0
+              });
+            },
+            fail: res => {
+              //拒绝授权
+              return;
+            }
+          })
+        }
       })
     }
 
-    wx.getSetting({
-      success: res => {
-        if (res.authSetting['scope.userInfo']) {
-          console.log("已授权")
-        }
-        else{
-          wx.navigateTo({
-            url: '/pages/login/login',
-          })
-        }
-      }
-    })
- 
-    this.setData({
-      userinfo: wx.getStorageSync('userinfo'),
-      radio: wx.getStorageSync('homeRandom')
-    });
   },
 
   /**
@@ -99,6 +120,7 @@ Page({
    * Lifecycle function--Called when page show
    */
   onShow: function () {
+    util.logRecord(util.getCurrentPageUrlWithArgs())
     this.setData({
       userinfo: wx.getStorageSync('userinfo')
     })
@@ -139,7 +161,7 @@ Page({
 
   },
 
-  toStar: function(){
+  toStar: function () {
     wx.navigateTo({
       url: '../star/star',
     })

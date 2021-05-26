@@ -31,7 +31,7 @@ Page({
    * Lifecycle function--Called when page show
    */
   onShow: function () {
-
+    util.logRecord(util.getCurrentPageUrlWithArgs())
   },
 
   /**

@@ -25,7 +25,7 @@
 		"userConfirmedUseCompilerModuleSwitch": false
 	},
 	"compileType": "miniprogram",
-	"libVersion": "2.8.0",
+	"libVersion": "2.15.0",
 	"appid": "wx6dcaf3de62a4454b",
 	"projectname": "mini-poe",
 	"debugOptions": {
