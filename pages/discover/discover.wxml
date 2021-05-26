@@ -14,16 +14,30 @@
 
 
 
+<view>词牌</view>
 <view class='wrapper'>
     <navigator url="../collection/collection?collectionid=1">
-        <view class='lalala'>
+        <view class='coll-item'>
             唐诗三百首
         </view>
     </navigator>
     <navigator url="../collection/collection?collectionid=2">
-        <view class='lalala'>
+        <view class='coll-item'>
             宋词三百首
         </view>
     </navigator>
 </view>
 
+<view class='wrapper'>
+<view>词牌</view>
+    <navigator url="../collection/collection?collectionid=1">
+        <view class='coll-item'>
+            唐诗三百首
+        </view>
+    </navigator>
+    <navigator url="../collection/collection?collectionid=2">
+        <view class='coll-item'>
+            宋词三百首
+        </view>
+    </navigator>
+</view>
