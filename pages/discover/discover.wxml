@@ -14,7 +14,7 @@
 
 
 
-<view>词牌</view>
+<view>选集</view>
 <view class='wrapper'>
     <navigator url="../collection/collection?collectionid=1">
         <view class='coll-item'>
@@ -28,16 +28,16 @@
     </navigator>
 </view>
 
-<view class='wrapper'>
 <view>词牌</view>
-    <navigator url="../collection/collection?collectionid=1">
-        <view class='coll-item'>
-            唐诗三百首
-        </view>
-    </navigator>
-    <navigator url="../collection/collection?collectionid=2">
-        <view class='coll-item'>
-            宋词三百首
-        </view>
-    </navigator>
+<view class='wrapper'>
+<block wx:for="{{topCipai}} " wx:key="item" wx:for-index="i">
+    {{item.collectionid}}
+    <!-- <block wx:if="{{i<5}}">
+        <navigator url="../collection/collection?collectionid=1">
+            <view class='coll-item'>
+                {{item.collectionid}}
+            </view>
+        </navigator>
+    </block> -->
+</block>
 </view>
