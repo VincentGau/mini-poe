@@ -10,14 +10,16 @@ Page({
    */
   data: {
     hasMoreWorks: false,
-    hasMoreAuthors: false
+    hasMoreAuthors: false,
+    topCipai: [1,2]
   },
 
   /**
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
-
+    // this.getTopCipai();
+    
   },
 
   /**
@@ -25,6 +27,19 @@ Page({
    */
   onReady: function () {
 
+  },
+
+  // 获取前20个词牌
+  getTopCipai: function() {
+    db.collection('cipai').orderBy('oorder', 'asc').get({
+      success: res =>{
+        // console.log(res.data)
+        this.setData({
+          topCipai: res.data
+        })
+        console.log(this.data.topCipai)
+      }
+    })
   },
 
   /**
