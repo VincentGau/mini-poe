@@ -15,8 +15,7 @@ Page({
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    console.log(options)
-    console.log(options.keyword)
+
     try {
       var value = wx.getStorageSync('works20')
       if (value) {
@@ -47,7 +46,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-
+    util.logRecord(util.getCurrentPageUrlWithArgs())
   },
 
   /**

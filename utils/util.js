@@ -1,3 +1,5 @@
+var app = getApp()
+
 const formatTime = date => {
   const year = date.getFullYear()
   const month = date.getMonth() + 1
@@ -83,6 +85,83 @@ const splitWithEnd = para => {
   return sections
 }
 
+const logRecord = page => {
+  if(app.globalData.openid && app.globalData.openid != ''){
+    // 表示onlaunch接口调用成功，已经获得openid
+    // console.log("onload after onlaunch")
+    wx.request({
+      url: 'https://tc.hakucc.com/wechat/record',
+      method:'POST',
+      data:{
+        openid: wx.getStorageSync('openid'),
+        nickname: wx.getStorageSync('userinfo').nickName || '',
+        avatarUrl: wx.getStorageSync('userinfo').avatarUrl || '',
+        country: wx.getStorageSync('userinfo').country || '',
+        province: wx.getStorageSync('userinfo').province || '',
+        gender: wx.getStorageSync('userinfo').gender,
+        lang: wx.getStorageSync('userinfo').language || '',
+        page: page,
+        actionType: '',
+        actionDetail: '',
+      },
+      header:{
+        "Content-Type": "application/x-www-form-urlencoded"
+      }
+    })
+  }
+  else{
+    // 给app定义一个回调函数
+    // console.log("onload before onlaunch, define callback")
+    app.openidCallback = openid => {
+      wx.request({
+        url: 'https://tc.hakucc.com/wechat/record',
+        method:'POST',
+        data:{
+          openid: openid,
+          nickname: wx.getStorageSync('userinfo').nickName || '',
+          avatarUrl: wx.getStorageSync('userinfo').avatarUrl || '',
+          country: wx.getStorageSync('userinfo').country || '',
+          province: wx.getStorageSync('userinfo').province || '',
+          gender: wx.getStorageSync('userinfo').gender,
+          lang: wx.getStorageSync('userinfo').language || '',
+          page: page,
+          actionType: '',
+          actionDetail: '',
+        },
+        header:{
+          "Content-Type": "application/x-www-form-urlencoded"
+        }
+      })
+    }
+  }
+}
+
+/*获取当前页url*/
+function getCurrentPageUrl(){
+  var pages = getCurrentPages()    //获取加载的页面
+  var currentPage = pages[pages.length-1]    //获取当前页面的对象
+  var url = currentPage.route    //当前页面url
+  return url
+}
+
+/*获取当前页带参数的url*/
+function getCurrentPageUrlWithArgs(){
+  var pages = getCurrentPages()    //获取加载的页面
+  var currentPage = pages[pages.length-1]    //获取当前页面的对象
+  var url = currentPage.route    //当前页面url
+  var options = currentPage.options    //如果要获取url中所带的参数可以查看options
+  
+  //拼接url的参数
+  var urlWithArgs = url + '?'
+  for(var key in options){
+      var value = options[key]
+      urlWithArgs += key + '=' + value + '&'
+  }
+  urlWithArgs = urlWithArgs.substring(0, urlWithArgs.length-1)
+  
+  return urlWithArgs
+}
+
 module.exports = {
   formatTime: formatTime,
   contentDigest: contentDigest,
@@ -93,4 +172,7 @@ module.exports = {
   stringIntersect: stringIntersect,
   splitParagraph: splitParagraph,
   splitWithEnd: splitWithEnd,
+  logRecord: logRecord,
+  getCurrentPageUrl: getCurrentPageUrl, 
+  getCurrentPageUrlWithArgs: getCurrentPageUrlWithArgs,
 }

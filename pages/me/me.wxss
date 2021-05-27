@@ -22,3 +22,10 @@
   border-radius: 0;
 }
 
+.a-text{
+  color: #576B95;
+  font-size: 28rpx;
+  text-align: center;
+  margin-top: 20px;
+}
+

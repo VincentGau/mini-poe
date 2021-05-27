@@ -21,18 +21,19 @@ Page({
     pageIndex: 0, //页数 
     userInfo: {},
     hasUserInfo: false,
-    canIUse: wx.canIUse('button.open-type.getUserInfo'),
+    // canIUse: wx.canIUse('button.open-type.getUserInfo'),
     noStarYet: false, // 尚未收藏任何作品
   },
+  
 
-  getUserInfo: function (e) {
-    // console.log(e)
-    app.globalData.userInfo = e.detail.userInfo
-    this.setData({
-      userInfo: e.detail.userInfo,
-      hasUserInfo: true
-    })
-  },
+  // getUserInfo: function (e) {
+  //   // console.log(e)
+  //   app.globalData.userInfo = e.detail.userInfo
+  //   this.setData({
+  //     userInfo: e.detail.userInfo,
+  //     hasUserInfo: true
+  //   })
+  // },
 
 
   random10: function () {
@@ -143,6 +144,35 @@ Page({
 
   // 首页随机来一首
   randomRefresh: function () {
+    // if(wx.getStorageSync('userinfo') && wx.getStorageSync('userinfo') != {}){
+    //   console.log("userinfo already exist.")
+    // }
+    // else{
+    //   wx.showModal({
+    //     title: '温馨提示',
+    //     content: '正在请求您的头像等信息',
+    //     showCancel: false,
+    //     success(res) {
+    //       wx.getUserProfile({
+    //         desc: "获取你的昵称、头像、地区及性别",
+    //         success: res => {
+    //           console.log(res)
+    //           wx.setStorageSync('userinfo', res.userInfo)
+
+    //           this.setData({
+    //             userinfo: wx.getStorageSync('userinfo'),
+    //             radio: wx.getStorageSync('homeRandom') || 0
+    //           });
+    //         },
+    //         fail: res => {
+    //           //拒绝授权
+    //           return;
+    //         }
+    //       })
+    //     }
+    //   })
+    // }
+    
     let homeRandom = wx.getStorageSync('homeRandom')
     switch (homeRandom) {
       case 0:
@@ -166,61 +196,64 @@ Page({
     })
   },
 
+
+
   /**
    * 生命周期函数--监听页面加载
    */
   onLoad: function (options) {
-    // console.log("onLoad")
+
+
     this.randomRefresh()
 
-    if(app.globalData.openid && app.globalData.openid != ''){
-      // 表示onlaunch接口调用成功，已经获得openid
-      // console.log("onload after onlaunch")
-      wx.request({
-        url: 'https://tc.hakucc.com/wechat/record',
-        method:'POST',
-        data:{
-          openid: wx.getStorageSync('openid'),
-          nickname: wx.getStorageSync('userinfo').nickName || '',
-          avatarUrl: wx.getStorageSync('userinfo').avatarUrl || '',
-          country: wx.getStorageSync('userinfo').country || '',
-          province: wx.getStorageSync('userinfo').province || '',
-          gender: Number(wx.getStorageSync('userinfo').gender) || -2,
-          lang: wx.getStorageSync('userinfo').language || '',
-          page: '/home',
-          actionType: '',
-          actionDetail: '',
-        },
-        header:{
-          "Content-Type": "application/x-www-form-urlencoded"
-        }
-      })
-    }
-    else{
-      // 给app定义一个回调函数
-      // console.log("onload before onlaunch, define callback")
-      app.openidCallback = openid => {
-        wx.request({
-          url: 'https://tc.hakucc.com/wechat/record',
-          method:'POST',
-          data:{
-            openid: openid,
-            nickname: wx.getStorageSync('userinfo').nickName || '',
-            avatarUrl: wx.getStorageSync('userinfo').avatarUrl || '',
-            country: wx.getStorageSync('userinfo').country || '',
-            province: wx.getStorageSync('userinfo').province || '',
-            gender: Number(wx.getStorageSync('userinfo').gender) || -2,
-            lang: wx.getStorageSync('userinfo').language || '',
-            page: '/home',
-            actionType: '',
-            actionDetail: '',
-          },
-          header:{
-            "Content-Type": "application/x-www-form-urlencoded"
-          }
-        })
-      }
-    }
+    // if(app.globalData.openid && app.globalData.openid != ''){
+    //   // 表示onlaunch接口调用成功，已经获得openid
+    //   // console.log("onload after onlaunch")
+    //   wx.request({
+    //     url: 'https://tc.hakucc.com/wechat/record',
+    //     method:'POST',
+    //     data:{
+    //       openid: wx.getStorageSync('openid'),
+    //       nickname: wx.getStorageSync('userinfo').nickName || '',
+    //       avatarUrl: wx.getStorageSync('userinfo').avatarUrl || '',
+    //       country: wx.getStorageSync('userinfo').country || '',
+    //       province: wx.getStorageSync('userinfo').province || '',
+    //       gender: wx.getStorageSync('userinfo').gender,
+    //       lang: wx.getStorageSync('userinfo').language || '',
+    //       page: '/home',
+    //       actionType: '',
+    //       actionDetail: '',
+    //     },
+    //     header:{
+    //       "Content-Type": "application/x-www-form-urlencoded"
+    //     }
+    //   })
+    // }
+    // else{
+    //   // 给app定义一个回调函数
+    //   // console.log("onload before onlaunch, define callback")
+    //   app.openidCallback = openid => {
+    //     wx.request({
+    //       url: 'https://tc.hakucc.com/wechat/record',
+    //       method:'POST',
+    //       data:{
+    //         openid: openid,
+    //         nickname: wx.getStorageSync('userinfo').nickName || '',
+    //         avatarUrl: wx.getStorageSync('userinfo').avatarUrl || '',
+    //         country: wx.getStorageSync('userinfo').country || '',
+    //         province: wx.getStorageSync('userinfo').province || '',
+    //         gender: wx.getStorageSync('userinfo').gender,
+    //         lang: wx.getStorageSync('userinfo').language || '',
+    //         page: '/home',
+    //         actionType: '',
+    //         actionDetail: '',
+    //       },
+    //       header:{
+    //         "Content-Type": "application/x-www-form-urlencoded"
+    //       }
+    //     })
+    //   }
+    // }
   },
 
   /**
@@ -234,89 +267,7 @@ Page({
    * 生命周期函数--监听页面显示
    */
   onShow: function () {
-    // console.log("onShow")
-    // if (!wx.getStorageSync('userinfo') || !wx.getStorageSync('openid')) {
-    //   wx.getUserInfo({
-    //     success: (res) => {
-    //       app.globalData.userInfo = res.userInfo
-    //       wx.setStorageSync('userinfo', res.userInfo)
-    //       wx.login({
-    //         success: res=>{
-    //           var code = res.code
-    //           if(code){
-    //             wx.request({
-    //               url: 'https://tc.hakucc.com/wechat/getOpenId',
-    //               method: 'post',
-    //               data:{
-    //                 code: code
-    //               },
-    //               header:{
-    //                 "Content-Type": "application/x-www-form-urlencoded"
-    //               },
-    //               success: function (res) {
-    //                 wx.setStorageSync('openid', res.data.openid);
-  
-    //                 wx.request({
-    //                   url: 'https://tc.hakucc.com/wechat/record',
-    //                   method:'POST',
-    //                   data:{
-    //                     openid: wx.getStorageSync('openid'),
-    //                     nickname: wx.getStorageSync('userinfo').nickName,
-    //                     avatarUrl: wx.getStorageSync('userinfo').avatarUrl,
-    //                     country: wx.getStorageSync('userinfo').country,
-    //                     province: wx.getStorageSync('userinfo').province,
-    //                     gender: wx.getStorageSync('userinfo').gender,
-    //                     lang: wx.getStorageSync('userinfo').language,
-    //                     page: '/home',
-    //                   },
-    //                   header:{
-    //                     "Content-Type": "application/x-www-form-urlencoded"
-    //                   },
-    //                   success:function(r){
-    //                     console.log(r.data)
-    //                   }
-    //                 })
-    //               }
-    //             })
-    //           }
-    //           else{
-    //             console.log('登录失败！' + res.errMsg)
-    //           }
-              
-    //         }
-    //       })
-    //     },
-    //     fail: () => {
-    //       wx.navigateTo({
-    //         url: '../login/login',
-    //       })
-    //     }
-    //   })
-    // }
-    // else{
-    //   let openid = wx.getStorageSync('openid')
-    //   let userinfo = wx.getStorageSync('userinfo')
-    //   wx.request({
-    //     url: 'https://tc.hakucc.com/wechat/record',
-    //     method:'POST',
-    //     data:{
-    //       openid: openid,
-    //       nickname: userinfo.nickName,
-    //       avatarUrl: userinfo.avatarUrl,
-    //       country: userinfo.country,
-    //       province: userinfo.province,
-    //       gender: userinfo.gender,
-    //       lang: userinfo.language,
-    //       page: '/home',
-    //     },
-    //     header:{
-    //       "Content-Type": "application/x-www-form-urlencoded"
-    //     },
-    //     success:function(res){
-    //       // console.log(res.data)
-    //     }
-    //   })
-    // }
+    util.logRecord(util.getCurrentPageUrlWithArgs())
   },
 
   /**

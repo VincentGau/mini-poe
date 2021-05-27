@@ -42,6 +42,8 @@
   </view>
 </block>
 
+
+
 <block wx:else>
   <view class='quote'>
     <view class='wrapper '>

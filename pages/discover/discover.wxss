@@ -22,8 +22,7 @@
   height: 100%;
 }
 
-.lalala{
-  margin-top: 100px;
+.coll-item{
   text-align: center;
   padding-left: 16px;
   padding-right: 16px;
@@ -31,4 +30,5 @@
   align-items: center;
   display: flex;
   height:100px;
+  writing-mode: vertical-lr;
 }

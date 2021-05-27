@@ -1,14 +1,5 @@
 <!--pages/me/me.wxml-->
 
-<!-- <view wx:if="{{!loggedIn}}">
-    <image class="avatar" src="/images/avatar.png" mode="cover"></image>
-    <button class="login-btn" open-type="getUserInfo" bindgetuserinfo="bindGetUserInfo">请点击登录</button>
-</view>
-<view wx:else>
-    <image class="avatar" src="{{userinfo.avatarUrl}}" mode="cover"></image>
-    <text>{{userinfo.nickName}}</text>
-</view> -->
-
 <view class="weui-cells weui-cells_after-title">
     <navigator url="../star/star" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
         <view class="weui-cell__bd">我的收藏</view>
@@ -46,7 +37,9 @@
     </navigator>
 </view>
 
-<block wx:if="{{userinfo.nickName=='Ying' || userinfo.nickName=='Haku高明'}}">
+<view class="a-text" bindtap="updateUserProfile">更新信息</view>
+
+<block wx:if="{{userinfo.nickName=='Ying' || userinfo.nickName=='Haku'}}">
 <view class="weui-cells__title">咚咚</view>
 <view class="weui-cells weui-cells_after-title">
     <navigator url="../other/dongdong" class="weui-cell weui-cell_access" hover-class="weui-cell_active">
