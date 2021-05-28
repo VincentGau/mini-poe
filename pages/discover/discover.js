@@ -11,14 +11,14 @@ Page({
   data: {
     hasMoreWorks: false,
     hasMoreAuthors: false,
-    topCipai: [1,2]
+    topCipai: []
   },
 
   /**
    * Lifecycle function--Called when page load
    */
   onLoad: function (options) {
-    // this.getTopCipai();
+    this.getTopCipai();
     
   },
 

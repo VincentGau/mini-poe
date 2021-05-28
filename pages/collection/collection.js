@@ -1,5 +1,6 @@
 // pages/collection/index.js
 const db = wx.cloud.database()
+const util = require('../../utils/util.js')
 Page({
 
   /**
@@ -68,6 +69,10 @@ Page({
         })
       }
     })
+  },
+
+  getWorksByCollid: function(collid, pagesize, pagenum){
+
   },
 
   /**
