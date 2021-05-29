@@ -30,14 +30,14 @@
 
 <view>词牌</view>
 <view class='wrapper'>
-<block wx:for="{{topCipai}} " wx:key="item" wx:for-index="i">
-    {{item.collectionid}}
-    <!-- <block wx:if="{{i<5}}">
-        <navigator url="../collection/collection?collectionid=1">
+<block wx:for-items="{{topCipai}}" wx:for-item="item" wx:for-index="i">
+    
+    <block wx:if="{{i<4}}">
+        <navigator url="../collection/collection?collectionid={{item.collectionid}}">
             <view class='coll-item'>
-                {{item.collectionid}}
+                {{item.collectionname}}
             </view>
         </navigator>
-    </block> -->
+    </block>
 </block>
 </view>
