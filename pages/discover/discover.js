@@ -31,15 +31,23 @@ Page({
 
   // 获取前20个词牌
   getTopCipai: function() {
-    db.collection('cipai').orderBy('oorder', 'asc').get({
-      success: res =>{
-        // console.log(res.data)
-        this.setData({
-          topCipai: res.data
-        })
-        console.log(this.data.topCipai)
-      }
-    })
+    if(wx.getStorageSync('topCipai')){
+      this.setData({
+        topCipai: wx.getStorageSync('topCipai')
+      })
+    }
+    else{
+      db.collection('cipai').orderBy('oorder', 'asc').get({
+        success: res =>{
+          this.setData({
+            topCipai: res.data
+          })
+          wx.setStorageSync('topCipai', this.data.topCipai)
+          console.log(this.data.topCipai)
+        }
+      })
+    }
+    
   },
 
   /**

@@ -14,7 +14,7 @@
 <block wx:for="{{works}}" wx:for-index="i" wx:key="item">
   <navigator url="../poe-detail/poe-detail?WorkId={{item.WorkId}}" class="weui-cell" hover-class="weui-cell_active">
       <view class="weui-cell__bd">
-          <view>{{item.Title}}<text class="dynasty"></text></view>
+          <view>{{item.Title}}<text class="dynasty">[{{item.Dynasty}}] {{item.AuthorName}}</text></view>
           <view class="weui-media-box__desc">{{tools.contentDigest(item.Content)}}</view>
       </view>
   </navigator>

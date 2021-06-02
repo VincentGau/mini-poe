@@ -71,8 +71,27 @@ Page({
     })
   },
 
-  getWorksByCollid: function(collid, pagesize, pagenum){
+  // 从云数据库查询词牌对应的作品
+  getWorksByCipaiName: function(cipainame, pagesize, pagenum){
+    db.collection('works_all').where({
+      Title: db.RegExp({
+        regexp: cipainame,          
+        options: 'i',        
+      })
+    }).orderBy('LikesCount', 'desc').skip(pagenum * pagesize).limit(pagesize).get().then(res => {
+      console.log(res.data)
+      this.setData({
+        pagenum : pagenum + 1,
+        works: this.data.works.concat(res.data),
+        emptyFlag: false
+      })
 
+      if(res.data.length < pagesize){
+        this.setData({
+          endFlag: true
+        })
+      }
+    })
   },
 
   /**
@@ -107,16 +126,35 @@ Page({
     //   }
     // })
 
-    let collectionDict = {
-      '1': 'shi_300',
-      '2': 'ci_300'
-    }
 
     this.setData({
-      collectionName: collectionDict[options.collectionid]
+      type: options.type
     })
-
-    this.getCollectionWorksByPageFromCloud(this.data.collectionName, this.data.pagesize, this.data.pagenum)
+    console.log("SET TYPE:" + this.data.type)
+    // 词牌
+    if(options.type == 1){
+      console.log("type 1")
+      let cipainame = options.cipaiName
+      this.setData({
+        cipainame: cipainame
+      })
+      this.getWorksByCipaiName(cipainame, this.data.pagesize, this.data.pagenum)
+      
+    }
+    // 唐诗三百首，宋词三百首等，单独维护列表的
+    else if(options.type == 0){
+      let collectionDict = {
+        '1': 'shi_300',
+        '2': 'ci_300'
+      }
+  
+      this.setData({
+        collectionName: collectionDict[options.collectionid]
+      })
+  
+      this.getCollectionWorksByPageFromCloud(this.data.collectionName, this.data.pagesize, this.data.pagenum)
+    }
+    
   },
 
   
@@ -187,7 +225,21 @@ Page({
     //     })
     //   }
     // })
-    this.getCollectionWorksByPageFromCloud(this.data.collectionName, this.data.pagesize, this.data.pagenum)
+
+
+    switch(this.data.type){
+      case '0':
+        console.log(this.data.collectionName, this.data.pagesize, this.data.pagenum)
+        this.getCollectionWorksByPageFromCloud(this.data.collectionName, this.data.pagesize, this.data.pagenum)
+        break;
+      case '1':
+        console.log(this.data.cipainame, this.data.pagesize, this.data.pagenum)
+        this.getWorksByCipaiName(this.data.cipainame, this.data.pagesize, this.data.pagenum)
+        break;
+      default:
+        break;
+
+    }
   },
 
   /**

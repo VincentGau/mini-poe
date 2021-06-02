@@ -93,11 +93,9 @@ Page({
     db.collection('star_works').aggregate().sample({
       size: 1
     }).end().then(res => {
-      // console.log(res)
       db.collection("works_all").where({
         WorkId: res.list[0].WorkId
       }).get().then(res => {
-        // console.log(res.data)
         let firstSen = util.firstSentence(res.data[0].Content)
 
         let quote = util.splitQuote(firstSen)
@@ -107,6 +105,7 @@ Page({
         })
       }).catch(err => {
         console.error(err)
+        console.error(res.list[0].WorkId)
       })
     }).catch(err => {
       console.log("no star")
@@ -122,23 +121,23 @@ Page({
     source.aggregate().sample({
       size: 1
     }).end().then(res => {
-      // console.log(res.list[0].workid)
       db.collection("works_all").where({
         WorkId: res.list[0].workid
       }).get().then(res => {
-        // console.log(res.data)
         let firstSen = util.firstSentence(res.data[0].Content)
 
         let quote = util.splitQuote(firstSen)
         this.setData({
-          quote: quote,
+          quote: quote, 
           workId: res.data[0].WorkId
         })
       }).catch(err => {
         console.error(err)
+        console.error(res)
       })
     }).catch(err => {
       console.error(err)
+      console.error(res.list[0].WorkId)
     })
   },
 

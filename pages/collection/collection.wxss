@@ -1,1 +1,6 @@
 /* pages/collection/index.wxss */
+.dynasty{
+  color:#666;
+  float:right;
+  font-size: 12px;
+}
